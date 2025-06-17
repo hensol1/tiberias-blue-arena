@@ -137,3 +137,22 @@
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
+
+/* Enhanced 3D flip effect for player cards */
+.group:hover .transform-style-preserve-3d {
+  transform: rotateY(180deg);
+}
+
+/* Ensure smooth transitions on mobile */
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .transform-style-preserve-3d {
+    transform: rotateY(180deg);
+  }
+}
+
+/* For touch devices, add active state */
+@media (hover: none) and (pointer: coarse) {
+  .group:active .transform-style-preserve-3d {
+    transform: rotateY(180deg);
+  }
+}

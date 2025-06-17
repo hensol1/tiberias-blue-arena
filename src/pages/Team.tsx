@@ -93,9 +93,9 @@ const Team = () => {
         {/* Players Grid */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">שחקני הקבוצה</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {players.map((player, index) => (
-              <div key={index} className="relative w-full h-80 perspective-1000 group">
+              <div key={index} className="relative w-full h-64 md:h-80 perspective-1000 group">
                 <div className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
                   {/* Front of card */}
                   <div className="absolute inset-0 w-full h-full backface-hidden rounded-lg overflow-hidden shadow-lg">
@@ -106,8 +106,8 @@ const Team = () => {
                         className="w-full h-full object-cover object-top"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                      <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <h3 className="text-white font-bold text-xl mb-1">{player.name}</h3>
+                      <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
+                        <h3 className="text-white font-bold text-lg md:text-xl mb-1">{player.name}</h3>
                         <div className="w-full h-0.5 bg-team-secondary mb-2"></div>
                         <p className="text-white/80 text-sm">{player.number}</p>
                       </div>
@@ -115,15 +115,15 @@ const Team = () => {
                   </div>
                   
                   {/* Back of card */}
-                  <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-team-primary to-team-dark">
-                    <div className="flex flex-col justify-center items-center h-full p-6 text-white text-center">
-                      <h3 className="text-2xl font-bold mb-4">{player.name}</h3>
-                      <div className="space-y-3 text-lg">
+                  <div className="absolute inset-0 w-full h-full backface-hidden rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-team-primary to-team-dark" style={{ transform: 'rotateY(180deg)' }}>
+                    <div className="flex flex-col justify-center items-center h-full p-4 md:p-6 text-white text-center">
+                      <h3 className="text-xl md:text-2xl font-bold mb-4">{player.name}</h3>
+                      <div className="space-y-2 md:space-y-3 text-base md:text-lg">
                         <p><span className="font-semibold">גיל:</span> {player.age}</p>
                         <p><span className="font-semibold">עמדה:</span> {player.position}</p>
                         <p><span className="font-semibold">מדינה:</span> {player.country}</p>
-                        <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mt-4">
-                          <span className="text-xl font-bold">{player.number}</span>
+                        <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-full flex items-center justify-center mt-3 md:mt-4">
+                          <span className="text-lg md:text-xl font-bold">{player.number}</span>
                         </div>
                       </div>
                     </div>
