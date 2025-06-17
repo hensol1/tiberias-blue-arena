@@ -1,9 +1,8 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Trophy, Calendar } from "lucide-react";
 
 const Team = () => {
   const players = [
@@ -13,7 +12,7 @@ const Team = () => {
       number: 1,
       age: 28,
       experience: "6 שנים",
-      image: "https://images.unsplash.com/photo-1594736797933-d0c6d7a7e19b?w=300&h=300&fit=crop"
+      image: "/lovable-uploads/3be6f079-4154-461f-a0d1-42db45709a35.png"
     },
     {
       name: "אמיר לוי",
@@ -21,7 +20,7 @@ const Team = () => {
       number: 4,
       age: 26,
       experience: "5 שנים",
-      image: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=300&h=300&fit=crop"
+      image: "/lovable-uploads/1ac693b6-dd76-4e81-a060-577f043a54ca.png"
     },
     {
       name: "דוד משה",
@@ -29,7 +28,7 @@ const Team = () => {
       number: 8,
       age: 24,
       experience: "3 שנים",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop"
+      image: "/lovable-uploads/72bb95fd-d0bd-45a9-9089-7a819e42fba6.png"
     },
     {
       name: "מיכאל אברהם",
@@ -37,7 +36,7 @@ const Team = () => {
       number: 10,
       age: 22,
       experience: "2 שנים",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop"
+      image: "/lovable-uploads/52b96baa-cfae-425d-b47a-f14bfe8cefbc.png"
     },
     {
       name: "רון דוד",
@@ -45,7 +44,7 @@ const Team = () => {
       number: 3,
       age: 27,
       experience: "4 שנים",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop"
+      image: "/lovable-uploads/6f8c229d-3ff0-41d8-8fcd-ba9c6d1a475a.png"
     },
     {
       name: "עמרי שמואל",
@@ -53,7 +52,7 @@ const Team = () => {
       number: 6,
       age: 25,
       experience: "3 שנים",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop"
+      image: "/lovable-uploads/1ac693b6-dd76-4e81-a060-577f043a54ca.png"
     }
   ];
 
@@ -103,72 +102,36 @@ const Team = () => {
       </section>
 
       <div className="container mx-auto px-4 py-12">
-        {/* Team Stats */}
-        <section className="mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Users className="h-12 w-12 text-team-primary mx-auto mb-2" />
-                <CardTitle className="text-right">סגל שחקנים</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-team-primary mb-2">28</div>
-                <p className="text-muted-foreground text-right">שחקנים רשומים</p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Trophy className="h-12 w-12 text-team-primary mx-auto mb-2" />
-                <CardTitle className="text-right">גיל ממוצע</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-team-primary mb-2">24.5</div>
-                <p className="text-muted-foreground text-right">שנים</p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Calendar className="h-12 w-12 text-team-primary mx-auto mb-2" />
-                <CardTitle className="text-right">ניסיון ממוצע</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-team-primary mb-2">4.2</div>
-                <p className="text-muted-foreground text-right">שנות ניסיון</p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
         {/* Players Grid */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">שחקני הקבוצה</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {players.map((player, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+              <Card key={index} className="overflow-hidden hover:shadow-xl transition-all duration-300 group bg-white border-0 shadow-lg">
                 <CardHeader className="p-0">
-                  <div className="relative">
+                  <div className="relative bg-gradient-to-b from-team-primary to-team-dark">
                     <img 
                       src={player.image} 
                       alt={player.name}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-80 object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-3 right-3">
-                      <div className="w-12 h-12 bg-team-primary rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    <div className="absolute top-4 right-4">
+                      <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-team-primary font-bold text-lg shadow-lg">
                         {player.number}
                       </div>
                     </div>
-                    <div className="absolute bottom-3 right-3">
-                      <Badge className={`${getPositionColor(player.position)} hover:${getPositionColor(player.position)}`}>
-                        {player.position}
-                      </Badge>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                      <div className="flex justify-between items-end">
+                        <Badge className={`${getPositionColor(player.position)} hover:${getPositionColor(player.position)} text-white font-medium`}>
+                          {player.position}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-semibold text-right mb-2 text-team-dark">{player.name}</h3>
-                  <div className="space-y-1 text-sm text-muted-foreground text-right">
+                <CardContent className="p-4 text-center">
+                  <h3 className="text-lg font-bold text-team-dark mb-2">{player.name}</h3>
+                  <div className="space-y-1 text-sm text-muted-foreground">
                     <p>גיל: {player.age}</p>
                     <p>ניסיון: {player.experience}</p>
                   </div>
