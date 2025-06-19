@@ -53,31 +53,32 @@ const Header = () => {
             <Link to="/" className="flex items-center space-x-3 space-x-reverse">
               <img 
                 src="/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png" 
-                alt="עירוני טבריה לוגו" 
+                alt="עירוני דורות טבריה לוגו" 
                 className="w-10 h-10 rounded-full"
               />
               <div className="text-right">
-                <h1 className="text-xl font-bold">עירוני טבריה</h1>
-                <p className="text-xs text-blue-200">מועדון כדורגל</p>
+                <h1 className="text-xl font-bold">עירוני דורות טבריה</h1>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8 space-x-reverse">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`text-sm font-medium transition-colors hover:text-blue-200 relative ${
-                    isActive(item.href) ? "text-white" : "text-blue-100"
-                  }`}
-                >
-                  {item.name}
-                  {isActive(item.href) && (
-                    <div className="absolute -bottom-1 right-0 left-0 h-0.5 bg-white rounded-full" />
-                  )}
-                </Link>
-              ))}
+            {/* Desktop Navigation - Centered */}
+            <nav className="hidden md:flex items-center justify-center flex-1">
+              <div className="flex items-center space-x-8 space-x-reverse">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`text-sm font-medium transition-colors hover:text-blue-200 relative ${
+                      isActive(item.href) ? "text-white" : "text-blue-100"
+                    }`}
+                  >
+                    {item.name}
+                    {isActive(item.href) && (
+                      <div className="absolute -bottom-1 right-0 left-0 h-0.5 bg-white rounded-full" />
+                    )}
+                  </Link>
+                ))}
+              </div>
             </nav>
 
             {/* Mobile menu */}
@@ -92,12 +93,11 @@ const Header = () => {
                   <div className="flex items-center mb-8">
                     <img 
                       src="/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png" 
-                      alt="עירוני טבריה לוגו" 
+                      alt="עירוני דורות טבריה לוגו" 
                       className="w-8 h-8 rounded-full ml-3"
                     />
                     <div className="text-right">
-                      <h2 className="text-lg font-bold text-white">עירוני טבריה</h2>
-                      <p className="text-xs text-blue-200">מועדון כדורגל</p>
+                      <h2 className="text-lg font-bold text-white">עירוני דורות טבריה</h2>
                     </div>
                   </div>
                   
