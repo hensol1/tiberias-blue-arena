@@ -2,34 +2,57 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NewsFeed from "@/components/NewsFeed";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Index = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  
+  const bannerImages = [
+    "/lovable-uploads/ae653618-f246-48c4-84fb-31e6114b0b25.png",
+    "/lovable-uploads/3eca3ff4-bae0-4b66-9c31-46793b15f049.png"
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % bannerImages.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [bannerImages.length]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-l from-team-primary to-team-dark text-white py-20">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-              עירוני טבריה
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100 animate-fade-in">
-              מועדון כדורגל עם מסורת, גאווה ועתיד מבטיח
-            </p>
-            <div className="flex justify-center space-x-4 space-x-reverse animate-fade-in">
-              <Button size="lg" className="bg-white text-team-primary hover:bg-gray-100">
-                <Link to="/team">הכר את הקבוצה</Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-team-primary">
-                <Link to="/games">משחקים קרובים</Link>
-              </Button>
-            </div>
+      {/* Hero Section - Image Carousel */}
+      <section className="relative h-96 md:h-[500px] overflow-hidden">
+        {bannerImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+              index === currentImage ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img
+              src={image}
+              alt={`עירוני טבריה ${index + 1}`}
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-black/20"></div>
           </div>
+        ))}
+        
+        {/* Optional: Add dots indicator */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 space-x-reverse">
+          {bannerImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImage(index)}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                index === currentImage ? 'bg-white' : 'bg-white/50'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
