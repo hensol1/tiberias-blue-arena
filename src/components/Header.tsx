@@ -46,50 +46,52 @@ const Header = () => {
       </div>
 
       {/* Main Header */}
-      <header className="bg-team-primary text-white shadow-lg sticky top-0 z-50">
+      <header className="bg-gradient-to-r from-team-primary via-team-secondary to-team-primary text-white shadow-xl sticky top-0 z-50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo and team name */}
-            <Link to="/" className="flex items-center space-x-3 space-x-reverse">
-              <img 
-                src="/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png" 
-                alt="עירוני דורות טבריה לוגו" 
-                className="w-10 h-10 rounded-full"
-              />
+          <div className="flex items-center justify-between h-20">
+            {/* Logo and team name - Bigger */}
+            <Link to="/" className="flex items-center space-x-4 space-x-reverse group">
+              <div className="relative">
+                <img 
+                  src="/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png" 
+                  alt="עירוני דורות טבריה לוגו" 
+                  className="w-16 h-16 rounded-full shadow-lg ring-4 ring-white/20 transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-black/10"></div>
+              </div>
               <div className="text-right">
-                <h1 className="text-xl font-bold">עירוני דורות טבריה</h1>
+                <h1 className="text-2xl font-bold tracking-wide">עירוני דורות טבריה</h1>
               </div>
             </Link>
 
-            {/* Desktop Navigation - Centered */}
+            {/* Desktop Navigation - Modern Design */}
             <nav className="hidden md:flex items-center justify-center flex-1">
-              <div className="flex items-center space-x-8 space-x-reverse">
+              <div className="flex items-center space-x-2 space-x-reverse bg-white/10 backdrop-blur-md rounded-full px-6 py-2 border border-white/20">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`text-sm font-medium transition-colors hover:text-blue-200 relative ${
-                      isActive(item.href) ? "text-white" : "text-blue-100"
+                    className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 hover:bg-white/20 hover:backdrop-blur-sm relative ${
+                      isActive(item.href) 
+                        ? "bg-white text-team-primary shadow-lg" 
+                        : "text-white hover:text-white"
                     }`}
                   >
                     {item.name}
-                    {isActive(item.href) && (
-                      <div className="absolute -bottom-1 right-0 left-0 h-0.5 bg-white rounded-full" />
-                    )}
                   </Link>
                 ))}
               </div>
             </nav>
 
-            {/* Social Media Icons - Left Side */}
-            <div className="hidden md:flex items-center space-x-4 space-x-reverse">
-              <a href="#" className="text-blue-100 hover:text-white transition-colors">
+            {/* Social Media Icons - Modern Design */}
+            <div className="hidden md:flex items-center space-x-3 space-x-reverse">
+              <a href="#" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-blue-100 hover:text-white transition-colors">
+              <a href="#" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="text-blue-100 hover:text-white transition-colors">
+              <a href="#" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Youtube className="h-5 w-5" />
               </a>
             </div>
@@ -97,33 +99,33 @@ const Header = () => {
             {/* Mobile menu */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="md:hidden text-white">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="sm" className="md:hidden text-white hover:bg-white/20 rounded-full p-3">
+                  <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-team-primary border-team-secondary">
+              <SheetContent side="right" className="w-80 bg-gradient-to-b from-team-primary to-team-secondary border-team-secondary backdrop-blur-md">
                 <div className="flex flex-col h-full pt-6">
                   <div className="flex items-center mb-8">
                     <img 
                       src="/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png" 
                       alt="עירוני דורות טבריה לוגו" 
-                      className="w-8 h-8 rounded-full ml-3"
+                      className="w-12 h-12 rounded-full ml-3 ring-2 ring-white/30"
                     />
                     <div className="text-right">
-                      <h2 className="text-lg font-bold text-white">עירוני דורות טבריה</h2>
+                      <h2 className="text-xl font-bold text-white">עירוני דורות טבריה</h2>
                     </div>
                   </div>
                   
-                  <nav className="flex flex-col space-y-4">
+                  <nav className="flex flex-col space-y-2">
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
                         to={item.href}
                         onClick={() => setIsOpen(false)}
-                        className={`text-right py-2 px-4 rounded-lg transition-colors ${
+                        className={`text-right py-3 px-6 rounded-xl transition-all duration-300 border ${
                           isActive(item.href)
-                            ? "bg-team-secondary text-white"
-                            : "text-blue-100 hover:bg-team-secondary/20"
+                            ? "bg-white text-team-primary shadow-lg border-white"
+                            : "text-white hover:bg-white/20 border-white/20 hover:border-white/40"
                         }`}
                       >
                         {item.name}
@@ -132,14 +134,14 @@ const Header = () => {
                   </nav>
 
                   {/* Social Media Icons in Mobile Menu */}
-                  <div className="flex items-center justify-center space-x-6 space-x-reverse mt-8">
-                    <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                  <div className="flex items-center justify-center space-x-4 space-x-reverse mt-8">
+                    <a href="#" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Facebook className="h-6 w-6" />
                     </a>
-                    <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                    <a href="#" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Instagram className="h-6 w-6" />
                     </a>
-                    <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                    <a href="#" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Youtube className="h-6 w-6" />
                     </a>
                   </div>
