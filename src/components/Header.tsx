@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, Facebook, Instagram, Youtube } from "lucide-react";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -81,6 +81,19 @@ const Header = () => {
               </div>
             </nav>
 
+            {/* Social Media Icons - Left Side */}
+            <div className="hidden md:flex items-center space-x-4 space-x-reverse">
+              <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                <Youtube className="h-5 w-5" />
+              </a>
+            </div>
+
             {/* Mobile menu */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
@@ -117,6 +130,19 @@ const Header = () => {
                       </Link>
                     ))}
                   </nav>
+
+                  {/* Social Media Icons in Mobile Menu */}
+                  <div className="flex items-center justify-center space-x-6 space-x-reverse mt-8">
+                    <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                      <Facebook className="h-6 w-6" />
+                    </a>
+                    <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                      <Instagram className="h-6 w-6" />
+                    </a>
+                    <a href="#" className="text-blue-100 hover:text-white transition-colors">
+                      <Youtube className="h-6 w-6" />
+                    </a>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>

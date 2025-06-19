@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Eye } from "lucide-react";
+import { Plus, Calendar, Eye, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import NewsCard from "./NewsCard";
 
@@ -24,6 +23,8 @@ interface NewsItem {
 const NewsFeed = () => {
   const { toast } = useToast();
   const [showAddForm, setShowAddForm] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
   const [newNews, setNewNews] = useState({
     title: "",
     excerpt: "",
@@ -68,6 +69,20 @@ const NewsFeed = () => {
     }
   ]);
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setImagePreview(result);
+        setNewNews({...newNews, image: result});
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddNews = () => {
     if (!newNews.title || !newNews.excerpt) {
       toast({
@@ -94,6 +109,8 @@ const NewsFeed = () => {
       category: "כללי",
       image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop"
     });
+    setImageFile(null);
+    setImagePreview("");
     setShowAddForm(false);
 
     toast({
@@ -155,6 +172,27 @@ const NewsFeed = () => {
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-right block">תמונה</label>
+              <div className="flex flex-col space-y-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="text-right"
+                />
+                {imagePreview && (
+                  <div className="relative w-full h-32 rounded-md overflow-hidden">
+                    <img 
+                      src={imagePreview} 
+                      alt="תצוגה מקדימה" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="flex space-x-2 space-x-reverse">
