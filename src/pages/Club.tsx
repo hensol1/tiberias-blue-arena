@@ -14,10 +14,9 @@ const Club = () => {
           <img
             src={clubBanner}
             alt="אצטדיון טבריה"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
           />
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <h1 className="text-4xl font-bold text-white">אודות המועדון</h1>
           </div>
         </div>
       </section>
