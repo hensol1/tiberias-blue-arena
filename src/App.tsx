@@ -12,6 +12,8 @@ import Youth from "./pages/Youth";
 import LoginPage from "./pages/Login";
 import ArticlePage from "./pages/ArticlePage";
 import NotFound from "./pages/NotFound";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ const App = () => (
           <Route path="/youth" element={<Youth />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/article/:id" element={<ArticlePage />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>
