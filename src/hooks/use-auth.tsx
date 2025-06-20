@@ -72,22 +72,7 @@ export const useAuth = () => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     if (!auth) {
-      // Demo mode login
-      console.log("Using demo mode login");
-      const demoUser = DEMO_USERS[email as keyof typeof DEMO_USERS];
-      
-      if (demoUser && demoUser.password === password) {
-        const appUser: AppUser = {
-          uid: demoUser.uid,
-          email,
-          role: demoUser.role,
-          name: demoUser.name
-        };
-        setUser(appUser);
-        return true;
-      }
-      
-      console.warn("Demo login failed - invalid credentials");
+      console.warn("Firebase auth not available - login failed");
       return false;
     }
 
@@ -102,9 +87,7 @@ export const useAuth = () => {
 
   const logout = async () => {
     if (!auth) {
-      // Demo mode logout
-      console.log("Demo mode logout");
-      setUser(null);
+      console.warn("Firebase auth not available - logout failed");
       return;
     }
 
