@@ -30,6 +30,22 @@ const mapFirebaseUserToAppUser = (firebaseUser: FirebaseUser): AppUser => {
   return { uid: firebaseUser.uid, email, role, name };
 };
 
+// Demo users for when Firebase is not available
+const DEMO_USERS = {
+  'admin@tiberias.com': {
+    password: 'admin123',
+    role: 'admin' as const,
+    name: 'מנהל מערכת',
+    uid: 'demo-admin-uid'
+  },
+  'editor@tiberias.com': {
+    password: 'editor123',
+    role: 'editor' as const,
+    name: 'עורך תוכן',
+    uid: 'demo-editor-uid'
+  }
+};
+
 export const useAuth = () => {
   const [user, setUser] = useState<AppUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,7 +72,22 @@ export const useAuth = () => {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     if (!auth) {
-      console.warn("Firebase auth not available - login failed");
+      // Demo mode login
+      console.log("Using demo mode login");
+      const demoUser = DEMO_USERS[email as keyof typeof DEMO_USERS];
+      
+      if (demoUser && demoUser.password === password) {
+        const appUser: AppUser = {
+          uid: demoUser.uid,
+          email,
+          role: demoUser.role,
+          name: demoUser.name
+        };
+        setUser(appUser);
+        return true;
+      }
+      
+      console.warn("Demo login failed - invalid credentials");
       return false;
     }
 
@@ -71,7 +102,9 @@ export const useAuth = () => {
 
   const logout = async () => {
     if (!auth) {
-      console.warn("Firebase auth not available - logout failed");
+      // Demo mode logout
+      console.log("Demo mode logout");
+      setUser(null);
       return;
     }
 
