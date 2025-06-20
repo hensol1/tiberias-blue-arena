@@ -23,6 +23,32 @@ interface NewsItem {
   featured?: boolean;
 }
 
+// Demo data for when Firebase is not available
+const demoNews: NewsItem[] = [
+  {
+    id: "demo-1",
+    title: "ברוכים הבאים לאתר עירוני טבריה",
+    excerpt: "האתר הרשמי של מועדון הכדורגל עירוני טבריה",
+    content: "ברוכים הבאים לאתר הרשמי של מועדון הכדורגל עירוני טבריה. כאן תוכלו למצוא את כל החדשות, המשחקים והעדכונים על המועדון.",
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop",
+    date: new Date().toLocaleDateString('he-IL'),
+    category: "כללי",
+    views: 0,
+    featured: true
+  },
+  {
+    id: "demo-2",
+    title: "משחק הבית הבא",
+    excerpt: "המועדון יארח את הקבוצה הבאה בשבת הקרובה",
+    content: "בשבת הקרובה יארח המועדון את הקבוצה הבאה באצטדיון הבית. צפויה להיות משחק מרגש עם תמיכה גדולה מהקהל.",
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop",
+    date: new Date(Date.now() - 86400000).toLocaleDateString('he-IL'),
+    category: "משחקים",
+    views: 0,
+    featured: false
+  }
+];
+
 const NewsFeed = () => {
   const { toast } = useToast();
   const { user, logout, hasPermission, isAuthenticated } = useAuth();
@@ -39,12 +65,20 @@ const NewsFeed = () => {
     image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop"
   });
 
-  const newsCollectionRef = collection(db, "news");
-
   useEffect(() => {
     const getNews = async () => {
       setIsLoading(true);
+      
+      // Check if Firebase is available
+      if (!db) {
+        console.warn("Firebase not available - using demo data");
+        setNews(demoNews);
+        setIsLoading(false);
+        return;
+      }
+
       try {
+        const newsCollectionRef = collection(db, "news");
         const q = query(newsCollectionRef, orderBy("date", "desc"));
         const data = await getDocs(q);
         const filteredData = data.docs.map((doc) => ({
@@ -55,6 +89,8 @@ const NewsFeed = () => {
       } catch (error) {
         console.error("Error fetching news from Firestore: ", error);
         toast({ title: "שגיאה בטעינת החדשות", variant: "destructive" });
+        // Fallback to demo data
+        setNews(demoNews);
       } finally {
         setIsLoading(false);
       }
@@ -82,7 +118,14 @@ const NewsFeed = () => {
       return;
     }
 
+    // Check if Firebase is available
+    if (!db) {
+      toast({ title: "Firebase לא זמין - לא ניתן להוסיף חדשות", variant: "destructive" });
+      return;
+    }
+
     try {
+      const newsCollectionRef = collection(db, "news");
       const docRef = await addDoc(newsCollectionRef, {
         ...newNews,
         date: new Date().toISOString(),
@@ -106,6 +149,12 @@ const NewsFeed = () => {
   };
 
   const handleDeleteNews = async (id: string) => {
+    // Check if Firebase is available
+    if (!db) {
+      toast({ title: "Firebase לא זמין - לא ניתן למחוק חדשות", variant: "destructive" });
+      return;
+    }
+
     try {
       const newsDoc = doc(db, "news", id);
       await deleteDoc(newsDoc);
@@ -132,7 +181,7 @@ const NewsFeed = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2 space-x-reverse">
-          {isAuthenticated && hasPermission('add_news') && (
+          {isAuthenticated && hasPermission('add_news') && db && (
             <Button onClick={() => setShowAddForm(s => !s)} className="bg-team-primary hover:bg-team-secondary">
               <Plus className="h-4 w-4 ml-2" />
               {showAddForm ? "בטל" : "הוסף חדשה"}
@@ -150,6 +199,14 @@ const NewsFeed = () => {
         </div>
         <h2 className="text-2xl font-bold text-right">חדשות ועדכונים</h2>
       </div>
+
+      {!db && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-right">
+          <p className="text-yellow-800">
+            <strong>מצב הדגמה:</strong> Firebase לא מוגדר. מציג נתוני דגמה בלבד.
+          </p>
+        </div>
+      )}
 
       {showAddForm && (
         <Card className="animate-fade-in">

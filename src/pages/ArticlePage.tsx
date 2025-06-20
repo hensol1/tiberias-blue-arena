@@ -15,6 +15,40 @@ interface ArticleData {
   category: string;
 }
 
+// Demo article data for when Firebase is not available
+const demoArticles: Record<string, ArticleData> = {
+  "demo-1": {
+    title: "ברוכים הבאים לאתר עירוני טבריה",
+    content: `
+      <p>ברוכים הבאים לאתר הרשמי של מועדון הכדורגל עירוני טבריה!</p>
+      <p>המועדון שלנו הוא אחד המועדונים הוותיקים והחשובים בישראל, עם היסטוריה עשירה ומסורת ארוכת שנים.</p>
+      <p>באתר זה תוכלו למצוא:</p>
+      <ul>
+        <li>חדשות ועדכונים על המועדון</li>
+        <li>מידע על השחקנים והצוות</li>
+        <li>לוח משחקים ותוצאות</li>
+        <li>תמונות וסרטונים</li>
+        <li>ועוד הרבה יותר...</li>
+      </ul>
+      <p>אנו מקווים שתהנו מהאתר ותמשיכו לתמוך במועדון!</p>
+    `,
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop",
+    date: new Date().toISOString(),
+    category: "כללי"
+  },
+  "demo-2": {
+    title: "משחק הבית הבא",
+    content: `
+      <p>בשבת הקרובה יארח המועדון את הקבוצה הבאה באצטדיון הבית.</p>
+      <p>המשחק צפוי להיות מרגש במיוחד עם תמיכה גדולה מהקהל הנאמן שלנו.</p>
+      <p>כל האוהדים מוזמנים להגיע ולתמוך בקבוצה!</p>
+    `,
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop",
+    date: new Date(Date.now() - 86400000).toISOString(),
+    category: "משחקים"
+  }
+};
+
 const ArticlePage = () => {
   const { id } = useParams<{ id: string }>();
   const [article, setArticle] = useState<ArticleData | null>(null);
@@ -25,6 +59,19 @@ const ArticlePage = () => {
     const fetchArticle = async () => {
       if (!id) {
         setError("Article ID is missing.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if Firebase is available
+      if (!db) {
+        console.warn("Firebase not available - checking demo articles");
+        const demoArticle = demoArticles[id];
+        if (demoArticle) {
+          setArticle(demoArticle);
+        } else {
+          setError("הכתבה לא נמצאה.");
+        }
         setIsLoading(false);
         return;
       }
@@ -81,6 +128,13 @@ const ArticlePage = () => {
     <>
       <Header />
       <div className="max-w-4xl mx-auto px-4 py-8">
+        {!db && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-right mb-6">
+            <p className="text-yellow-800">
+              <strong>מצב הדגמה:</strong> Firebase לא מוגדר. מציג נתוני דגמה בלבד.
+            </p>
+          </div>
+        )}
         <article>
           <div className="mb-4">
             <Link to="/" className="text-sm text-blue-600 hover:underline flex items-center">

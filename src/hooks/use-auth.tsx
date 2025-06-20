@@ -35,6 +35,13 @@ export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Check if Firebase auth is available
+    if (!auth) {
+      console.warn("Firebase auth not available - running in demo mode");
+      setIsLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         setUser(mapFirebaseUserToAppUser(firebaseUser));
@@ -48,6 +55,11 @@ export const useAuth = () => {
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    if (!auth) {
+      console.warn("Firebase auth not available - login failed");
+      return false;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       return true;
@@ -58,6 +70,11 @@ export const useAuth = () => {
   };
 
   const logout = async () => {
+    if (!auth) {
+      console.warn("Firebase auth not available - logout failed");
+      return;
+    }
+
     try {
       await signOut(auth);
     } catch (error) {
