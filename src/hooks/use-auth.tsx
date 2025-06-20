@@ -1,69 +1,68 @@
 import { useState, useEffect } from 'react';
+import { auth } from '@/lib/firebase';
+import { 
+  User as FirebaseUser, 
+  signInWithEmailAndPassword, 
+  signOut,
+  onAuthStateChanged
+} from 'firebase/auth';
 
-interface User {
-  id: string;
+interface AppUser {
+  uid: string;
+  email: string | null;
   name: string;
   role: 'admin' | 'editor' | 'user';
 }
 
+const mapFirebaseUserToAppUser = (firebaseUser: FirebaseUser): AppUser => {
+  const email = firebaseUser.email || '';
+  let role: 'admin' | 'editor' | 'user' = 'user';
+  let name = 'משתמש אורח';
+
+  if (email === 'admin@tiberias.com') {
+    role = 'admin';
+    name = 'מנהל מערכת';
+  } else if (email === 'editor@tiberias.com') {
+    role = 'editor';
+    name = 'עורך תוכן';
+  }
+
+  return { uid: firebaseUser.uid, email, role, name };
+};
+
 export const useAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // בדוק אם יש משתמש מחובר ב-localStorage
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('user');
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(mapFirebaseUserToAppUser(firebaseUser));
+      } else {
+        setUser(null);
       }
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const login = (username: string, password: string): boolean => {
-    // כאן תוכל להוסיף לוגיקת אימות אמיתית
-    // כרגע נשתמש בסיסמאות פשוטות לצורך הדגמה
-    
-    const adminCredentials = {
-      username: 'admin',
-      password: 'admin123'
-    };
-    
-    const editorCredentials = {
-      username: 'editor',
-      password: 'editor123'
-    };
-
-    if (username === adminCredentials.username && password === adminCredentials.password) {
-      const user: User = {
-        id: '1',
-        name: 'מנהל מערכת',
-        role: 'admin'
-      };
-      setUser(user);
-      localStorage.setItem('user', JSON.stringify(user));
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
       return true;
-    } else if (username === editorCredentials.username && password === editorCredentials.password) {
-      const user: User = {
-        id: '2',
-        name: 'עורך תוכן',
-        role: 'editor'
-      };
-      setUser(user);
-      localStorage.setItem('user', JSON.stringify(user));
-      return true;
+    } catch (error) {
+      console.error("Firebase login error:", error);
+      return false;
     }
-    
-    return false;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Firebase logout error:", error);
+    }
   };
 
   const hasPermission = (permission: string): boolean => {
@@ -71,7 +70,6 @@ export const useAuth = () => {
     
     switch (permission) {
       case 'add_news':
-        return user.role === 'admin' || user.role === 'editor';
       case 'edit_news':
         return user.role === 'admin' || user.role === 'editor';
       case 'delete_news':

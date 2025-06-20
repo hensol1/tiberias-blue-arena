@@ -11,26 +11,26 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const success = login(username, password);
+    const success = await login(email, password);
 
     if (success) {
       toast({
         title: "התחברות מוצלחת!",
         description: "ברוך שובך למערכת הניהול.",
       });
-      navigate("/"); // Redirect to homepage on successful login
+      navigate("/"); // Redirect to homepage
     } else {
       toast({
         title: "שגיאה בהתחברות",
-        description: "שם המשתמש או הסיסמה שהזנת אינם נכונים.",
+        description: "האימייל או הסיסמה שהזנת אינם נכונים.",
         variant: "destructive",
       });
       setIsLoading(false);
@@ -43,23 +43,23 @@ const LoginPage = () => {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">התחברות למערכת הניהול</CardTitle>
           <CardDescription>
-            יש להזין שם משתמש וסיסמה כדי להמשיך
+            יש להזין אימייל וסיסמה כדי להמשיך
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-right block" htmlFor="username">
-                שם משתמש
+              <label className="text-sm font-medium text-right block" htmlFor="email">
+                אימייל
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
-                  id="username"
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="הכנס שם משתמש"
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="הכנס כתובת אימייל"
                   className="text-right pl-10"
                   required
                 />
@@ -96,8 +96,8 @@ const LoginPage = () => {
           <div className="mt-4 p-3 bg-gray-50 rounded-md text-right">
             <p className="text-sm text-gray-600 mb-2">פרטי התחברות לדוגמה:</p>
             <div className="text-xs text-gray-500 space-y-1">
-              <p>מנהל: `admin` / `admin123`</p>
-              <p>עורך: `editor` / `editor123`</p>
+              <p>מנהל: `admin@tiberias.com` / `admin123`</p>
+              <p>עורך: `editor@tiberias.com` / `editor123`</p>
             </div>
           </div>
         </CardContent>
