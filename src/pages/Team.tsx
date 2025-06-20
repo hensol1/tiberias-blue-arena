@@ -22,7 +22,7 @@ import MotiIvanir from "@/assets/lovable-uploads/Moti.png";
 const Team = () => {
   const players = [
     { name: "עידו שרון", position: "שוער", number: 1, age: 22, image: IdoSharon, country: "ישראל" },
-    { name: "אונדז'יי באצ'ו", position: "בלם", number: 3, age: 30, image: OndrejBaco, country: "צ'כיה" },
+    { name: "אונדז'יי באצ'ו", position: "הגנה", number: 3, age: 30, image: OndrejBaco, country: "צ'כיה" },
     { name: "סאמבה קונטה", position: "בלם", number: 4, age: 22, image: SambaKonte, country: "גינאה-ביסאו" },
     { name: "עומר יצחק", position: "בלם", number: 22, age: 22, image: OmerYitzhak, country: "ישראל" },
     { name: "חארון שפשו", position: "מגן ימני", number: 15, age: 21, image: HaroonShapso, country: "ישראל" },
