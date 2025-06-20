@@ -1,73 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { db } from "@/lib/firebase"; // Import the Firestore instance
+import { collection, getDocs, addDoc, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Eye, Upload } from "lucide-react";
+import { Plus, Calendar, Eye, Upload, LogOut, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 import NewsCard from "./NewsCard";
 
 interface NewsItem {
-  id: number;
+  id: string; // Firestore uses string IDs
   title: string;
   excerpt: string;
-  content: string;
   image: string;
   date: string;
   category: string;
-  views: number;
-  featured: boolean;
+  views?: number;
+  featured?: boolean;
 }
 
 const NewsFeed = () => {
   const { toast } = useToast();
+  const { user, logout, hasPermission, isAuthenticated } = useAuth();
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [newNews, setNewNews] = useState({
     title: "",
     excerpt: "",
-    content: "",
     category: "כללי",
     image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop"
   });
 
-  const [news, setNews] = useState<NewsItem[]>([
-    {
-      id: 1,
-      title: "ניצחון מרשים 3-1 על הפועל חיפה",
-      excerpt: "הקבוצה הציגה משחק מעולה ורשמה ניצחון חשוב בליגה. שלושה שערים מדהימים והופעה מרשימה של כל השחקנים.",
-      content: "פרטים מלאים על המשחק...",
-      image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop",
-      date: "15 דצמבר 2024",
-      category: "משחקים",
-      views: 1250,
-      featured: true
-    },
-    {
-      id: 2,
-      title: "חתימה על חוזה חדש עם השחקן הבוגר",
-      excerpt: "המועדון חתם על הארכת חוזה עם אחד השחקנים הוותיקים והמוערכים ביותר. החוזה ייכנס לתוקף מיד.",
-      content: "פרטים על החוזה...",
-      image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800&h=400&fit=crop",
-      date: "14 דצמבר 2024",
-      category: "העברות",
-      views: 890,
-      featured: false
-    },
-    {
-      id: 3,
-      title: "מחלקת הנוער זוכה באליפות האזורית",
-      excerpt: "בני הנוער של המועדון זכו באליפות האזורית לאחר עונה מדהימה. הישג גדול לעתיד המועדון.",
-      content: "פרטים על הזכייה...",
-      image: "https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?w=800&h=400&fit=crop",
-      date: "13 דצמבר 2024",
-      category: "נוער",
-      views: 650,
-      featured: false
-    }
-  ]);
+  const newsCollectionRef = collection(db, "news");
+
+  useEffect(() => {
+    const getNews = async () => {
+      setIsLoading(true);
+      try {
+        const q = query(newsCollectionRef, orderBy("date", "desc"));
+        const data = await getDocs(q);
+        const filteredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        } as NewsItem));
+        setNews(filteredData);
+      } catch (error) {
+        console.error("Error fetching news from Firestore: ", error);
+        toast({ title: "שגיאה בטעינת החדשות", variant: "destructive" });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getNews();
+  }, [toast]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -83,54 +74,78 @@ const NewsFeed = () => {
     }
   };
 
-  const handleAddNews = () => {
+  const handleAddNews = async () => {
     if (!newNews.title || !newNews.excerpt) {
-      toast({
-        title: "שגיאה",
-        description: "אנא מלא את כל השדות הנדרשים",
-        variant: "destructive"
-      });
+      toast({ title: "נא למלא את כל השדות", variant: "destructive" });
       return;
     }
 
-    const newsItem: NewsItem = {
-      id: Date.now(),
-      ...newNews,
-      date: new Date().toLocaleDateString('he-IL'),
-      views: 0,
-      featured: false
-    };
+    try {
+      const docRef = await addDoc(newsCollectionRef, {
+        ...newNews,
+        date: new Date().toISOString(),
+        views: 0,
+        featured: false,
+      });
+      
+      // Add new item to state to reflect change immediately
+      setNews(prev => [{ id: docRef.id, ...newNews, date: new Date().toLocaleDateString('he-IL'), views: 0, featured: false }, ...prev]);
 
-    setNews([newsItem, ...news]);
-    setNewNews({
-      title: "",
-      excerpt: "",
-      content: "",
-      category: "כללי",
-      image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop"
-    });
-    setImageFile(null);
-    setImagePreview("");
-    setShowAddForm(false);
+      setShowAddForm(false);
+      setNewNews({ title: "", excerpt: "", category: "כללי", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop" });
+      setImageFile(null);
+      setImagePreview("");
+      toast({ title: "החדשה נוספה בהצלחה!" });
 
-    toast({
-      title: "החדשה נוספה בהצלחה!",
-      description: "החדשה החדשה פורסמה באתר"
-    });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      toast({ title: "שגיאה בהוספת חדשה", variant: "destructive" });
+    }
   };
 
+  const handleDeleteNews = async (id: string) => {
+    try {
+      const newsDoc = doc(db, "news", id);
+      await deleteDoc(newsDoc);
+      setNews(prev => prev.filter(item => item.id !== id));
+      toast({ title: "החדשה נמחקה בהצלחה" });
+    } catch (error) {
+      console.error("Error deleting document: ", error);
+      toast({ title: "שגיאה במחיקת חדשה", variant: "destructive" });
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast({ title: "התנתקת בהצלחה מהמערכת." });
+  };
+  
   const categories = ["כללי", "משחקים", "העברות", "נוער", "אימונים"];
 
+  if (isLoading) {
+    return <div className="text-center py-12">טוען חדשות...</div>;
+  }
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Button 
-          onClick={() => setShowAddForm(!showAddForm)}
-          className="bg-team-primary hover:bg-team-secondary"
-        >
-          <Plus className="h-4 w-4 ml-2" />
-          הוסף חדשה
-        </Button>
+        <div className="flex items-center space-x-2 space-x-reverse">
+          {isAuthenticated && hasPermission('add_news') && (
+            <Button onClick={() => setShowAddForm(s => !s)} className="bg-team-primary hover:bg-team-secondary">
+              <Plus className="h-4 w-4 ml-2" />
+              {showAddForm ? "בטל" : "הוסף חדשה"}
+            </Button>
+          )}
+          {isAuthenticated && (
+             <div className="flex items-center space-x-2 space-x-reverse">
+              <span className="text-sm text-gray-600">שלום, {user?.name}</span>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 ml-1" />
+                התנתק
+              </Button>
+            </div>
+          )}
+        </div>
         <h2 className="text-2xl font-bold text-right">חדשות ועדכונים</h2>
       </div>
 
@@ -217,18 +232,14 @@ const NewsFeed = () => {
         {news.map((item) => (
           <NewsCard
             key={item.id}
-            title={item.title}
-            excerpt={item.excerpt}
-            image={item.image}
-            date={item.date}
-            category={item.category}
-            views={item.views}
-            featured={item.featured}
+            {...item}
+            showDelete={isAuthenticated && hasPermission('delete_news')}
+            onDelete={() => handleDeleteNews(item.id)}
           />
         ))}
       </div>
-
-      {news.length === 0 && (
+      
+      {!isLoading && news.length === 0 && (
         <div className="text-center py-12">
           <p className="text-muted-foreground">אין חדשות להצגה</p>
         </div>

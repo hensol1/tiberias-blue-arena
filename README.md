@@ -1,73 +1,88 @@
-# Welcome to your Lovable project
+# עירוני טבריה - אתר רשמי
 
-## Project info
+אתר רשמי למועדון הכדורגל עירוני טבריה.
 
-**URL**: https://lovable.dev/projects/bb02e052-2763-4c57-b91f-4289cf517bc2
+## תכונות
 
-## How can I edit this code?
+- **עמוד ראשי** עם חדשות ועדכונים
+- **עמוד המועדון** עם מידע על ההיסטוריה והמתקנים
+- **עמוד הקבוצה** עם רשימת השחקנים
+- **עמוד משחקים** עם לוח משחקים ותוצאות
+- **עמוד טלוויזיה** עם סרטונים ותמונות
+- **עמוד נוער** עם מידע על מחלקת הנוער
 
-There are several ways of editing your application.
+## מערכת הרשאות
 
-**Use Lovable**
+האתר כולל מערכת הרשאות לניהול תוכן:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/bb02e052-2763-4c57-b91f-4289cf517bc2) and start prompting.
+### רמות הרשאה:
+- **מנהל (Admin)**: יכול להוסיף, לערוך ולמחוק חדשות
+- **עורך (Editor)**: יכול להוסיף ולערוך חדשות
+- **משתמש רגיל**: יכול רק לצפות בתוכן
 
-Changes made via Lovable will be committed automatically to this repo.
+### פרטי התחברות לדוגמה:
+- **מנהל**: username: `admin`, password: `admin123`
+- **עורך**: username: `editor`, password: `editor123`
 
-**Use your preferred IDE**
+### איך להשתמש:
+1. לחץ על כפתור "התחבר" בעמוד הראשי
+2. הכנס את פרטי ההתחברות
+3. לאחר ההתחברות, כפתור "הוסף חדשה" יופיע (אם יש לך הרשאה)
+4. לחץ על "התנתק" כדי לצאת מהמערכת
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## התקנה והרצה
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# התקן תלויות
+npm install
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# הרץ את הפרויקט במצב פיתוח
 npm run dev
+
+# בנה את הפרויקט לייצור
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+## טכנולוגיות
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
+- React 18
 - TypeScript
-- React
-- shadcn-ui
 - Tailwind CSS
+- Vite
+- React Router
+- Lucide React Icons
 
-## How can I deploy this project?
+## מבנה הפרויקט
 
-Simply open [Lovable](https://lovable.dev/projects/bb02e052-2763-4c57-b91f-4289cf517bc2) and click on Share -> Publish.
+```
+src/
+├── components/          # קומפוננטות React
+│   ├── ui/             # קומפוננטות UI בסיסיות
+│   ├── Header.tsx      # כותרת האתר
+│   ├── Footer.tsx      # כותרת תחתונה
+│   ├── NewsFeed.tsx    # הזנת חדשות
+│   ├── NewsCard.tsx    # כרטיס חדשה
+│   └── LoginModal.tsx  # חלון התחברות
+├── hooks/              # React Hooks
+│   ├── use-auth.tsx    # ניהול הרשאות
+│   └── use-toast.ts    # הודעות מערכת
+├── pages/              # עמודים
+│   ├── Index.tsx       # עמוד ראשי
+│   ├── Club.tsx        # עמוד המועדון
+│   ├── Team.tsx        # עמוד הקבוצה
+│   ├── Games.tsx       # עמוד משחקים
+│   ├── TV.tsx          # עמוד טלוויזיה
+│   └── Youth.tsx       # עמוד נוער
+└── lib/                # ספריות עזר
+    └── utils.ts        # פונקציות עזר
+```
 
-## Can I connect a custom domain to my Lovable project?
+## אבטחה
 
-Yes, you can!
+- מערכת ההרשאות מבוססת על localStorage (לצורך הדגמה)
+- בסביבת ייצור יש להשתמש במערכת אימות מאובטחת יותר
+- הסיסמאות מוגדרות בקוד לצורך הדגמה בלבד
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## רישיון
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+פרויקט זה מיועד לשימוש פנימי של מועדון עירוני טבריה.
