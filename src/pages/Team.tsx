@@ -1,131 +1,44 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
+import IdoSharon from "@/assets/lovable-uploads/Ido Sharon.webp";
+import OndrejBaco from "@/assets/lovable-uploads/Ondrej Baco.webp";
+import SambaKonte from "@/assets/lovable-uploads/Samba.webp";
+import OmerYitzhak from "@/assets/lovable-uploads/Omer Yitzhak.webp";
+import HaroonShapso from "@/assets/lovable-uploads/Haroon Shapso.webp";
+import EliBalilti from "@/assets/lovable-uploads/Eli Balilti.webp";
+import RonUnger from "@/assets/lovable-uploads/Ron Unger.webp";
+import DavidKeltjens from "@/assets/lovable-uploads/David Keltjens.webp";
+import IlayElmkies from "@/assets/lovable-uploads/Ilay Elmkies.webp";
+import YonatanTeper from "@/assets/lovable-uploads/Yonatan Teper.webp";
+import NivTubul from "@/assets/lovable-uploads/53254.png";
+import WahebHabiballah from "@/assets/lovable-uploads/Waheb Habiballah.webp";
+import StanislavBilenkyi from "@/assets/lovable-uploads/Stanislav Bilenkyi.webp";
+import EliranHodada from "@/assets/lovable-uploads/Eliran.jpg";
+import MotiIvanir from "@/assets/lovable-uploads/Moti.png";
 
 const Team = () => {
   const players = [
-    {
-      name: "עידו שרון",
-      position: "שוער",
-      number: 1,
-      age: 22,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Ido Sharon.webp`
-    },
-    {
-      name: "אונדז'יי באצ'ו",
-      position: "בלם",
-      number: 3,
-      age: 30,
-      country: "צ'כיה",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Ondrej Baco.webp`
-    },
-    {
-      name: "סאמבה קונטה",
-      position: "בלם",
-      number: 4,
-      age: 22,
-      country: "גינאה-ביסאו",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Samba.webp`
-    },
-    {
-      name: "עומר יצחק",
-      position: "בלם",
-      number: 22,
-      age: 22,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Omer Yitzhak.webp`
-    },
-    {
-      name: "חארון שפשו",
-      position: "מגן ימני",
-      number: 15,
-      age: 21,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Haroon Shapso.webp`
-    },
-    {
-      name: "אלי בלילתי",
-      position: "מגן שמאלי",
-      number: 17,
-      age: 30,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Eli Balilti.webp`
-    },
-    {
-      name: "רון אונגר",
-      position: "מגן שמאלי",
-      number: 2,
-      age: 22,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Ron Unger.webp`
-    },
-    {
-      name: "דויד קלטינס",
-      position: "קשר אחורי",
-      number: 23,
-      age: 29,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/David Keltjens.webp`
-    },
-    {
-      name: "איליי אלמקייס",
-      position: "קשר מרכזי",
-      number: 10,
-      age: 24,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Ilay Elmkies.webp`
-    },
-    {
-      name: "יונתן טפר",
-      position: "קשר התקפי",
-      number: 14,
-      age: 24,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Yonatan Teper.webp`
-    },
-    {
-      name: "ניב טובול",
-      position: "קשר",
-      number: 80,
-      age: 22,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/53254.png`
-    },
-    {
-      name: "וואהב חביבאלה",
-      position: "קיצוני",
-      number: 7,
-      age: 22,
-      country: "ישראל",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Waheb Habiballah.webp`
-    },
-    {
-      name: "סטניסלב בילנקי",
-      position: "חלוץ",
-      number: 99,
-      age: 25,
-      country: "אוקראינה",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Stanislav Bilenkyi.webp`
-    }
+    { name: "עידו שרון", position: "שוער", number: 1, age: 22, image: IdoSharon, country: "ישראל" },
+    { name: "אונדז'יי באצ'ו", position: "בלם", number: 3, age: 30, image: OndrejBaco, country: "צ'כיה" },
+    { name: "סאמבה קונטה", position: "בלם", number: 4, age: 22, image: SambaKonte, country: "גינאה-ביסאו" },
+    { name: "עומר יצחק", position: "בלם", number: 22, age: 22, image: OmerYitzhak, country: "ישראל" },
+    { name: "חארון שפשו", position: "מגן ימני", number: 15, age: 21, image: HaroonShapso, country: "ישראל" },
+    { name: "אלי בלילתי", position: "מגן שמאלי", number: 17, age: 30, image: EliBalilti, country: "ישראל" },
+    { name: "רון אונגר", position: "מגן שמאלי", number: 2, age: 22, image: RonUnger, country: "ישראל" },
+    { name: "דויד קלטינס", position: "קשר אחורי", number: 23, age: 29, image: DavidKeltjens, country: "ישראל" },
+    { name: "איליי אלמקייס", position: "קשר מרכזי", number: 10, age: 24, image: IlayElmkies, country: "ישראל" },
+    { name: "יונתן טפר", position: "קשר התקפי", number: 14, age: 24, image: YonatanTeper, country: "ישראל" },
+    { name: "ניב טובול", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
+    { name: "וואהב חביבאלה", position: "קיצוני", number: 7, age: 22, image: WahebHabiballah, country: "ישראל" },
+    { name: "סטניסלב בילנקי", position: "חלוץ", number: 99, age: 25, image: StanislavBilenkyi, country: "אוקראינה" }
   ];
 
   const staff = [
-    {
-      name: "אלירן חודדה",
-      role: "מאמן ראשי",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Eliran.jpg`
-    },
-    {
-      name: "מוטי איוניר",
-      role: "מנהל מקצועי",
-      image: `${import.meta.env.BASE_URL}lovable-uploads/Moti.png`
-    },
-    {
-      name: "שרה אלון",
-      role: "פיזיותרפיסטית",
-      experience: "5 שנות ניסיון",
-      image: "https://images.unsplash.com/photo-1594824475470-42e6b7d6fc24?w=300&h=300&fit=crop"
-    }
+    { name: "אלירן חודדה", position: "מאמן ראשי", image: EliranHodada },
+    { name: "מוטי איוניר", position: "מנהל מקצועי", image: MotiIvanir },
   ];
 
   const goalkeepers = players.filter(p => p.position === 'שוער');
@@ -236,19 +149,21 @@ const Team = () => {
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">הצוות המקצועי</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {staff.map((member, index) => (
-              <div key={index} className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg group">
+              <Card key={index} className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden shadow-lg group">
                 <img 
                   src={member.image} 
                   alt={member.name}
                   className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-right">
-                  <h3 className="text-white font-bold text-lg md:text-xl mb-1">{member.name}</h3>
-                  <div className="w-full h-0.5 bg-team-secondary mb-2"></div>
-                  <p className="text-white/80 text-sm">{member.role}</p>
+                <div className="p-4">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent rounded-lg"></div>
+                  <div className="absolute bottom-4 right-4 text-right">
+                    <h3 className="text-white font-bold text-lg md:text-xl mb-1">{member.name}</h3>
+                    <div className="w-full h-0.5 bg-team-secondary mb-2"></div>
+                    <p className="text-white/80 text-sm">{member.position}</p>
+                  </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </section>

@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
+import clubBanner from "@/assets/lovable-uploads/club page banner.png";
 
 const Club = () => {
   return (
@@ -11,7 +12,7 @@ const Club = () => {
       <section className="w-full">
         <div className="relative h-64 md:h-96">
           <img
-            src={`${import.meta.env.BASE_URL}lovable-uploads/club page banner.png`}
+            src={clubBanner}
             alt="אצטדיון טבריה"
             className="w-full h-full object-cover"
           />

@@ -3,13 +3,15 @@ import Footer from "@/components/Footer";
 import NewsFeed from "@/components/NewsFeed";
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import sponsorLogo1 from "@/assets/lovable-uploads/ae653618-f246-48c4-84fb-31e6114b0b25.png";
+import sponsorLogo2 from "@/assets/lovable-uploads/3eca3ff4-bae0-4b66-9c31-46793b15f049.png";
 
 const sponsorLogos = [
   "https://www.likud.org.il/wp-content/uploads/2021/09/likud-logo.png",
   "https://www.winner.co.il/content/images/winner-logo.svg",
   "https://upload.wikimedia.org/wikipedia/he/thumb/3/36/Hapoel_tveria.png/180px-Hapoel_tveria.png",
-  `${import.meta.env.BASE_URL}lovable-uploads/ae653618-f246-48c4-84fb-31e6114b0b25.png`,
-  `${import.meta.env.BASE_URL}lovable-uploads/3eca3ff4-bae0-4b66-9c31-46793b15f049.png`
+  sponsorLogo1,
+  sponsorLogo2
 ];
 
 const Index = () => {
