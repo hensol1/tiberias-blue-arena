@@ -30,13 +30,13 @@ const Header = () => {
       <div className="bg-white py-4 border-b">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center space-x-8 space-x-reverse">
-            <a href="https://www.facebook.com/IroniTveryaFC" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.facebook.com/groupdorot" target="_blank" rel="noopener noreferrer">
               <img src={facebookLogo} alt="Facebook" className="h-12 object-contain" />
             </a>
-            <a href="https://www.instagram.com/ironitveryafc/" target="_blank" rel="noopener noreferrer">
+            <a href="https://burgersaloon.co.il/" target="_blank" rel="noopener noreferrer">
               <img src={instagramLogo} alt="Instagram" className="h-12 object-contain" />
             </a>
-            <a href="https://www.youtube.com/channel/your-channel" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.ginosar.co.il/" target="_blank" rel="noopener noreferrer">
               <img src={youtubeLogo} alt="YouTube" className="h-12 object-contain" />
             </a>
           </div>
