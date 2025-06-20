@@ -83,10 +83,10 @@ const Header = () => {
 
             {/* Social Media Icons - Modern Design */}
             <div className="hidden md:flex items-center space-x-3 space-x-reverse">
-              <a href="#" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://www.facebook.com/Tiberias.FC/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Instagram className="h-5 w-5" />
               </a>
               <a href="#" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
@@ -133,10 +133,10 @@ const Header = () => {
 
                   {/* Social Media Icons in Mobile Menu */}
                   <div className="flex items-center justify-center space-x-4 space-x-reverse mt-8">
-                    <a href="#" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
+                    <a href="https://www.facebook.com/Tiberias.FC/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Facebook className="h-6 w-6" />
                     </a>
-                    <a href="#" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
+                    <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Instagram className="h-6 w-6" />
                     </a>
                     <a href="#" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">

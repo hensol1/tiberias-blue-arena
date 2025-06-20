@@ -1,4 +1,3 @@
-
 import { Facebook, Instagram, Twitter, Youtube, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -58,10 +57,10 @@ const Footer = () => {
           <div className="text-right">
             <h4 className="text-lg font-semibold mb-4">עקבו אחרינו</h4>
             <div className="flex justify-end space-x-4 space-x-reverse">
-              <a href="#" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
+              <a href="https://www.facebook.com/Tiberias.FC/" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
+              <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
                 <Instagram className="h-5 w-5" />
               </a>
               <a href="#" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
