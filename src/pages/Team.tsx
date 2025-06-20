@@ -31,7 +31,7 @@ const Team = () => {
     { name: "דויד קלטינס", position: "קשר", number: 3, age: 30, image: DavidKeltjens, country: "ישראל" },
     { name: "איליי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
     { name: "יונתן טפר", position: "קשר", number: 14, age: 24, image: YonatanTeper, country: "ישראל" },
-    { name: "ניב טובול", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
+    { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
     { name: "וואהב חביבאלה", position: "התקפה", number: 7, age: 22, image: WahebHabiballah, country: "ישראל" },
     { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" }
   ];

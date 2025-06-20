@@ -19,8 +19,8 @@ const Index = () => {
   const { toast } = useToast();
   
   const bannerImages = [
-    "/lovable-uploads/ae653618-f246-48c4-84fb-31e6114b0b25.png",
-    "/lovable-uploads/3eca3ff4-bae0-4b66-9c31-46793b15f049.png"
+    sponsorLogo1,
+    sponsorLogo2
   ];
 
   useEffect(() => {
