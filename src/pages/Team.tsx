@@ -7,125 +7,118 @@ const Team = () => {
       name: "עידו שרון",
       position: "שוער",
       number: 1,
-      age: 24,
+      age: 22,
       country: "ישראל",
-      image: "/lovable-uploads/Ido Sharon.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Ido Sharon.webp`
     },
     {
-      name: "אונרדז באצו",
-      position: "הגנה",
-      number: 37,
-      age: 29,
+      name: "אונדז'יי באצ'ו",
+      position: "בלם",
+      number: 3,
+      age: 30,
       country: "צ'כיה",
-      image: "/lovable-uploads/Ondrej Baco.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Ondrej Baco.webp`
     },
     {
-      name: "סמביניה",
-      position: "הגנה",
-      number: 8,
-      age: 32,
+      name: "סאמבה קונטה",
+      position: "בלם",
+      number: 4,
+      age: 22,
       country: "גינאה-ביסאו",
-      image: "/lovable-uploads/Samba.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Samba.webp`
     },
     {
       name: "עומר יצחק",
-      position: "הגנה",
-      number: 17,
-      age: 24,
+      position: "בלם",
+      number: 22,
+      age: 22,
       country: "ישראל",
-      image: "/lovable-uploads/Omer Yitzhak.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Omer Yitzhak.webp`
     },
     {
-      name: "הארון שאפסו",
-      position: "הגנה",
-      number: 99,
-      age: 26,
-      country: "ישראל",
-      image: "/lovable-uploads/Haroon Shapso.webp"
-    },
-    {
-      name: "אלי בלילטי",
-      position: "הגנה",
+      name: "חארון שפשו",
+      position: "מגן ימני",
       number: 15,
-      age: 31,
+      age: 21,
       country: "ישראל",
-      image: "/lovable-uploads/Eli Balilti.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Haroon Shapso.webp`
+    },
+    {
+      name: "אלי בלילתי",
+      position: "מגן שמאלי",
+      number: 17,
+      age: 30,
+      country: "ישראל",
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Eli Balilti.webp`
     },
     {
       name: "רון אונגר",
-      position: "הגנה",
-      number: 99,
-      age: 23,
+      position: "מגן שמאלי",
+      number: 2,
+      age: 22,
       country: "ישראל",
-      image: "/lovable-uploads/Ron Unger.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Ron Unger.webp`
     },
     {
-      name: "דוד קלטינס",
-      position: "קשר",
-      number: 3,
-      age: 30,
+      name: "דויד קלטינס",
+      position: "קשר אחורי",
+      number: 23,
+      age: 29,
       country: "ישראל",
-      image: "/lovable-uploads/David Keltjens.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/David Keltjens.webp`
     },
     {
-      name: "עילאי אלמקייס",
-      position: "קשר",
-      number: 99,
-      age: 25,
+      name: "איליי אלמקייס",
+      position: "קשר מרכזי",
+      number: 10,
+      age: 24,
       country: "ישראל",
-      image: "/lovable-uploads/Ilay Elmkies.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Ilay Elmkies.webp`
     },
     {
       name: "יונתן טפר",
-      position: "קשר",
-      number: 5,
+      position: "קשר התקפי",
+      number: 14,
       age: 24,
       country: "ישראל",
-      image: "/lovable-uploads/Yonatan Teper.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Yonatan Teper.webp`
     },
     {
-      name: "ניב גוטליב",
+      name: "ניב טובול",
       position: "קשר",
-      number: 5,
+      number: 80,
       age: 22,
       country: "ישראל",
-      image: "/lovable-uploads/53254.png"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/53254.png`
     },
     {
-      name: "ואהיב חביבאללה",
-      position: "התקפה",
-      number: 14,
-      age: 27,
+      name: "וואהב חביבאלה",
+      position: "קיצוני",
+      number: 7,
+      age: 22,
       country: "ישראל",
-      image: "/lovable-uploads/Waheb Habiballah.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Waheb Habiballah.webp`
     },
     {
       name: "סטניסלב בילנקי",
-      position: "התקפה",
-      number: 9,
-      age: 26,
+      position: "חלוץ",
+      number: 99,
+      age: 25,
       country: "אוקראינה",
-      image: "/lovable-uploads/Stanislav Bilenkyi.webp"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Stanislav Bilenkyi.webp`
     }
-
-
-
-
-
-
-
   ];
 
   const staff = [
     {
-      name: "אלירן חודידה",
+      name: "אלירן חודדה",
       role: "מאמן ראשי",
-      image: "/lovable-uploads/Eliran.jpg"
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Eliran.jpg`
     },
     {
-      name: "מוטי קריספיל",
-      role: "עוזר מאמן",
-      image: "/lovable-uploads/Moti.png"
+      name: "מוטי איוניר",
+      role: "מנהל מקצועי",
+      image: `${import.meta.env.BASE_URL}lovable-uploads/Moti.png`
     },
     {
       name: "שרה אלון",

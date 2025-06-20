@@ -9,11 +9,16 @@ const Club = () => {
       
       {/* Hero Section */}
       <section className="w-full">
-        <img 
-          src="/lovable-uploads/club page banner.png" 
-          alt="שחקני עירוני דורות טבריה חוגגים"
-          className="w-full h-auto max-h-[400px] object-cover object-top"
-        />
+        <div className="relative h-64 md:h-96">
+          <img
+            src={`${import.meta.env.BASE_URL}lovable-uploads/club page banner.png`}
+            alt="אצטדיון טבריה"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <h1 className="text-4xl font-bold text-white">אודות המועדון</h1>
+          </div>
+        </div>
       </section>
 
       <div className="container mx-auto px-4 py-12">

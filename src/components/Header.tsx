@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Menu, Facebook, Instagram, Youtube } from "lucide-react";
 
 const Header = () => {
@@ -26,21 +25,15 @@ const Header = () => {
       <div className="bg-white py-4 border-b">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center space-x-8 space-x-reverse">
-            <img 
-              src="/lovable-uploads/ccb18f9d-a882-4a2b-917a-ec289bf2bdba.png" 
-              alt="קבוצת דורות" 
-              className="h-12 object-contain"
-            />
-            <img 
-              src="/lovable-uploads/dd6e1668-d05f-453f-b2f6-8634e77d314f.png" 
-              alt="Burger Saloon" 
-              className="h-12 object-contain"
-            />
-            <img 
-              src="/lovable-uploads/8bb54cc5-8f24-41e6-aa2b-c554ae0e0136.png" 
-              alt="Nof Ginosar" 
-              className="h-12 object-contain"
-            />
+            <a href="https://www.facebook.com/IroniTveryaFC" target="_blank" rel="noopener noreferrer">
+              <img src={`${import.meta.env.BASE_URL}lovable-uploads/ccb18f9d-a882-4a2b-917a-ec289bf2bdba.png`} alt="Facebook" className="h-12 object-contain" />
+            </a>
+            <a href="https://www.instagram.com/ironitveryafc/" target="_blank" rel="noopener noreferrer">
+              <img src={`${import.meta.env.BASE_URL}lovable-uploads/dd6e1668-d05f-453f-b2f6-8634e77d314f.png`} alt="Instagram" className="h-12 object-contain" />
+            </a>
+            <a href="https://www.youtube.com/channel/your-channel" target="_blank" rel="noopener noreferrer">
+              <img src={`${import.meta.env.BASE_URL}lovable-uploads/8bb54cc5-8f24-41e6-aa2b-c554ae0e0136.png`} alt="YouTube" className="h-12 object-contain" />
+            </a>
           </div>
         </div>
       </div>
@@ -53,7 +46,7 @@ const Header = () => {
             <Link to="/" className="flex items-center space-x-4 space-x-reverse group">
               <div className="relative">
                 <img 
-                  src="/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png" 
+                  src={`${import.meta.env.BASE_URL}lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png`} 
                   alt="עירוני דורות טבריה לוגו" 
                   className="w-16 h-16 rounded-full shadow-lg ring-4 ring-white/20 transition-transform duration-300 group-hover:scale-110"
                 />
@@ -107,7 +100,7 @@ const Header = () => {
                 <div className="flex flex-col h-full pt-6">
                   <div className="flex items-center mb-8">
                     <img 
-                      src="/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png" 
+                      src={`${import.meta.env.BASE_URL}lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png`} 
                       alt="עירוני דורות טבריה לוגו" 
                       className="w-12 h-12 rounded-full ml-3 ring-2 ring-white/30"
                     />
