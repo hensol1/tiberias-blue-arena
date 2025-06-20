@@ -22,23 +22,23 @@ import MotiIvanir from "@/assets/lovable-uploads/Moti.png";
 const Team = () => {
   const players = [
     { name: "עידו שרון", position: "שוער", number: 1, age: 22, image: IdoSharon, country: "ישראל" },
-    { name: "אונדז'יי באצ'ו", position: "הגנה", number: 3, age: 30, image: OndrejBaco, country: "צ'כיה" },
-    { name: "סאמבה קונטה", position: "בלם", number: 4, age: 22, image: SambaKonte, country: "גינאה-ביסאו" },
-    { name: "עומר יצחק", position: "בלם", number: 22, age: 22, image: OmerYitzhak, country: "ישראל" },
-    { name: "חארון שפשו", position: "מגן ימני", number: 15, age: 21, image: HaroonShapso, country: "ישראל" },
-    { name: "אלי בלילתי", position: "מגן שמאלי", number: 17, age: 30, image: EliBalilti, country: "ישראל" },
-    { name: "רון אונגר", position: "מגן שמאלי", number: 2, age: 22, image: RonUnger, country: "ישראל" },
-    { name: "דויד קלטינס", position: "קשר אחורי", number: 23, age: 29, image: DavidKeltjens, country: "ישראל" },
-    { name: "איליי אלמקייס", position: "קשר מרכזי", number: 10, age: 24, image: IlayElmkies, country: "ישראל" },
-    { name: "יונתן טפר", position: "קשר התקפי", number: 14, age: 24, image: YonatanTeper, country: "ישראל" },
+    { name: "אונדז'יי באצ'ו", position: "הגנה", number: 37, age: 29, image: OndrejBaco, country: "צ'כיה" },
+    { name: "סאמבה קונטה", position: "הגנה", number: 4, age: 22, image: SambaKonte, country: "גינאה-ביסאו" },
+    { name: "עומר יצחק", position: "הגנה", number: 22, age: 22, image: OmerYitzhak, country: "ישראל" },
+    { name: "חארון שפשו", position: "הגנה", number: 99, age: 25, image: HaroonShapso, country: "ישראל" },
+    { name: "אלי בלילתי", position: "הגנה", number: 15, age: 31, image: EliBalilti, country: "ישראל" },
+    { name: "רון אונגר", position: "הגנה", number: 2, age: 22, image: RonUnger, country: "ישראל" },
+    { name: "דויד קלטינס", position: "קשר", number: 3, age: 30, image: DavidKeltjens, country: "ישראל" },
+    { name: "איליי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
+    { name: "יונתן טפר", position: "קשר", number: 14, age: 24, image: YonatanTeper, country: "ישראל" },
     { name: "ניב טובול", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
-    { name: "וואהב חביבאלה", position: "קיצוני", number: 7, age: 22, image: WahebHabiballah, country: "ישראל" },
-    { name: "סטניסלב בילנקי", position: "חלוץ", number: 99, age: 25, image: StanislavBilenkyi, country: "אוקראינה" }
+    { name: "וואהב חביבאלה", position: "התקפה", number: 7, age: 22, image: WahebHabiballah, country: "ישראל" },
+    { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" }
   ];
 
   const staff = [
     { name: "אלירן חודדה", position: "מאמן ראשי", image: EliranHodada },
-    { name: "מוטי איוניר", position: "מנהל מקצועי", image: MotiIvanir },
+    { name: "מוטי קריספיל", position: "עוזר מאמן", image: MotiIvanir },
   ];
 
   const goalkeepers = players.filter(p => p.position === 'שוער');
