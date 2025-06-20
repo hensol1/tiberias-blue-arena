@@ -10,6 +10,7 @@ import Games from "./pages/Games";
 import TV from "./pages/TV";
 import Youth from "./pages/Youth";
 import LoginPage from "./pages/Login";
+import ArticlePage from "./pages/ArticlePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/tv" element={<TV />} />
           <Route path="/youth" element={<Youth />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/article/:id" element={<ArticlePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

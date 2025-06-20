@@ -13,9 +13,10 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Eye, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface NewsCardProps {
-  id: number;
+  id: string;
   title: string;
   excerpt: string;
   image: string;
@@ -24,7 +25,7 @@ interface NewsCardProps {
   views?: number;
   featured?: boolean;
   showDelete?: boolean;
-  onDelete?: (id: number) => void;
+  onDelete?: (id: string) => void;
 }
 
 const NewsCard = ({ id, title, excerpt, image, date, category, views = 0, featured = false, showDelete = false, onDelete }: NewsCardProps) => {
@@ -67,7 +68,7 @@ const NewsCard = ({ id, title, excerpt, image, date, category, views = 0, featur
         </AlertDialog>
       )}
 
-      <div className="cursor-pointer">
+      <Link to={`/article/${id}`} className="cursor-pointer">
         <CardHeader className="p-0">
           <div className="relative overflow-hidden">
             <img 
@@ -105,7 +106,7 @@ const NewsCard = ({ id, title, excerpt, image, date, category, views = 0, featur
             <Calendar className="h-3 w-3" />
           </div>
         </CardFooter>
-      </div>
+      </Link>
     </Card>
   );
 };

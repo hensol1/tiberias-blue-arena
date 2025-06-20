@@ -15,6 +15,7 @@ interface NewsItem {
   id: string; // Firestore uses string IDs
   title: string;
   excerpt: string;
+  content: string;
   image: string;
   date: string;
   category: string;
@@ -33,6 +34,7 @@ const NewsFeed = () => {
   const [newNews, setNewNews] = useState({
     title: "",
     excerpt: "",
+    content: "",
     category: "כללי",
     image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop"
   });
@@ -92,7 +94,7 @@ const NewsFeed = () => {
       setNews(prev => [{ id: docRef.id, ...newNews, date: new Date().toLocaleDateString('he-IL'), views: 0, featured: false }, ...prev]);
 
       setShowAddForm(false);
-      setNewNews({ title: "", excerpt: "", category: "כללי", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop" });
+      setNewNews({ title: "", excerpt: "", content: "", category: "כללי", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop" });
       setImageFile(null);
       setImagePreview("");
       toast({ title: "החדשה נוספה בהצלחה!" });
@@ -173,6 +175,17 @@ const NewsFeed = () => {
                 placeholder="הכנס תקציר קצר..."
                 className="text-right"
                 rows={3}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-right block">תוכן מלא</label>
+              <Textarea
+                value={newNews.content}
+                onChange={(e) => setNewNews({...newNews, content: e.target.value})}
+                placeholder="הכנס את תוכן הכתבה המלא..."
+                className="text-right"
+                rows={6}
               />
             </div>
 
