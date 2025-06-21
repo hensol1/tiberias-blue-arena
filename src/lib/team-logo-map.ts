@@ -1,31 +1,42 @@
 // src/lib/team-logo-map.ts
 
-// This file maps Hebrew team names to their corresponding logo filenames in English.
-// The filenames should match the files located in `src/assets/team-logos/`.
+// Import all logos individually. This is the most reliable way in Vite.
+import beitarJerusalem from '../assets/team-logos/Beitar Jerusalem.webp';
+import fcAshdod from '../assets/team-logos/FC Ashdod.webp';
+import hapoelBeerSheva from '../assets/team-logos/Hapoel Beer Sheva.webp';
+import hapoelHadera from '../assets/team-logos/Hapoel Hadera.webp';
+import hapoelHaifa from '../assets/team-logos/Hapoel Haifa.webp';
+import hapoelJerusalem from '../assets/team-logos/Hapoel Jerusalem.webp';
+import hapoelPetachTikva from '../assets/team-logos/Hapoel Petach Tikva.png';
+import hapoelTelAviv from '../assets/team-logos/Hapoel Tel Aviv.png';
+import ihudBneiSakhnin from '../assets/team-logos/Ihud Bnei Sakhnin.webp';
+import ironiKiryatShmona from '../assets/team-logos/Ironi Kiryat Shmona.webp';
+import maccabiBneiReineh from '../assets/team-logos/Maccabi Bnei Reineh.webp';
+import maccabiHaifa from '../assets/team-logos/Maccabi Haifa.webp';
+import maccabiNetanya from '../assets/team-logos/Maccabi Netanya.webp';
+import maccabiPetahTikva from '../assets/team-logos/Maccabi Petah Tikva.webp';
+import maccabiTelAviv from '../assets/team-logos/Maccabi Tel Aviv.webp';
+import ironiTiberias from '../assets/team-logos/Ironi Tiberias.webp';
+import placeholder from '/placeholder.svg';
 
-// Vite feature to import all logos and get their public URLs.
-const logos = import.meta.glob<string>('/src/assets/team-logos/*.png', { eager: true, import: 'default' });
 
 const TEAM_LOGO_MAP: Record<string, string> = {
-  // Ligat Ha'al Teams
-  "בית\"ר ירושלים": "Beitar Jerusalem.png",
-  "מ.ס. אשדוד": "FC Ashdod.png",
-  "הפועל באר שבע": "Hapoel Beer Sheva.png",
-  "הפועל חדרה": "Hapoel Hadera.png",
-  "הפועל חיפה": "Hapoel Haifa.png",
-  "הפועל ירושלים": "Hapoel Jerusalem.png",
-  "הפועל פתח תקווה": "Hapoel Petach Tikva.png",
-  "הפועל תל אביב": "Hapoel Tel Aviv.png",
-  "בני סכנין": "Ihud Bnei Sakhnin.png",
-  "עירוני קרית שמונה": "Ironi Kiryat Shmona.png",
-  "מכבי בני ריינה": "Maccabi Bnei Reineh.png",
-  "מכבי חיפה": "Maccabi Haifa.png",
-  "מכבי נתניה": "Maccabi Netanya.png",
-  "מכבי פתח תקווה": "Maccabi Petah Tikva.png",
-  "מכבי תל אביב": "Maccabi Tel Aviv.png",
-
-  // Our Team
-  "עירוני טבריה": "Ironi Tiberias.png",
+  "בית\"ר ירושלים": beitarJerusalem,
+  "מ.ס. אשדוד": fcAshdod,
+  "הפועל באר שבע": hapoelBeerSheva,
+  "הפועל חדרה": hapoelHadera,
+  "הפועל חיפה": hapoelHaifa,
+  "הפועל ירושלים": hapoelJerusalem,
+  "הפועל פתח תקווה": hapoelPetachTikva,
+  "הפועל תל אביב": hapoelTelAviv,
+  "בני סכנין": ihudBneiSakhnin,
+  "עירוני קרית שמונה": ironiKiryatShmona,
+  "מכבי בני ריינה": maccabiBneiReineh,
+  "מכבי חיפה": maccabiHaifa,
+  "מכבי נתניה": maccabiNetanya,
+  "מכבי פתח תקווה": maccabiPetahTikva,
+  "מכבי תל אביב": maccabiTelAviv,
+  "עירוני טבריה": ironiTiberias,
 };
 
 /**
@@ -34,15 +45,5 @@ const TEAM_LOGO_MAP: Record<string, string> = {
  * @returns The path to the team's logo, or a placeholder if not found.
  */
 export const getTeamLogo = (teamName: string): string => {
-  const filename = TEAM_LOGO_MAP[teamName];
-  if (filename) {
-    const path = `/src/assets/team-logos/${filename}`;
-    // The `logos` object from `import.meta.glob` will have keys like: 
-    // '/src/assets/team-logos/Beitar Jerusalem.png'
-    // and values like the final public URL: 
-    // '/assets/Beitar Jerusalem.1a2b3c.png'
-    return logos[path] || '/placeholder.svg';
-  }
-  // Return a path to a generic placeholder logo if no specific logo is found.
-  return '/placeholder.svg';
+  return TEAM_LOGO_MAP[teamName] || placeholder;
 }; 
