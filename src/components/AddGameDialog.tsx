@@ -34,6 +34,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded }: AddGameDialogProps) => 
   const [gameData, setGameData] = useState({
     opponent: "",
     competition: "ליגה",
+    stage: "",
     venue: "",
     date: "",
     time: "",
@@ -157,6 +158,12 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded }: AddGameDialogProps) => 
                 <SelectItem value="youth">קבוצת נוער</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="stage" className="text-right">
+              שלב / מחזור
+            </Label>
+            <Input id="stage" name="stage" value={gameData.stage} onChange={handleInputChange} className="col-span-3" placeholder="לדוג': מחזור 1, גמר..."/>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="status" className="text-right">

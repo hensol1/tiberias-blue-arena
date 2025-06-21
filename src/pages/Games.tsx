@@ -196,7 +196,7 @@ const Games = () => {
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground text-right">
                       <div className="flex items-center justify-end">
-                        <span className="mr-2">{game.date}</span>
+                        <span className="mr-2">{new Date(game.date).toLocaleDateString('he-IL')}</span>
                         <Calendar className="h-4 w-4 text-team-primary" />
                       </div>
                       <div className="flex items-center justify-end">
@@ -208,8 +208,8 @@ const Games = () => {
                         <MapPin className="h-4 w-4 text-team-primary" />
                       </div>
                       <div className="flex items-center justify-end gap-2">
-                        <span>{game.competition}</span>
-                        <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-4 w-4 object-contain" />
+                        <span>{game.competition}{game.stage && ` - ${game.stage}`}</span>
+                        <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-6 w-6 object-contain" />
                       </div>
                   </div>
 
@@ -235,8 +235,10 @@ const Games = () => {
                   <div className="flex items-center justify-between">
                     {getResultBadge(game.won)}
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-muted-foreground">{game.competition}</span>
-                      <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-6 w-6 object-contain"/>
+                      <span className="text-sm font-medium text-muted-foreground">
+                        {game.competition}{game.stage && ` - ${game.stage}`}
+                      </span>
+                      <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-7 w-7 object-contain"/>
                     </div>
                   </div>
                 </CardHeader>
