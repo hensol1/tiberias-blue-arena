@@ -21,8 +21,18 @@ import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
-import { TEAM_NAMES } from "@/lib/team-logo-map";
-import { COMPETITION_NAMES } from "@/lib/competition-logo-map";
+// import { TEAM_NAMES } from "@/lib/team-logo-map";
+// import { COMPETITION_NAMES } from "@/lib/competition-logo-map";
+
+// Temporary hardcoded arrays until import issue is resolved
+const TEAM_NAMES = [
+    "עירוני טבריה", "מכבי חיפה", "מכבי תל אביב", "הפועל באר שבע", 
+    "הפועל חיפה", "מכבי בני ריינה", "הפועל ירושלים", "מכבי פתח תקוה", 
+    "הפועל חדרה", "הפועל תל אביב", "מ.ס. אשדוד", "בית\"ר ירושלים", 
+    "מכבי נתניה", "הפועל פתח תקוה", "איחוד בני סכנין", "עירוני קרית שמונה"
+];
+
+const COMPETITION_NAMES = ["ליגת העל", "גביע המדינה", "גביע הטוטו"];
 
 const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit }: {
     isOpen: boolean;
