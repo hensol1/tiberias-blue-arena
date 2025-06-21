@@ -10,6 +10,7 @@ import { db } from "@/lib/firebase";
 import { collection, addDoc, getDocs, query, orderBy } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import AddGameDialog from "@/components/AddGameDialog";
+import { getTeamLogo } from "@/lib/team-logo-map";
 
 const Games = () => {
   const [selectedTeam, setSelectedTeam] = useState<'senior' | 'youth'>('senior');
@@ -170,45 +171,51 @@ const Games = () => {
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
           <div className="space-y-6">
             {isLoading ? <p>טוען משחקים...</p> : upcomingGames.length > 0 ? (
-              upcomingGames.map((game, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              upcomingGames.map((game) => (
+              <Card key={game.id} className="hover:shadow-lg transition-shadow overflow-hidden">
                 <CardContent className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-                    <div className="text-right md:order-1">
-                      <h3 className="text-xl font-semibold text-team-dark mb-2">
-                        עירוני טבריה נגד {game.opponent}
-                      </h3>
-                      <Badge variant="outline" className="mb-2">
-                        {game.competition}
-                      </Badge>
-                      <div className="text-sm text-muted-foreground">
-                        {game.isHome ? 'משחק בית' : 'משחק חוץ'}
-                      </div>
+                  <div className="grid grid-cols-5 gap-4 items-center">
+                    
+                    {/* Teams & Logos */}
+                    <div className="col-span-2 flex flex-col items-center text-center">
+                       <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-16 h-16 mb-2 object-contain"/>
+                       <h3 className="font-semibold">עירוני טבריה</h3>
+                    </div>
+
+                    <div className="text-center text-muted-foreground">VS</div>
+
+                    <div className="col-span-2 flex flex-col items-center text-center">
+                       <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-16 h-16 mb-2 object-contain"/>
+                       <h3 className="font-semibold">{game.opponent}</h3>
                     </div>
                     
-                    <div className="text-center md:order-2">
-                      <div className="flex items-center justify-center mb-2">
-                        <span className="ml-2">{game.date}</span>
+                  </div>
+                  
+                  <div className="border-t my-4"></div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground text-right">
+                      <div className="flex items-center justify-end">
+                        <span className="mr-2">{game.date}</span>
                         <Calendar className="h-4 w-4 text-team-primary" />
                       </div>
-                      <div className="flex items-center justify-center">
-                        <span className="ml-2">{game.time}</span>
+                      <div className="flex items-center justify-end">
+                        <span className="mr-2">{game.time}</span>
                         <Clock className="h-4 w-4 text-team-primary" />
                       </div>
-                    </div>
-                    
-                    <div className="text-center md:order-3">
-                      <div className="flex items-center justify-center">
-                        <span className="ml-2">{game.venue}</span>
+                      <div className="flex items-center justify-end">
+                        <span className="mr-2">{game.venue}</span>
                         <MapPin className="h-4 w-4 text-team-primary" />
                       </div>
-                    </div>
-                    
-                    <div className="text-center md:order-4">
-                      <Button className="bg-team-primary hover:bg-team-secondary w-full md:w-auto">
+                      <div className="flex items-center justify-end">
+                        <span className="mr-2">{game.competition}</span>
+                        <Trophy className="h-4 w-4 text-team-primary" />
+                      </div>
+                  </div>
+
+                  <div className="mt-4 text-center">
+                     <Button className="bg-team-primary hover:bg-team-secondary w-full md:w-auto">
                         קנה כרטיסים
                       </Button>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -221,33 +228,35 @@ const Games = () => {
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">תוצאות אחרונות</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {isLoading ? <p>טוען תוצאות...</p> : recentResults.length > 0 ? (
-              recentResults.map((game, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              recentResults.map((game) => (
+              <Card key={game.id} className="hover:shadow-lg transition-shadow overflow-hidden">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     {getResultBadge(game.won)}
-                    <CardTitle className="text-right text-lg">
-                      עירוני טבריה נגד {game.opponent}
-                    </CardTitle>
+                    <Badge variant="outline">{game.competition}</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-center mb-4">
-                    <div className="text-3xl font-bold text-team-primary">{game.result}</div>
+                  <div className="flex items-center justify-around text-center mb-4">
+                    <div className="flex-1 flex flex-col items-center">
+                      <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-16 h-16 object-contain mb-2"/>
+                      <h4 className="font-semibold">עירוני טבריה</h4>
+                    </div>
+                    <div className="text-3xl font-bold text-team-primary px-4">{game.result}</div>
+                    <div className="flex-1 flex flex-col items-center">
+                      <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-16 h-16 object-contain mb-2"/>
+                      <h4 className="font-semibold">{game.opponent}</h4>
+                    </div>
                   </div>
                   
-                  <div className="space-y-2 text-sm text-muted-foreground text-right">
+                  <div className="border-t pt-3 space-y-2 text-sm text-muted-foreground text-right">
                     <div className="flex items-center justify-end">
-                      <span className="ml-2">{game.date}</span>
+                      <span className="mr-2">{new Date(game.date).toLocaleDateString('he-IL')}</span>
                       <Calendar className="h-4 w-4" />
                     </div>
                     <div className="flex items-center justify-end">
-                      <span className="ml-2">{game.venue}</span>
+                      <span className="mr-2">{game.venue}</span>
                       <MapPin className="h-4 w-4" />
-                    </div>
-                    <div className="flex items-center justify-end">
-                      <span className="ml-2">{game.competition}</span>
-                      <Trophy className="h-4 w-4" />
                     </div>
                   </div>
                 </CardContent>
