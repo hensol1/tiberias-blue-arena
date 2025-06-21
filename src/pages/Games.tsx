@@ -1,77 +1,69 @@
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Clock, Trophy } from "lucide-react";
+import { Calendar, MapPin, Clock, Trophy, Plus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, getDocs, query, orderBy } from "firebase/firestore";
+import { useToast } from "@/hooks/use-toast";
+import AddGameDialog from "@/components/AddGameDialog";
 
 const Games = () => {
-  const upcomingGames = [
-    {
-      opponent: "הפועל חיפה",
-      date: "25 דצמבר 2024",
-      time: "20:00",
-      venue: "אצטדיון עירוני טבריה",
-      competition: "ליגה ב'",
-      isHome: true
-    },
-    {
-      opponent: "מכבי נתניה",
-      date: "2 ינואר 2025",
-      time: "19:30",
-      venue: "אצטדיון נתניה",
-      competition: "ליגה ב'",
-      isHome: false
-    },
-    {
-      opponent: "בני סכנין",
-      date: "9 ינואר 2025",
-      time: "20:00",
-      venue: "אצטדיון עירוני טבריה",
-      competition: "ליגה ב'",
-      isHome: true
-    }
-  ];
+  const [selectedTeam, setSelectedTeam] = useState<'senior' | 'youth'>('senior');
+  const [allGames, setAllGames] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
-  const recentResults = [
-    {
-      opponent: "הפועל רעננה",
-      result: "2-1",
-      date: "18 דצמבר 2024",
-      venue: "אצטדיון עירוני טבריה",
-      competition: "ליגה ב'",
-      isHome: true,
-      won: true
-    },
-    {
-      opponent: "מכבי אום אל פחם",
-      result: "1-1",
-      date: "11 דצמבר 2024",
-      venue: "אצטדיון אום אל פחם",
-      competition: "ליגה ב'",
-      isHome: false,
-      won: null
-    },
-    {
-      opponent: "הפועל עכו",
-      result: "3-0",
-      date: "4 דצמבר 2024",
-      venue: "אצטדיון עירוני טבריה",
-      competition: "ליגה ב'",
-      isHome: true,
-      won: true
-    },
-    {
-      opponent: "מכבי קבליו",
-      result: "0-2",
-      date: "27 נובמבר 2024",
-      venue: "אצטדיון קבליו",
-      competition: "ליגה ב'",
-      isHome: false,
-      won: false
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      if (!db) {
+        console.warn("Firebase not available. Using hardcoded data.");
+        // We can add fallback data here if needed
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const gamesCollection = collection(db, "games");
+        const q = query(gamesCollection, orderBy("date", "desc"));
+        const gamesSnapshot = await getDocs(q);
+        const gamesList = gamesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setAllGames(gamesList);
+      } catch (error) {
+        console.error("Error fetching games:", error);
+        toast({ title: "שגיאה בטעינת המשחקים", variant: "destructive" });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchGames();
+  }, [toast]);
+
+  const handleGameAdded = (newGame: any) => {
+    setAllGames(prev => [newGame, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+  };
+
+  const upcomingGames = allGames.filter(g => g.team === selectedTeam && g.status === 'upcoming');
+  const recentResults = allGames.filter(g => g.team === selectedTeam && g.status === 'recent');
+
+  const teamData = {
+    stats: {
+        wins: recentResults.filter(g => g.won === true).length,
+        draws: recentResults.filter(g => g.won === null).length,
+        losses: recentResults.filter(g => g.won === false).length,
+        // Position will need to be managed separately, maybe in a different collection or manually.
+        // For now, let's hardcode it or derive it differently.
+        position: selectedTeam === 'senior' ? 7 : 4
     }
-  ];
+  }
+
+  const teamName = selectedTeam === 'senior' ? 'הקבוצה הבוגרת' : 'קבוצת הנוער';
 
   const getResultBadge = (won: boolean | null) => {
     if (won === true) return <Badge className="bg-green-500 hover:bg-green-500">ניצחון</Badge>;
@@ -94,33 +86,79 @@ const Games = () => {
       </section>
 
       <div className="container mx-auto px-4 py-12">
+        {/* Team Selection Buttons */}
+        <section className="mb-8 flex justify-center items-center gap-4">
+            <div className="flex items-center space-x-2 space-x-reverse bg-gray-200/50 backdrop-blur-md rounded-full p-2 border border-gray-300/60 shadow-inner">
+              <Button
+                variant="ghost"
+                onClick={() => setSelectedTeam('senior')}
+                className={`px-8 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${
+                  selectedTeam === 'senior' 
+                    ? "bg-white text-team-primary shadow-md" 
+                    : "text-team-primary/70 hover:text-team-primary"
+                }`}
+              >
+                הקבוצה הבוגרת
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => setSelectedTeam('youth')}
+                className={`px-8 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${
+                  selectedTeam === 'youth' 
+                    ? "bg-white text-team-primary shadow-md" 
+                    : "text-team-primary/70 hover:text-team-primary"
+                }`}
+              >
+                קבוצת הנוער
+              </Button>
+            </div>
+            {isAuthenticated && (
+                <Button onClick={() => setShowAddDialog(true)} className="bg-team-primary hover:bg-team-secondary rounded-full">
+                    <Plus className="h-4 w-4 ml-2" />
+                    הוסף משחק
+                </Button>
+            )}
+        </section>
+
+        {/* Add Game Dialog */}
+        {showAddDialog && (
+            <AddGameDialog
+                isOpen={showAddDialog}
+                onClose={() => setShowAddDialog(false)}
+                onGameAdded={handleGameAdded}
+            />
+        )}
+        
         {/* Season Stats */}
         <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6 text-center text-team-dark">
+            סטטיסטיקות עונה - {teamName}
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-green-600 mb-2">8</div>
+                <div className="text-3xl font-bold text-green-600 mb-2">{teamData.stats.wins}</div>
                 <div className="text-sm text-muted-foreground">ניצחונות</div>
               </CardContent>
             </Card>
             
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-yellow-600 mb-2">4</div>
+                <div className="text-3xl font-bold text-yellow-600 mb-2">{teamData.stats.draws}</div>
                 <div className="text-sm text-muted-foreground">תיקו</div>
               </CardContent>
             </Card>
             
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-red-600 mb-2">3</div>
+                <div className="text-3xl font-bold text-red-600 mb-2">{teamData.stats.losses}</div>
                 <div className="text-sm text-muted-foreground">הפסדים</div>
               </CardContent>
             </Card>
             
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
-                <div className="text-3xl font-bold text-team-primary mb-2">7</div>
+                <div className="text-3xl font-bold text-team-primary mb-2">{teamData.stats.position}</div>
                 <div className="text-sm text-muted-foreground">מיקום בטבלה</div>
               </CardContent>
             </Card>
@@ -131,7 +169,8 @@ const Games = () => {
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
           <div className="space-y-6">
-            {upcomingGames.map((game, index) => (
+            {isLoading ? <p>טוען משחקים...</p> : upcomingGames.length > 0 ? (
+              upcomingGames.map((game, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
@@ -173,7 +212,7 @@ const Games = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            ))) : <p>אין משחקים קרובים.</p>}
           </div>
         </section>
 
@@ -181,7 +220,8 @@ const Games = () => {
         <section>
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">תוצאות אחרונות</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {recentResults.map((game, index) => (
+            {isLoading ? <p>טוען תוצאות...</p> : recentResults.length > 0 ? (
+              recentResults.map((game, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -212,7 +252,7 @@ const Games = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            ))) : <p>אין תוצאות אחרונות.</p>}
           </div>
         </section>
       </div>

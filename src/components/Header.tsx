@@ -58,7 +58,7 @@ const Header = () => {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-black/10"></div>
               </div>
               <div className="text-right">
-                <h1 className="text-2xl font-bold tracking-wide">עירוני דורות טבריה</h1>
+                <h1 className="text-2xl font-bold tracking-wide">עירוני 'דורות' טבריה</h1>
               </div>
             </Link>
 
