@@ -2,28 +2,30 @@
 
 // This file maps Hebrew team names to their corresponding logo filenames in English.
 // The filenames should match the files located in `src/assets/team-logos/`.
-// We are assuming the file extension is .png, but the function will handle different extensions.
+
+// Vite feature to import all logos and get their public URLs.
+const logos = import.meta.glob<string>('/src/assets/team-logos/*.png', { eager: true, import: 'default' });
 
 const TEAM_LOGO_MAP: Record<string, string> = {
   // Ligat Ha'al Teams
-  "בית\"ר ירושלים": "Beitar Jerusalem",
-  "מ.ס. אשדוד": "FC Ashdod",
-  "הפועל באר שבע": "Hapoel Beer Sheva",
-  "הפועל חדרה": "Hapoel Hadera",
-  "הפועל חיפה": "Hapoel Haifa",
-  "הפועל ירושלים": "Hapoel Jerusalem",
-  "הפועל פתח תקווה": "Hapoel Petach Tikva",
-  "הפועל תל אביב": "Hapoel Tel Aviv",
-  "בני סכנין": "Ihud Bnei Sakhnin",
-  "עירוני קרית שמונה": "Ironi Kiryat Shmona",
-  "מכבי בני ריינה": "Maccabi Bnei Reineh",
-  "מכבי חיפה": "Maccabi Haifa",
-  "מכבי נתניה": "Maccabi Netanya",
-  "מכבי פתח תקווה": "Maccabi Petah Tikva",
-  "מכבי תל אביב": "Maccabi Tel Aviv",
+  "בית\"ר ירושלים": "Beitar Jerusalem.png",
+  "מ.ס. אשדוד": "FC Ashdod.png",
+  "הפועל באר שבע": "Hapoel Beer Sheva.png",
+  "הפועל חדרה": "Hapoel Hadera.png",
+  "הפועל חיפה": "Hapoel Haifa.png",
+  "הפועל ירושלים": "Hapoel Jerusalem.png",
+  "הפועל פתח תקווה": "Hapoel Petach Tikva.png",
+  "הפועל תל אביב": "Hapoel Tel Aviv.png",
+  "בני סכנין": "Ihud Bnei Sakhnin.png",
+  "עירוני קרית שמונה": "Ironi Kiryat Shmona.png",
+  "מכבי בני ריינה": "Maccabi Bnei Reineh.png",
+  "מכבי חיפה": "Maccabi Haifa.png",
+  "מכבי נתניה": "Maccabi Netanya.png",
+  "מכבי פתח תקווה": "Maccabi Petah Tikva.png",
+  "מכבי תל אביב": "Maccabi Tel Aviv.png",
 
   // Our Team
-  "עירוני טבריה": "Ironi Tiberias",
+  "עירוני טבריה": "Ironi Tiberias.png",
 };
 
 /**
@@ -32,11 +34,14 @@ const TEAM_LOGO_MAP: Record<string, string> = {
  * @returns The path to the team's logo, or a placeholder if not found.
  */
 export const getTeamLogo = (teamName: string): string => {
-  const englishName = TEAM_LOGO_MAP[teamName];
-  if (englishName) {
-    // Vite can handle dynamic imports from the assets directory.
-    // We assume the logo files are PNGs, but this could be adapted.
-    return `/src/assets/team-logos/${englishName}.png`;
+  const filename = TEAM_LOGO_MAP[teamName];
+  if (filename) {
+    const path = `/src/assets/team-logos/${filename}`;
+    // The `logos` object from `import.meta.glob` will have keys like: 
+    // '/src/assets/team-logos/Beitar Jerusalem.png'
+    // and values like the final public URL: 
+    // '/assets/Beitar Jerusalem.1a2b3c.png'
+    return logos[path] || '/placeholder.svg';
   }
   // Return a path to a generic placeholder logo if no specific logo is found.
   return '/placeholder.svg';
