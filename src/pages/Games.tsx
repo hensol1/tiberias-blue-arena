@@ -84,8 +84,11 @@ const Games = () => {
   };
 
   const openEditDialog = (game: any) => {
+    console.log("openEditDialog called with game:", game);
     setEditingGame(game);
-    setShowAddDialog(true);
+    setTimeout(() => {
+      setShowAddDialog(true);
+    }, 0);
   };
   
   const closeAddOrEditDialog = () => {

@@ -19,24 +19,27 @@ import maccabiTelAviv from '../assets/team-logos/Maccabi Tel Aviv.webp';
 import ironiTiberias from '../assets/team-logos/Ironi Tiberias.webp';
 import placeholder from '/placeholder.svg';
 
+type TeamLogoMap = {
+    [key: string]: string;
+};
 
-const TEAM_LOGO_MAP: Record<string, string> = {
-  "בית\"ר ירושלים": beitarJerusalem,
-  "מ.ס. אשדוד": fcAshdod,
-  "הפועל באר שבע": hapoelBeerSheva,
-  "הפועל חדרה": hapoelHadera,
-  "הפועל חיפה": hapoelHaifa,
-  "הפועל ירושלים": hapoelJerusalem,
-  "הפועל פתח תקווה": hapoelPetachTikva,
-  "הפועל תל אביב": hapoelTelAviv,
-  "בני סכנין": ihudBneiSakhnin,
-  "עירוני קרית שמונה": ironiKiryatShmona,
-  "מכבי בני ריינה": maccabiBneiReineh,
-  "מכבי חיפה": maccabiHaifa,
-  "מכבי נתניה": maccabiNetanya,
-  "מכבי פתח תקווה": maccabiPetahTikva,
-  "מכבי תל אביב": maccabiTelAviv,
-  "עירוני טבריה": ironiTiberias,
+const teamLogoMap: TeamLogoMap = {
+    "עירוני טבריה": ironiTiberias,
+    "מכבי חיפה": maccabiHaifa,
+    "מכבי תל אביב": maccabiTelAviv,
+    "הפועל באר שבע": hapoelBeerSheva,
+    "הפועל חיפה": hapoelHaifa,
+    "מכבי בני ריינה": maccabiBneiReineh,
+    "הפועל ירושלים": hapoelJerusalem,
+    "מכבי פתח תקוה": maccabiPetahTikva,
+    "הפועל חדרה": hapoelHadera,
+    "הפועל תל אביב": hapoelTelAviv,
+    "מ.ס. אשדוד": fcAshdod,
+    "בית\"ר ירושלים": beitarJerusalem,
+    "מכבי נתניה": maccabiNetanya,
+    "הפועל פתח תקוה": hapoelPetachTikva,
+    "איחוד בני סכנין": ihudBneiSakhnin,
+    "עירוני קרית שמונה": ironiKiryatShmona,
 };
 
 /**
@@ -45,5 +48,7 @@ const TEAM_LOGO_MAP: Record<string, string> = {
  * @returns The path to the team's logo, or a placeholder if not found.
  */
 export const getTeamLogo = (teamName: string): string => {
-  return TEAM_LOGO_MAP[teamName] || placeholder;
-}; 
+  return teamLogoMap[teamName] || placeholder;
+};
+
+export const TEAM_NAMES = Object.keys(teamLogoMap); 
