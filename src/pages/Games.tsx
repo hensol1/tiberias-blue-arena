@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import AddGameDialog from "@/components/AddGameDialog";
 import { getTeamLogo } from "@/lib/team-logo-map";
 import { getCompetitionLogo } from "@/lib/competition-logo-map";
+import { Separator } from "@/components/ui/separator";
 
 const Games = () => {
   const [selectedTeam, setSelectedTeam] = useState<'senior' | 'youth'>('senior');
@@ -170,104 +171,126 @@ const Games = () => {
         {/* Upcoming Games */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
-          <div className="space-y-6">
+          <div className="space-y-4">
             {isLoading ? <p>טוען משחקים...</p> : upcomingGames.length > 0 ? (
               upcomingGames.map((game) => (
-              <Card key={game.id} className="hover:shadow-lg transition-shadow overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="grid grid-cols-5 gap-4 items-center">
-                    
-                    {/* Teams & Logos */}
-                    <div className="col-span-2 flex flex-col items-center text-center">
-                       <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-16 h-16 mb-2 object-contain"/>
-                       <h3 className="font-semibold">עירוני טבריה</h3>
-                    </div>
-
-                    <div className="text-center text-muted-foreground">VS</div>
-
-                    <div className="col-span-2 flex flex-col items-center text-center">
-                       <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-16 h-16 mb-2 object-contain"/>
-                       <h3 className="font-semibold">{game.opponent}</h3>
-                    </div>
-                    
+              <Card key={game.id} className="hover:shadow-lg transition-shadow">
+                {/* Desktop View */}
+                <div className="hidden md:flex flex-row items-center p-4 gap-4 justify-between">
+                  <div className="flex-grow flex items-center justify-center gap-4 md:gap-8">
+                      <div className="flex items-center flex-row-reverse gap-3">
+                          <h3 className="text-lg font-bold text-right hidden sm:block">עירוני טבריה</h3>
+                          <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 object-contain" />
+                      </div>
+                      <span className="text-xl font-light text-muted-foreground">VS</span>
+                      <div className="flex items-center gap-3">
+                          <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 object-contain" />
+                          <h3 className="text-lg font-bold text-left hidden sm:block">{game.opponent}</h3>
+                      </div>
                   </div>
-                  
-                  <div className="border-t my-4"></div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground text-right">
-                      <div className="flex items-center justify-end">
-                        <span className="mr-2">{new Date(game.date).toLocaleDateString('he-IL')}</span>
-                        <Calendar className="h-4 w-4 text-team-primary" />
-                      </div>
-                      <div className="flex items-center justify-end">
-                        <span className="mr-2">{game.time}</span>
-                        <Clock className="h-4 w-4 text-team-primary" />
-                      </div>
-                      <div className="flex items-center justify-end">
-                        <span className="mr-2">{game.venue}</span>
-                        <MapPin className="h-4 w-4 text-team-primary" />
-                      </div>
+                  <Separator orientation="vertical" className="h-16 hidden md:block" />
+                  <div className="hidden md:flex flex-col gap-2 text-right text-sm w-48">
                       <div className="flex items-center justify-end gap-2">
-                        <span>{game.competition}{game.stage && ` - ${game.stage}`}</span>
-                        <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-6 w-6 object-contain" />
+                          <span>{game.competition}{game.stage && ` - ${game.stage}`}</span>
+                          <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-8 w-8 object-contain" />
+                      </div>
+                      <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                          <Calendar className="w-4 h-4"/>
+                          <span>{new Date(game.date).toLocaleDateString('he-IL')}, {game.time}</span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                          <MapPin className="w-4 h-4"/>
+                          <span>{game.venue}</span>
                       </div>
                   </div>
-
-                  <div className="mt-4 text-center">
-                     <Button className="bg-team-primary hover:bg-team-secondary w-full md:w-auto">
+                  <div className="pr-4">
+                     <Button className="bg-team-primary hover:bg-team-secondary">
                         קנה כרטיסים
                       </Button>
                   </div>
+                </div>
+
+                {/* Mobile View */}
+                <CardContent className="md:hidden flex flex-col gap-4 p-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex flex-col items-center text-center w-20">
+                            <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 object-contain"/>
+                            <h4 className="font-semibold text-sm mt-1">עירוני טבריה</h4>
+                        </div>
+                        <span className="text-xl font-light text-muted-foreground">VS</span>
+                        <div className="flex flex-col items-center text-center w-20">
+                            <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 object-contain"/>
+                            <h4 className="font-semibold text-sm mt-1">{game.opponent}</h4>
+                        </div>
+                    </div>
+                    <Separator />
+                    <div className="text-sm text-right space-y-2">
+                        <div className="flex items-center justify-end gap-2">
+                            <span>{game.competition}{game.stage && ` - ${game.stage}`}</span>
+                            <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-6 w-6 object-contain" />
+                        </div>
+                        <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                            <span>{new Date(game.date).toLocaleDateString('he-IL')}, {game.time}</span>
+                            <Calendar className="w-4 h-4"/>
+                        </div>
+                        <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                            <span>{game.venue}</span>
+                            <MapPin className="w-4 h-4"/>
+                        </div>
+                    </div>
+                    <Button className="bg-team-primary hover:bg-team-secondary w-full mt-2">
+                        קנה כרטיסים
+                    </Button>
                 </CardContent>
               </Card>
-            ))) : <p>אין משחקים קרובים.</p>}
+            ))) : <p className="text-center text-muted-foreground">אין משחקים קרובים.</p>}
           </div>
         </section>
 
         {/* Recent Results */}
         <section>
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">תוצאות אחרונות</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {isLoading ? <p>טוען תוצאות...</p> : recentResults.length > 0 ? (
               recentResults.map((game) => (
-              <Card key={game.id} className="hover:shadow-lg transition-shadow overflow-hidden">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    {getResultBadge(game.won)}
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-muted-foreground">
-                        {game.competition}{game.stage && ` - ${game.stage}`}
-                      </span>
-                      <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-7 w-7 object-contain"/>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-around text-center mb-4">
-                    <div className="flex-1 flex flex-col items-center">
-                      <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-16 h-16 object-contain mb-2"/>
-                      <h4 className="font-semibold">עירוני טבריה</h4>
-                    </div>
-                    <div className="text-3xl font-bold text-team-primary px-4">{game.result}</div>
-                    <div className="flex-1 flex flex-col items-center">
-                      <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-16 h-16 object-contain mb-2"/>
-                      <h4 className="font-semibold">{game.opponent}</h4>
-                    </div>
-                  </div>
-                  
-                  <div className="border-t pt-3 space-y-2 text-sm text-muted-foreground text-right">
-                    <div className="flex items-center justify-end">
-                      <span className="mr-2">{new Date(game.date).toLocaleDateString('he-IL')}</span>
-                      <Calendar className="h-4 w-4" />
-                    </div>
-                    <div className="flex items-center justify-end">
-                      <span className="mr-2">{game.venue}</span>
-                      <MapPin className="h-4 w-4" />
-                    </div>
+              <Card key={game.id} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-4 relative">
+                  <div className="absolute top-3 left-3 z-10">{getResultBadge(game.won)}</div>
+                  <div className="flex flex-row items-center gap-4">
+                      {/* Matchup with Result */}
+                      <div className="flex-grow flex items-center justify-center gap-2">
+                          <div className="flex flex-col items-center text-center w-24">
+                              <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 mb-1 object-contain"/>
+                              <h4 className="font-semibold text-sm text-center">עירוני טבריה</h4>
+                          </div>
+                          <div className="text-4xl font-bold text-team-primary px-2">{game.result}</div>
+                          <div className="flex flex-col items-center text-center w-24">
+                              <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 mb-1 object-contain"/>
+                              <h4 className="font-semibold text-sm text-center">{game.opponent}</h4>
+                          </div>
+                      </div>
+
+                      <Separator orientation="vertical" className="h-20" />
+
+                      {/* Details Section */}
+                      <div className="flex flex-col gap-2 text-right text-sm w-44">
+                          <div className="flex items-center justify-end gap-2">
+                              <span>{game.competition}{game.stage && ` - ${game.stage}`}</span>
+                              <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-8 w-8 object-contain"/>
+                          </div>
+                          <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                              <Calendar className="w-4 h-4"/>
+                              <span>{new Date(game.date).toLocaleDateString('he-IL')}</span>
+                          </div>
+                          <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                              <MapPin className="w-4 h-4"/>
+                              <span>{game.venue}</span>
+                          </div>
+                      </div>
                   </div>
                 </CardContent>
               </Card>
-            ))) : <p>אין תוצאות אחרונות.</p>}
+            ))) : <p className="text-center text-muted-foreground col-span-full">אין תוצאות אחרונות.</p>}
           </div>
         </section>
       </div>
