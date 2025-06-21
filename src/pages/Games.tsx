@@ -11,6 +11,7 @@ import { collection, addDoc, getDocs, query, orderBy } from "firebase/firestore"
 import { useToast } from "@/hooks/use-toast";
 import AddGameDialog from "@/components/AddGameDialog";
 import { getTeamLogo } from "@/lib/team-logo-map";
+import { getCompetitionLogo } from "@/lib/competition-logo-map";
 
 const Games = () => {
   const [selectedTeam, setSelectedTeam] = useState<'senior' | 'youth'>('senior');
@@ -206,9 +207,9 @@ const Games = () => {
                         <span className="mr-2">{game.venue}</span>
                         <MapPin className="h-4 w-4 text-team-primary" />
                       </div>
-                      <div className="flex items-center justify-end">
-                        <span className="mr-2">{game.competition}</span>
-                        <Trophy className="h-4 w-4 text-team-primary" />
+                      <div className="flex items-center justify-end gap-2">
+                        <span>{game.competition}</span>
+                        <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-4 w-4 object-contain" />
                       </div>
                   </div>
 
@@ -233,7 +234,10 @@ const Games = () => {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     {getResultBadge(game.won)}
-                    <Badge variant="outline">{game.competition}</Badge>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-muted-foreground">{game.competition}</span>
+                      <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-6 w-6 object-contain"/>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>

@@ -33,7 +33,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded }: AddGameDialogProps) => 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [gameData, setGameData] = useState({
     opponent: "",
-    competition: "",
+    competition: "ליגה",
     venue: "",
     date: "",
     time: "",
@@ -133,7 +133,16 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded }: AddGameDialogProps) => 
             <Label htmlFor="competition" className="text-right">
               מסגרת
             </Label>
-            <Input id="competition" name="competition" value={gameData.competition} onChange={handleInputChange} className="col-span-3" />
+            <Select onValueChange={(v) => handleSelectChange("competition", v)} defaultValue={gameData.competition}>
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="בחר מסגרת" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ליגה">ליגה</SelectItem>
+                <SelectItem value="גביע">גביע</SelectItem>
+                <SelectItem value="גביע הטוטו">גביע הטוטו</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="team" className="text-right">
