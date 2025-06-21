@@ -21,18 +21,8 @@ import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
-// import { TEAM_NAMES } from "@/lib/team-logo-map";
-// import { COMPETITION_NAMES } from "@/lib/competition-logo-map";
-
-// Temporary hardcoded arrays until import issue is resolved
-const TEAM_NAMES = [
-    "עירוני טבריה", "מכבי חיפה", "מכבי תל אביב", "הפועל באר שבע", 
-    "הפועל חיפה", "מכבי בני ריינה", "הפועל ירושלים", "מכבי פתח תקוה", 
-    "הפועל חדרה", "הפועל תל אביב", "מ.ס. אשדוד", "בית\"ר ירושלים", 
-    "מכבי נתניה", "הפועל פתח תקוה", "איחוד בני סכנין", "עירוני קרית שמונה"
-];
-
-const COMPETITION_NAMES = ["ליגת העל", "גביע המדינה", "גביע הטוטו"];
+import { TEAM_NAMES } from "@/lib/team-logo-map";
+import { COMPETITION_NAMES } from "@/lib/competition-logo-map";
 
 const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit }: {
     isOpen: boolean;
@@ -54,10 +44,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
     const isEditMode = !!gameToEdit;
 
     useEffect(() => {
-        console.log("AddGameDialog useEffect triggered:", { isEditMode, gameToEdit, isOpen });
-        
         if (isEditMode && gameToEdit) {
-            console.log("Populating form with game data:", gameToEdit);
             setTeam(gameToEdit.team || "senior");
             setOpponent(gameToEdit.opponent || "");
             setDate(gameToEdit.date ? new Date(gameToEdit.date).toISOString().substring(0, 16) : "");
@@ -66,9 +53,8 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
             setStage(gameToEdit.stage || "");
             setScore(gameToEdit.score || "");
             setNotes(gameToEdit.notes || "");
-        } else if (!isEditMode) {
+        } else {
              // Reset form when opening for a new game
-            console.log("Resetting form for new game");
             setTeam("senior");
             setOpponent("");
             setDate("");
@@ -80,20 +66,6 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
         }
     }, [gameToEdit, isEditMode, isOpen]);
 
-    // Additional useEffect to handle form population when dialog opens
-    useEffect(() => {
-        if (isOpen && isEditMode && gameToEdit) {
-            console.log("Dialog opened in edit mode, populating form:", gameToEdit);
-            setTeam(gameToEdit.team || "senior");
-            setOpponent(gameToEdit.opponent || "");
-            setDate(gameToEdit.date ? new Date(gameToEdit.date).toISOString().substring(0, 16) : "");
-            setVenue(gameToEdit.venue || "home");
-            setCompetition(gameToEdit.competition || "");
-            setStage(gameToEdit.stage || "");
-            setScore(gameToEdit.score || "");
-            setNotes(gameToEdit.notes || "");
-        }
-    }, [isOpen, isEditMode, gameToEdit]);
 
     const getGameStatus = (gameDate: string, gameScore: string) => {
         if (gameScore) {

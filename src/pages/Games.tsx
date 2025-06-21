@@ -84,11 +84,8 @@ const Games = () => {
   };
 
   const openEditDialog = (game: any) => {
-    console.log("openEditDialog called with game:", game);
     setEditingGame(game);
-    setTimeout(() => {
-      setShowAddDialog(true);
-    }, 0);
+    setShowAddDialog(true);
   };
   
   const closeAddOrEditDialog = () => {
@@ -147,7 +144,7 @@ const Games = () => {
               >
                 קבוצת הנוער
               </Button>
-            </div>
+          </div>
             {isAuthenticated && hasPermission('add_game') && (
                 <Button onClick={() => setShowAddDialog(true)} className="bg-team-primary hover:bg-team-secondary rounded-full">
                     <Plus className="h-4 w-4 ml-2" />
@@ -166,7 +163,7 @@ const Games = () => {
                 gameToEdit={editingGame}
             />
         )}
-        
+
         {/* Upcoming Games */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
@@ -212,7 +209,7 @@ const Games = () => {
                           <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 object-contain" />
                           <h3 className="text-lg font-bold text-left hidden sm:block">{game.opponent}</h3>
                       </div>
-                  </div>
+                    </div>
                   <Separator orientation="vertical" className="h-16 hidden md:block" />
                   <div className="hidden md:flex flex-col gap-2 text-right text-sm w-48">
                       <div className="flex items-center justify-end gap-2">
@@ -227,13 +224,13 @@ const Games = () => {
                           <MapPin className="w-4 h-4"/>
                           <span>{game.venue}</span>
                       </div>
-                  </div>
+                    </div>
                   <div className="pr-4">
                      <Button className="bg-team-primary hover:bg-team-secondary">
                         קנה כרטיסים
                       </Button>
+                    </div>
                   </div>
-                </div>
 
                 {/* Mobile View */}
                 <CardContent className="md:hidden flex flex-col gap-4 p-4">
@@ -319,8 +316,8 @@ const Games = () => {
                               <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 mb-1 object-contain"/>
                               <h4 className="font-semibold text-sm text-center">{game.opponent}</h4>
                           </div>
-                      </div>
-
+                  </div>
+                  
                       <Separator orientation="vertical" className="h-20" />
 
                       {/* Details Section */}
@@ -332,12 +329,12 @@ const Games = () => {
                           <div className="flex items-center justify-end gap-2 text-muted-foreground">
                               <Calendar className="w-4 h-4"/>
                               <span>{new Date(game.date).toLocaleDateString('he-IL')}</span>
-                          </div>
+                    </div>
                           <div className="flex items-center justify-end gap-2 text-muted-foreground">
                               <MapPin className="w-4 h-4"/>
                               <span>{game.venue}</span>
-                          </div>
-                      </div>
+                    </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

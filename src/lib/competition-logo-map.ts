@@ -1,8 +1,8 @@
 // src/lib/competition-logo-map.ts
 
-import LigaLogo from '../assets/competition/LIGA.png';
-import TotoLogo from '../assets/competition/TOTO.png';
-import GaviaLogo from '../assets/competition/GAVIA.png';
+import LigaLogo from '@/assets/competition/LIGA.png';
+import TotoLogo from '@/assets/competition/TOTO.png';
+import GaviaLogo from '@/assets/competition/GAVIA.png';
 
 // A generic placeholder can be used if needed, but for a fixed list,
 // we can assume a logo will always exist.
