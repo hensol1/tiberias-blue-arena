@@ -104,8 +104,11 @@ export const useAuth = () => {
     switch (permission) {
       case 'add_news':
       case 'edit_news':
+      case 'add_game':
+      case 'edit_game':
         return user.role === 'admin' || user.role === 'editor';
       case 'delete_news':
+      case 'delete_game':
         return user.role === 'admin';
       case 'manage_users':
         return user.role === 'admin';

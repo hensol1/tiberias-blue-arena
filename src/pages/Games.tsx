@@ -3,24 +3,36 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Clock, Trophy, Plus } from "lucide-react";
+import { Calendar, MapPin, Clock, Trophy, Plus, Edit, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { db } from "@/lib/firebase";
-import { collection, addDoc, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, orderBy, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import AddGameDialog from "@/components/AddGameDialog";
 import { getTeamLogo } from "@/lib/team-logo-map";
 import { getCompetitionLogo } from "@/lib/competition-logo-map";
 import { Separator } from "@/components/ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const Games = () => {
   const [selectedTeam, setSelectedTeam] = useState<'senior' | 'youth'>('senior');
   const [allGames, setAllGames] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [editingGame, setEditingGame] = useState<any | null>(null);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, hasPermission } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -52,19 +64,37 @@ const Games = () => {
     setAllGames(prev => [newGame, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
   };
 
+  const handleGameUpdated = (updatedGame: any) => {
+    setAllGames(prev => prev.map(g => g.id === updatedGame.id ? updatedGame : g));
+  };
+  
+  const handleDeleteGame = async (gameId: string) => {
+    if (!hasPermission('delete_game')) {
+        toast({ title: "אין לך הרשאה למחוק משחקים", variant: "destructive" });
+        return;
+    }
+    try {
+        await deleteDoc(doc(db, "games", gameId));
+        setAllGames(prev => prev.filter(g => g.id !== gameId));
+        toast({ title: "המשחק נמחק בהצלחה" });
+    } catch (error) {
+        console.error("Error deleting game: ", error);
+        toast({ title: "שגיאה במחיקת המשחק", variant: "destructive" });
+    }
+  };
+
+  const openEditDialog = (game: any) => {
+    setEditingGame(game);
+    setShowAddDialog(true);
+  };
+  
+  const closeAddOrEditDialog = () => {
+    setShowAddDialog(false);
+    setEditingGame(null);
+  }
+
   const upcomingGames = allGames.filter(g => g.team === selectedTeam && g.status === 'upcoming');
   const recentResults = allGames.filter(g => g.team === selectedTeam && g.status === 'recent');
-
-  const teamData = {
-    stats: {
-        wins: recentResults.filter(g => g.won === true).length,
-        draws: recentResults.filter(g => g.won === null).length,
-        losses: recentResults.filter(g => g.won === false).length,
-        // Position will need to be managed separately, maybe in a different collection or manually.
-        // For now, let's hardcode it or derive it differently.
-        position: selectedTeam === 'senior' ? 7 : 4
-    }
-  }
 
   const teamName = selectedTeam === 'senior' ? 'הקבוצה הבוגרת' : 'קבוצת הנוער';
 
@@ -115,7 +145,7 @@ const Games = () => {
                 קבוצת הנוער
               </Button>
             </div>
-            {isAuthenticated && (
+            {isAuthenticated && hasPermission('add_game') && (
                 <Button onClick={() => setShowAddDialog(true)} className="bg-team-primary hover:bg-team-secondary rounded-full">
                     <Plus className="h-4 w-4 ml-2" />
                     הוסף משחק
@@ -123,58 +153,50 @@ const Games = () => {
             )}
         </section>
 
-        {/* Add Game Dialog */}
+        {/* Add/Edit Game Dialog */}
         {showAddDialog && (
             <AddGameDialog
                 isOpen={showAddDialog}
-                onClose={() => setShowAddDialog(false)}
+                onClose={closeAddOrEditDialog}
                 onGameAdded={handleGameAdded}
+                onGameUpdated={handleGameUpdated}
+                gameToEdit={editingGame}
             />
         )}
         
-        {/* Season Stats */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-6 text-center text-team-dark">
-            סטטיסטיקות עונה - {teamName}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-green-600 mb-2">{teamData.stats.wins}</div>
-                <div className="text-sm text-muted-foreground">ניצחונות</div>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-yellow-600 mb-2">{teamData.stats.draws}</div>
-                <div className="text-sm text-muted-foreground">תיקו</div>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-red-600 mb-2">{teamData.stats.losses}</div>
-                <div className="text-sm text-muted-foreground">הפסדים</div>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-team-primary mb-2">{teamData.stats.position}</div>
-                <div className="text-sm text-muted-foreground">מיקום בטבלה</div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
         {/* Upcoming Games */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
           <div className="space-y-4">
             {isLoading ? <p>טוען משחקים...</p> : upcomingGames.length > 0 ? (
               upcomingGames.map((game) => (
-              <Card key={game.id} className="hover:shadow-lg transition-shadow">
+              <Card key={game.id} className="hover:shadow-lg transition-shadow relative group">
+                {isAuthenticated && (
+                  <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                    {hasPermission('edit_game') && (
+                      <Button variant="outline" size="icon" className="h-8 w-8 bg-white" onClick={() => openEditDialog(game)}>
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    )}
+                    {hasPermission('delete_game') && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="icon" className="h-8 w-8">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent dir="rtl">
+                          <AlertDialogHeader><AlertDialogTitle>האם למחוק את המשחק?</AlertDialogTitle></AlertDialogHeader>
+                          <AlertDialogDescription>פעולה זו לא ניתנת לשחזור.</AlertDialogDescription>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>ביטול</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteGame(game.id)}>מחק</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                  </div>
+                )}
                 {/* Desktop View */}
                 <div className="hidden md:flex flex-row items-center p-4 gap-4 justify-between">
                   <div className="flex-grow flex items-center justify-center gap-4 md:gap-8">
@@ -253,7 +275,33 @@ const Games = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {isLoading ? <p>טוען תוצאות...</p> : recentResults.length > 0 ? (
               recentResults.map((game) => (
-              <Card key={game.id} className="hover:shadow-lg transition-shadow">
+              <Card key={game.id} className="hover:shadow-lg transition-shadow relative group">
+                {isAuthenticated && (
+                  <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                    {hasPermission('edit_game') && (
+                      <Button variant="outline" size="icon" className="h-8 w-8 bg-white" onClick={() => openEditDialog(game)}>
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    )}
+                    {hasPermission('delete_game') && (
+                       <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="icon" className="h-8 w-8">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent dir="rtl">
+                           <AlertDialogHeader><AlertDialogTitle>האם למחוק את המשחק?</AlertDialogTitle></AlertDialogHeader>
+                           <AlertDialogDescription>פעולה זו לא ניתנת לשחזור.</AlertDialogDescription>
+                           <AlertDialogFooter>
+                            <AlertDialogCancel>ביטול</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteGame(game.id)}>מחק</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                  </div>
+                )}
                 <CardContent className="p-4 relative">
                   <div className="absolute top-3 left-3 z-10">{getResultBadge(game.won)}</div>
                   <div className="flex flex-row items-center gap-4">
