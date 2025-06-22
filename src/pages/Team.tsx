@@ -12,6 +12,7 @@ import EliBalilti from "@/assets/lovable-uploads/Eli Balilti.webp";
 import RonUnger from "@/assets/lovable-uploads/Ron Unger.webp";
 import DavidKeltjens from "@/assets/lovable-uploads/David Keltjens.webp";
 import IlayElmkies from "@/assets/lovable-uploads/Ilay Elmkies.webp";
+import Usman from "@/assets/lovable-uploads/Usman.png";
 import YonatanTeper from "@/assets/lovable-uploads/Yonatan Teper.webp";
 import NivTubul from "@/assets/lovable-uploads/53254.png";
 import WahebHabiballah from "@/assets/lovable-uploads/Waheb Habiballah.webp";
@@ -30,6 +31,7 @@ const Team = () => {
     { name: "רון אונגר", position: "הגנה", number: 2, age: 22, image: RonUnger, country: "ישראל" },
     { name: "דויד קלטינס", position: "קשר", number: 3, age: 30, image: DavidKeltjens, country: "ישראל" },
     { name: "איליי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
+    { name: "מוחמד אוסמן", position: "קשר", number: 10, age: 31, image: Usman, country: "ניגריה" },
     { name: "יונתן טפר", position: "קשר", number: 14, age: 24, image: YonatanTeper, country: "ישראל" },
     { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
     { name: "וואהב חביבאלה", position: "התקפה", number: 7, age: 22, image: WahebHabiballah, country: "ישראל" },
