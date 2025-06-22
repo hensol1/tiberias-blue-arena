@@ -24,23 +24,26 @@ const Team = () => {
   const players = [
     { name: "עידו שרון", position: "שוער", number: 1, age: 22, image: IdoSharon, country: "ישראל" },
     { name: "אונדז'יי באצ'ו", position: "הגנה", number: 37, age: 29, image: OndrejBaco, country: "צ'כיה" },
-    { name: "סאמבה קונטה", position: "הגנה", number: 4, age: 22, image: SambaKonte, country: "גינאה-ביסאו" },
-    { name: "עומר יצחק", position: "הגנה", number: 22, age: 22, image: OmerYitzhak, country: "ישראל" },
-    { name: "חארון שפשו", position: "הגנה", number: 99, age: 25, image: HaroonShapso, country: "ישראל" },
+    { name: "סאמבה קונטה", position: "הגנה", number: 4, age: 32, image: SambaKonte, country: "גינאה-ביסאו" },
+    { name: "עומר יצחק", position: "הגנה", number: 17, age: 24, image: OmerYitzhak, country: "ישראל" },
+    { name: "הארון שפסו", position: "הגנה", number: 99, age: 26, image: HaroonShapso, country: "ישראל" },
     { name: "אלי בלילתי", position: "הגנה", number: 15, age: 31, image: EliBalilti, country: "ישראל" },
-    { name: "רון אונגר", position: "הגנה", number: 2, age: 22, image: RonUnger, country: "ישראל" },
+    { name: "רון אונגר", position: "הגנה", number: 2, age: 23, image: RonUnger, country: "ישראל" },
     { name: "דויד קלטינס", position: "קשר", number: 3, age: 30, image: DavidKeltjens, country: "ישראל" },
     { name: "איליי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
     { name: "מוחמד אוסמן", position: "קשר", number: 10, age: 31, image: Usman, country: "ניגריה" },
-    { name: "יונתן טפר", position: "קשר", number: 14, age: 24, image: YonatanTeper, country: "ישראל" },
+    { name: "יונתן טפר", position: "קשר", number: 5, age: 24, image: YonatanTeper, country: "ישראל" },
     { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
-    { name: "וואהב חביבאלה", position: "התקפה", number: 7, age: 22, image: WahebHabiballah, country: "ישראל" },
+    { name: "וואהב חביבאלה", position: "התקפה", number: 14, age: 27, image: WahebHabiballah, country: "ישראל" },
     { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" }
   ];
 
   const staff = [
     { name: "אלירן חודדה", position: "מאמן ראשי", image: EliranHodada },
     { name: "מוטי קריספיל", position: "עוזר מאמן", image: MotiIvanir },
+    { name: "דודו גורש", position: "מאמן שוערים", image: NivTubul },
+    { name: "שלומי ורדרו", position: "מאמן כושר", image: NivTubul },
+
   ];
 
   const goalkeepers = players.filter(p => p.position === 'שוער');
