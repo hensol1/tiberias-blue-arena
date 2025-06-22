@@ -30,7 +30,7 @@ const Team = () => {
     { name: "אלי בלילתי", position: "הגנה", number: 15, age: 31, image: EliBalilti, country: "ישראל" },
     { name: "רון אונגר", position: "הגנה", number: 2, age: 23, image: RonUnger, country: "ישראל" },
     { name: "דויד קלטינס", position: "קשר", number: 3, age: 30, image: DavidKeltjens, country: "ישראל" },
-    { name: "איליי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
+    { name: "עילאי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
     { name: "מוחמד אוסמן", position: "קשר", number: 10, age: 31, image: Usman, country: "ניגריה" },
     { name: "יונתן טפר", position: "קשר", number: 5, age: 24, image: YonatanTeper, country: "ישראל" },
     { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
@@ -63,11 +63,6 @@ const Team = () => {
               className="w-full h-full object-cover object-top"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-right">
-              <h3 className="text-white font-bold text-lg md:text-xl mb-1">{player.name}</h3>
-              <div className="w-full h-0.5 bg-team-secondary mb-2"></div>
-              <p className="text-white/80 text-sm">{player.number}</p>
-            </div>
           </div>
         </div>
         
