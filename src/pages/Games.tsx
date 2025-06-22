@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Clock, Trophy, Plus, Edit, Trash2 } from "lucide-react";
+import { Calendar, MapPin, Clock, Trophy, Plus, Edit, Trash2, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { db } from "@/lib/firebase";
@@ -34,6 +34,27 @@ const Games = () => {
 
   const { isAuthenticated, hasPermission } = useAuth();
   const { toast } = useToast();
+
+  // Israeli Premier League Lower Playoff Table - Round 33
+  const lowerPlayoffTable = [
+    { position: 7, team: "הפועל ירושלים", played: 33, won: 11, drawn: 11, lost: 11, goalsFor: 47, goalsAgainst: 42, points: 44 },
+    { position: 8, team: "מכבי בני ריינה", played: 33, won: 12, drawn: 5, lost: 16, goalsFor: 36, goalsAgainst: 43, points: 41 },
+    { position: 9, team: "עירוני קרית שמונה", played: 33, won: 11, drawn: 4, lost: 18, goalsFor: 32, goalsAgainst: 52, points: 37 },
+    { position: 10, team: "איחוד בני סכנין", played: 33, won: 10, drawn: 7, lost: 16, goalsFor: 26, goalsAgainst: 44, points: 36 },
+    { position: 11, team: "מ.ס. אשדוד", played: 33, won: 8, drawn: 11, lost: 14, goalsFor: 48, goalsAgainst: 55, points: 35 },
+    { position: 12, team: "עירוני טבריה", played: 33, won: 8, drawn: 11, lost: 14, goalsFor: 28, goalsAgainst: 45, points: 35 },
+    { position: 13, team: "מכבי פתח תקוה", played: 33, won: 8, drawn: 9, lost: 16, goalsFor: 31, goalsAgainst: 50, points: 33 },
+    { position: 14, team: "הפועל חדרה", played: 33, won: 5, drawn: 12, lost: 16, goalsFor: 31, goalsAgainst: 57, points: 27 },
+  ];
+
+  const getFormIcon = (result: string) => {
+    switch (result) {
+      case 'W': return <TrendingUp className="w-3 h-3 text-green-500" />;
+      case 'D': return <Minus className="w-3 h-3 text-yellow-500" />;
+      case 'L': return <TrendingDown className="w-3 h-3 text-red-500" />;
+      default: return null;
+    }
+  };
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -288,80 +309,202 @@ const Games = () => {
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">תוצאות אחרונות</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {isLoading ? <p>טוען תוצאות...</p> : recentResults.length > 0 ? (
-              recentResults.map((game) => (
-              <Card key={game.id} className="hover:shadow-lg transition-shadow relative group">
-                {isAuthenticated && (
-                  <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                    {hasPermission('edit_game') && (
-                      <Button variant="outline" size="icon" className="h-8 w-8 bg-white" onClick={() => openEditDialog(game)}>
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    )}
-                    {hasPermission('delete_game') && (
-                       <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="destructive" size="icon" className="h-8 w-8">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent dir="rtl">
-                           <AlertDialogHeader><AlertDialogTitle>האם למחוק את המשחק?</AlertDialogTitle></AlertDialogHeader>
-                           <AlertDialogDescription>פעולה זו לא ניתנת לשחזור.</AlertDialogDescription>
-                           <AlertDialogFooter>
-                            <AlertDialogCancel>ביטול</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDeleteGame(game.id)}>מחק</AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    )}
-                  </div>
-                )}
-                <CardContent className="p-4 relative">
-                  <div className="flex flex-row items-center gap-4">
-                      {/* Matchup with Result */}
-                      <div className="flex-grow flex items-center justify-center gap-2">
-                          <div className="flex flex-col items-center text-center w-24">
-                              <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 mb-1 object-contain"/>
-                              <h4 className="font-semibold text-sm text-center">עירוני טבריה</h4>
-                          </div>
-                          <div className="text-4xl font-bold text-team-primary px-2">{game.score}</div>
-                          <div className="flex flex-col items-center text-center w-24">
-                              <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 mb-1 object-contain"/>
-                              <h4 className="font-semibold text-sm text-center">{game.opponent}</h4>
-                          </div>
-                  </div>
-                  
-                      <Separator orientation="vertical" className="h-20" />
+              recentResults.map((game) => {
+                const isHomeGame = game.venue.includes("גרין") || game.venue.includes("הגליל") || game.venue.includes("טבריה");
+                const homeTeam = isHomeGame ? "עירוני טבריה" : game.opponent;
+                const awayTeam = isHomeGame ? game.opponent : "עירוני טבריה";
+                const [homeScore, awayScore] = game.score.split('-').map((s: string) => s.trim());
 
-                      {/* Details Section */}
-                      <div className="flex flex-col gap-2 text-right text-sm w-44">
-                          <div className="flex items-center justify-end gap-2">
-                              <span>{game.competition}{game.stage && ` - ${game.stage}`}</span>
-                              <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-8 w-8 object-contain"/>
-                          </div>
-                          <div className="flex items-center justify-end gap-2 text-muted-foreground">
-                              <Calendar className="w-4 h-4"/>
-                              <span>{new Date(game.date).toLocaleDateString('he-IL')}, {new Date(game.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
-                    </div>
-                          <div className="flex items-center justify-end gap-2 text-muted-foreground">
-                              <MapPin className="w-4 h-4"/>
-                              <span>{game.venue}</span>
-                    </div>
-                    </div>
-                  </div>
-                  {game.notes && (
-                    <>
-                      <Separator className="my-2" />
-                      <div className="text-sm text-right text-muted-foreground pr-2">
-                        <p className="font-semibold text-team-dark">כובשים:</p>
-                        <p className="whitespace-pre-line">{game.notes}</p>
+                return (
+                  <Card key={game.id} className="hover:shadow-lg transition-shadow relative group">
+                    {isAuthenticated && (
+                      <div className="absolute top-3 left-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                        {hasPermission('edit_game') && (
+                          <Button variant="outline" size="icon" className="h-8 w-8 bg-white" onClick={() => openEditDialog(game)}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {hasPermission('delete_game') && (
+                           <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="destructive" size="icon" className="h-8 w-8">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent dir="rtl">
+                               <AlertDialogHeader><AlertDialogTitle>האם למחוק את המשחק?</AlertDialogTitle></AlertDialogHeader>
+                               <AlertDialogDescription>פעולה זו לא ניתנת לשחזור.</AlertDialogDescription>
+                               <AlertDialogFooter>
+                                <AlertDialogCancel>ביטול</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDeleteGame(game.id)}>מחק</AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        )}
                       </div>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            ))) : <p className="text-center text-muted-foreground col-span-full">אין תוצאות אחרונות.</p>}
+                    )}
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-center">
+                        {/* Matchup */}
+                        <div className="flex-1 flex items-center justify-center gap-2 sm:gap-4">
+                          <div className="flex flex-col items-center text-center w-20">
+                            <img src={getTeamLogo(awayTeam)} alt={awayTeam} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center">{awayTeam}</h4>
+                          </div>
+                          <div className="text-3xl sm:text-4xl font-bold text-team-dark px-1">
+                            <span>{awayScore}</span>
+                            <span className="mx-1">-</span>
+                            <span>{homeScore}</span>
+                          </div>
+                          <div className="flex flex-col items-center text-center w-20">
+                            <img src={getTeamLogo(homeTeam)} alt={homeTeam} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center">{homeTeam}</h4>
+                          </div>
+                        </div>
+
+                        <Separator orientation="vertical" className="h-20 mx-4" />
+
+                        {/* Game Details */}
+                        <div className="flex flex-col text-right text-xs sm:text-sm space-y-1 text-muted-foreground w-28">
+                            <p className="font-bold text-team-dark">{game.competition}</p>
+                            <p>מחזור {game.stage}</p>
+                            <div className="pt-2 flex items-center justify-end gap-1.5">
+                                <span>{new Date(game.date).toLocaleDateString('he-IL', {day: '2-digit', month: '2-digit', year: 'numeric'})}</span>
+                                <Calendar className="w-3 h-3" />
+                            </div>
+                            <div className="flex items-center justify-end gap-1.5">
+                                <span>{new Date(game.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <div className="flex items-center justify-end gap-1.5">
+                                <span className="truncate">{game.venue}</span>
+                                <MapPin className="w-3 h-3" />
+                            </div>
+                        </div>
+                      </div>
+                      {game.notes && (
+                        <>
+                          <Separator className="my-3" />
+                          <div className="text-sm text-right text-muted-foreground">
+                            <span className="font-semibold text-team-dark">כובשים: </span>
+                            <span className="whitespace-pre-line">{game.notes}</span>
+                          </div>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })
+            ) : <p className="text-center text-muted-foreground col-span-full">אין תוצאות אחרונות.</p>}
           </div>
+        </section>
+
+        {/* Israeli Premier League Table */}
+        <section className="mt-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-team-dark">פלייאוף תחתון - מחזור 33</h2>
+          </div>
+          
+          <Card className="overflow-hidden">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full min-w-[600px]">
+                <thead className="bg-gray-50 border-b">
+                  <tr>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">מיקום</th>
+                    <th className="px-4 py-3 text-right font-semibold text-gray-700">קבוצה</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">משחקים</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">נצחונות</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">תיקו</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">הפסדים</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">זכות</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">חובה</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">הפרש</th>
+                    <th className="px-4 py-3 text-center font-semibold text-gray-700">נקודות</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lowerPlayoffTable.map((team) => (
+                    <tr 
+                      key={team.team} 
+                      className={`border-b hover:bg-gray-50 transition-colors ${
+                        team.team === "עירוני טבריה" ? "bg-blue-50 border-l-4 border-r-4 border-team-primary" : ""
+                      } ${
+                        team.position >= 13 ? "bg-red-50" : ""
+                      }`}
+                    >
+                      <td className="px-4 py-3 text-center font-semibold">
+                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                          team.position >= 13 ? "bg-red-500 text-white" : 
+                          "bg-gray-200 text-gray-700"
+                        }`}>
+                          {team.position}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <img src={getTeamLogo(team.team)} alt={team.team} className="w-6 h-6 object-contain" />
+                          <span className="font-medium">{team.team}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-center">{team.played}</td>
+                      <td className="px-4 py-3 text-center text-green-600 font-semibold">{team.won}</td>
+                      <td className="px-4 py-3 text-center text-yellow-600 font-semibold">{team.drawn}</td>
+                      <td className="px-4 py-3 text-center text-red-600 font-semibold">{team.lost}</td>
+                      <td className="px-4 py-3 text-center">{team.goalsFor}</td>
+                      <td className="px-4 py-3 text-center">{team.goalsAgainst}</td>
+                      <td className={`px-4 py-3 text-center font-semibold ${
+                        team.goalsFor - team.goalsAgainst > 0 ? "text-green-600" : 
+                        team.goalsFor - team.goalsAgainst < 0 ? "text-red-600" : "text-gray-600"
+                      }`}>
+                        {team.goalsFor - team.goalsAgainst > 0 ? "+" : ""}{team.goalsFor - team.goalsAgainst}
+                      </td>
+                      <td className="px-4 py-3 text-center font-bold text-lg">{team.points}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Table */}
+            <div className="md:hidden">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b">
+                  <tr>
+                    <th className="p-2 text-center font-semibold text-gray-700 text-xs">מיקום</th>
+                    <th className="p-2 text-center font-semibold text-gray-700 text-xs">קבוצה</th>
+                    <th className="p-2 text-center font-semibold text-gray-700 text-xs">מש'</th>
+                    <th className="p-2 text-center font-semibold text-gray-700 text-xs">נק'</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lowerPlayoffTable.map((team) => (
+                    <tr 
+                      key={team.team} 
+                      className={`border-b ${
+                        team.team === "עירוני טבריה" ? "bg-blue-50" : ""
+                      } ${
+                        team.position >= 13 ? "bg-red-50" : ""
+                      }`}
+                    >
+                      <td className="p-2 text-center font-semibold">
+                        <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold ${
+                          team.position >= 13 ? "bg-red-500 text-white" : 
+                          "bg-gray-200 text-gray-700"
+                        }`}>
+                          {team.position}
+                        </span>
+                      </td>
+                      <td className="p-2 text-center">
+                        <img src={getTeamLogo(team.team)} alt={team.team} className="w-6 h-6 object-contain mx-auto" />
+                      </td>
+                      <td className="p-2 text-center">{team.played}</td>
+                      <td className="p-2 text-center font-bold">{team.points}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
         </section>
       </div>
 
