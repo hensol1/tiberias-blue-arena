@@ -124,33 +124,6 @@ const TV = () => {
     setEditingVideo(null);
   };
 
-  const videoCategories = [
-    {
-      title: "סיכומי משחקים",
-      count: videos.filter(v => v.category === "סיכומי משחקים").length,
-      icon: "🎯",
-      description: "סיכומים מפורטים של כל המשחקים"
-    },
-    {
-      title: "ראיונות",
-      count: videos.filter(v => v.category === "ראיונות").length,
-      icon: "🎤",
-      description: "ראיונות עם שחקנים ואנשי צוות"
-    },
-    {
-      title: "אימונים",
-      count: videos.filter(v => v.category === "אימונים").length,
-      icon: "💪",
-      description: "מבט מאחורי הקלעים על האימונים"
-    },
-    {
-      title: "אירועי מועדון",
-      count: videos.filter(v => v.category === "אירועי מועדון").length,
-      icon: "🎉",
-      description: "אירועים מיוחדים ופעילויות קהילה"
-    }
-  ];
-
   const featuredVideos = videos.filter(v => v.featured).slice(0, 2);
   const recentVideos = videos.slice(0, 4);
 
@@ -226,27 +199,6 @@ const TV = () => {
             </div>
           </section>
         )}
-
-        {/* Video Categories */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">קטגוריות וידאו</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {videoCategories.map((category, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-all duration-300 cursor-pointer group">
-                <CardContent className="p-6">
-                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                    {category.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold text-team-dark mb-2">{category.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-3">{category.description}</p>
-                  <Badge variant="outline" className="text-team-primary border-team-primary">
-                    {category.count} סרטונים
-                  </Badge>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
 
         {/* Recent Videos */}
         <section>
