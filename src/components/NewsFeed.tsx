@@ -179,8 +179,9 @@ const NewsFeed = () => {
   
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2 space-x-reverse">
+      <div className="relative flex justify-center items-center">
+        <h2 className="text-2xl font-bold">חדשות ועדכונים</h2>
+        <div className="absolute right-0 flex items-center space-x-2 space-x-reverse">
           {isAuthenticated && hasPermission('add_news') && db && (
             <Button onClick={() => setShowAddForm(s => !s)} className="bg-team-primary hover:bg-team-secondary">
               <Plus className="h-4 w-4 ml-2" />
@@ -197,7 +198,6 @@ const NewsFeed = () => {
             </div>
           )}
         </div>
-        <h2 className="text-2xl font-bold text-right">חדשות ועדכונים</h2>
       </div>
 
       {!db && (
