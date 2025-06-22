@@ -226,9 +226,16 @@ const Games = () => {
                       </div>
                     </div>
                   <div className="pr-4">
-                     <Button className="bg-team-primary hover:bg-team-secondary">
-                        קנה כרטיסים
-                      </Button>
+                     {game.ticketLink && (
+                        <Button 
+                          asChild 
+                          className="bg-team-primary hover:bg-team-secondary"
+                        >
+                          <a href={game.ticketLink} target="_blank" rel="noopener noreferrer">
+                            קנה כרטיסים
+                          </a>
+                        </Button>
+                     )}
                     </div>
                   </div>
 
@@ -260,9 +267,16 @@ const Games = () => {
                             <MapPin className="w-4 h-4"/>
                         </div>
                     </div>
-                    <Button className="bg-team-primary hover:bg-team-secondary w-full mt-2">
-                        קנה כרטיסים
-                    </Button>
+                    {game.ticketLink && (
+                        <Button 
+                          asChild 
+                          className="bg-team-primary hover:bg-team-secondary w-full mt-2"
+                        >
+                           <a href={game.ticketLink} target="_blank" rel="noopener noreferrer">
+                            קנה כרטיסים
+                          </a>
+                        </Button>
+                    )}
                 </CardContent>
               </Card>
             ))) : <p className="text-center text-muted-foreground">אין משחקים קרובים.</p>}

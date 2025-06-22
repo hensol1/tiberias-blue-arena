@@ -34,9 +34,10 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
     const [team, setTeam] = useState("senior");
     const [opponent, setOpponent] = useState("");
     const [date, setDate] = useState("");
-    const [venue, setVenue] = useState("home");
+    const [venue, setVenue] = useState("");
     const [competition, setCompetition] = useState("");
     const [stage, setStage] = useState("");
+    const [ticketLink, setTicketLink] = useState("");
     const [score, setScore] = useState("");
     const [notes, setNotes] = useState("");
     const { toast } = useToast();
@@ -48,20 +49,22 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
             setTeam(gameToEdit.team || "senior");
             setOpponent(gameToEdit.opponent || "");
             setDate(gameToEdit.date ? new Date(gameToEdit.date).toISOString().substring(0, 16) : "");
-            setVenue(gameToEdit.venue || "home");
+            setVenue(gameToEdit.venue || "");
             setCompetition(gameToEdit.competition || "");
             setStage(gameToEdit.stage || "");
             setScore(gameToEdit.score || "");
+            setTicketLink(gameToEdit.ticketLink || "");
             setNotes(gameToEdit.notes || "");
         } else {
              // Reset form when opening for a new game
             setTeam("senior");
             setOpponent("");
             setDate("");
-            setVenue("home");
+            setVenue("");
             setCompetition("");
             setStage("");
             setScore("");
+            setTicketLink("");
             setNotes("");
         }
     }, [gameToEdit, isEditMode, isOpen]);
@@ -106,6 +109,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
             stage,
             score,
             notes,
+            ticketLink,
             status: getGameStatus(date, score),
             won: determineWon(score),
             lastUpdated: serverTimestamp()
@@ -161,16 +165,13 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
 
                         {/* Venue */}
                         <div className="space-y-2">
-                            <Label htmlFor="venue">בית/חוץ</Label>
-                            <Select value={venue} onValueChange={setVenue}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="בחר מיקום" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="home">בית</SelectItem>
-                                    <SelectItem value="away">חוץ</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <Label htmlFor="venue">אצטדיון</Label>
+                            <Input
+                                id="venue"
+                                value={venue}
+                                onChange={(e) => setVenue(e.target.value)}
+                                placeholder="לדוגמה: אצטדיון עירוני טבריה"
+                            />
                         </div>
 
                         {/* Opponent Selection */}
@@ -218,6 +219,17 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                                 value={stage}
                                 onChange={(e) => setStage(e.target.value)}
                                 placeholder="לדוגמה: מחזור 14"
+                            />
+                        </div>
+
+                        {/* Ticket Link */}
+                        <div className="space-y-2">
+                            <Label htmlFor="ticketLink">קישור לכרטיסים</Label>
+                            <Input
+                                id="ticketLink"
+                                value={ticketLink}
+                                onChange={(e) => setTicketLink(e.target.value)}
+                                placeholder="הדבק קישור כאן"
                             />
                         </div>
 
