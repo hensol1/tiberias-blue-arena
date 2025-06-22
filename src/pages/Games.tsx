@@ -94,7 +94,7 @@ const Games = () => {
   }
 
   const upcomingGames = allGames.filter(g => g.team === selectedTeam && g.status === 'upcoming');
-  const recentResults = allGames.filter(g => g.team === selectedTeam && g.status === 'recent');
+  const recentResults = allGames.filter(g => g.team === selectedTeam && g.status === 'result');
 
   const teamName = selectedTeam === 'senior' ? 'הקבוצה הבוגרת' : 'קבוצת הנוער';
 
@@ -317,7 +317,6 @@ const Games = () => {
                   </div>
                 )}
                 <CardContent className="p-4 relative">
-                  <div className="absolute top-3 left-3 z-10">{getResultBadge(game.won)}</div>
                   <div className="flex flex-row items-center gap-4">
                       {/* Matchup with Result */}
                       <div className="flex-grow flex items-center justify-center gap-2">
@@ -325,7 +324,7 @@ const Games = () => {
                               <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 mb-1 object-contain"/>
                               <h4 className="font-semibold text-sm text-center">עירוני טבריה</h4>
                           </div>
-                          <div className="text-4xl font-bold text-team-primary px-2">{game.result}</div>
+                          <div className="text-4xl font-bold text-team-primary px-2">{game.score}</div>
                           <div className="flex flex-col items-center text-center w-24">
                               <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 mb-1 object-contain"/>
                               <h4 className="font-semibold text-sm text-center">{game.opponent}</h4>
@@ -350,6 +349,15 @@ const Games = () => {
                     </div>
                     </div>
                   </div>
+                  {game.notes && (
+                    <>
+                      <Separator className="my-2" />
+                      <div className="text-sm text-right text-muted-foreground pr-2">
+                        <p className="font-semibold text-team-dark">כובשים:</p>
+                        <p className="whitespace-pre-line">{game.notes}</p>
+                      </div>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             ))) : <p className="text-center text-muted-foreground col-span-full">אין תוצאות אחרונות.</p>}
