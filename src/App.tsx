@@ -11,6 +11,7 @@ import TV from "./pages/TV";
 import Youth from "./pages/Youth";
 import LoginPage from "./pages/Login";
 import ArticlePage from "./pages/ArticlePage";
+import VideoPage from "./pages/VideoPage";
 import NotFound from "./pages/NotFound";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/team" element={<Team />} />
           <Route path="/games" element={<Games />} />
           <Route path="/tv" element={<TV />} />
+          <Route path="/video/:id" element={<VideoPage />} />
           <Route path="/youth" element={<Youth />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/article/:id" element={<ArticlePage />} />
