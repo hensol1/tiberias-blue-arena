@@ -135,7 +135,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[425px]" dir="rtl">
+            <DialogContent className="sm:max-w-2xl" dir="rtl">
                 <DialogHeader>
                     <DialogTitle>{isEditMode ? "עריכת משחק" : "הוספת משחק חדש"}</DialogTitle>
                     <DialogDescription>
@@ -143,12 +143,13 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
-                    <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 py-4">
+                        
                         {/* Team Selection */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="team" className="text-right">קבוצה</Label>
+                        <div className="space-y-2">
+                            <Label htmlFor="team">קבוצה</Label>
                             <Select value={team} onValueChange={setTeam}>
-                                <SelectTrigger className="col-span-3">
+                                <SelectTrigger>
                                     <SelectValue placeholder="בחר קבוצה" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -157,34 +158,12 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                                 </SelectContent>
                             </Select>
                         </div>
-                        {/* Opponent Selection */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                           <Label htmlFor="opponent" className="text-right">יריבה*</Label>
-                           <Select value={opponent} onValueChange={setOpponent}>
-                                <SelectTrigger className="col-span-3">
-                                    <SelectValue placeholder="בחר יריבה" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {TEAM_NAMES.map(name => <SelectItem key={name} value={name}>{name}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        {/* Date and Time */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="date" className="text-right">תאריך ושעה*</Label>
-                            <Input
-                                id="date"
-                                type="datetime-local"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                className="col-span-3"
-                            />
-                        </div>
+
                         {/* Venue */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="venue" className="text-right">בית/חוץ</Label>
+                        <div className="space-y-2">
+                            <Label htmlFor="venue">בית/חוץ</Label>
                             <Select value={venue} onValueChange={setVenue}>
-                                <SelectTrigger className="col-span-3">
+                                <SelectTrigger>
                                     <SelectValue placeholder="בחר מיקום" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -193,11 +172,36 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                                 </SelectContent>
                             </Select>
                         </div>
+
+                        {/* Opponent Selection */}
+                        <div className="space-y-2">
+                           <Label htmlFor="opponent">יריבה*</Label>
+                           <Select value={opponent} onValueChange={setOpponent}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="בחר יריבה" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {TEAM_NAMES.map(name => <SelectItem key={name} value={name}>{name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Date and Time */}
+                        <div className="space-y-2">
+                            <Label htmlFor="date">תאריך ושעה*</Label>
+                            <Input
+                                id="date"
+                                type="datetime-local"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                            />
+                        </div>
+                        
                          {/* Competition */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                             <Label htmlFor="competition" className="text-right">מפעל*</Label>
+                        <div className="space-y-2">
+                             <Label htmlFor="competition">מפעל*</Label>
                              <Select value={competition} onValueChange={setCompetition}>
-                                <SelectTrigger className="col-span-3">
+                                <SelectTrigger>
                                     <SelectValue placeholder="בחר מפעל" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -205,40 +209,40 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                                 </SelectContent>
                             </Select>
                         </div>
+
                         {/* Stage */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="stage" className="text-right">שלב/מחזור*</Label>
+                        <div className="space-y-2">
+                            <Label htmlFor="stage">שלב/מחזור*</Label>
                             <Input
                                 id="stage"
                                 value={stage}
                                 onChange={(e) => setStage(e.target.value)}
-                                className="col-span-3"
                                 placeholder="לדוגמה: מחזור 14"
                             />
                         </div>
+
                         {/* Score */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="score" className="text-right">תוצאה</Label>
+                        <div className="space-y-2 md:col-span-2">
+                            <Label htmlFor="score">תוצאה</Label>
                             <Input
                                 id="score"
                                 value={score}
                                 onChange={(e) => setScore(e.target.value)}
-                                className="col-span-3"
                                 placeholder="לדוגמה: 2-1 (התוצאה שלנו קודם)"
                             />
                         </div>
+
                         {/* Notes */}
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="notes" className="text-right">הערות</Label>
+                        <div className="space-y-2 md:col-span-2">
+                            <Label htmlFor="notes">הערות</Label>
                             <Textarea
                                 id="notes"
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
-                                className="col-span-3"
                                 placeholder="הערות נוספות (כובשים, כרטיסים וכו')"
                             />
                         </div>
-                         <p className="text-sm text-muted-foreground col-span-4">* שדה חובה</p>
+                         <p className="text-sm text-muted-foreground md:col-span-2">* שדה חובה</p>
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={onClose}>ביטול</Button>
