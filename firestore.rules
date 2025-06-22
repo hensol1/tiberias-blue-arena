@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isAuthenticated() && 
+             request.auth.token.email == 'admin@tiberias.com';
+    }
+    
+    // Helper function to check if user is editor or admin
+    function isEditorOrAdmin() {
+      return isAuthenticated() && 
+             (request.auth.token.email == 'admin@tiberias.com' || 
+              request.auth.token.email == 'editor@tiberias.com');
+    }
+    
+    // News collection rules
+    match /news/{document} {
+      allow read: if true; // Anyone can read news
+      allow create, update: if isEditorOrAdmin(); // Only editors and admins can create/update
+      allow delete: if isAdmin(); // Only admins can delete
+    }
+    
+    // Games collection rules
+    match /games/{document} {
+      allow read: if true; // Anyone can read games
+      allow create, update: if isEditorOrAdmin(); // Only editors and admins can create/update
+      allow delete: if isAdmin(); // Only admins can delete
+    }
+    
+    // Videos collection rules
+    match /videos/{document} {
+      allow read: if true; // Anyone can read videos
+      allow create, update: if isEditorOrAdmin(); // Only editors and admins can create/update
+      allow delete: if isAdmin(); // Only admins can delete
+    }
+    
+    // Users collection rules (if you have one)
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+      allow read, write: if isAdmin(); // Admins can access all user data
+    }
+    
+    // Default rule - deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 
