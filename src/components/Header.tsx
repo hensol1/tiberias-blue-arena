@@ -31,7 +31,7 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between md:justify-center md:relative">
             <a
-              href="https://www.go-out.co/event/1748924558292?referrer=nights"
+              href="https://www.go-out.co/event/1749454502160"
               target="_blank"
               rel="noopener noreferrer"
               className="md:absolute md:left-4 md:top-1/2 md:-translate-y-1/2 transition-transform duration-300 hover:scale-105"
