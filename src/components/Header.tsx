@@ -29,16 +29,23 @@ const Header = () => {
       {/* Partner Logos Section */}
       <div className="bg-white py-4 border-b">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center space-x-8 space-x-reverse">
-            <a href="https://www.facebook.com/groupdorot" target="_blank" rel="noopener noreferrer">
-              <img src={facebookLogo} alt="Facebook" className="h-12 object-contain" />
+          <div className="flex items-center justify-between md:justify-center md:relative">
+            <a
+              href="https://www.go-out.co/event/1748924558292?referrer=nights"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="md:absolute md:left-4 md:top-1/2 md:-translate-y-1/2 transition-transform duration-300 hover:scale-105"
+            >
+              <Button variant="secondary" className="text-white">לרכישת מנוי</Button>
             </a>
-            <a href="https://burgersaloon.co.il/" target="_blank" rel="noopener noreferrer">
-              <img src={instagramLogo} alt="Instagram" className="h-12 object-contain" />
-            </a>
-            <a href="https://www.ginosar.co.il/" target="_blank" rel="noopener noreferrer">
-              <img src={youtubeLogo} alt="YouTube" className="h-12 object-contain" />
-            </a>
+            <div className="flex items-center justify-end md:justify-center space-x-2 md:space-x-8 space-x-reverse">
+              <a href="https://www.facebook.com/groupdorot" target="_blank" rel="noopener noreferrer">
+                <img src={facebookLogo} alt="Facebook" className="h-10 md:h-12 object-contain" />
+              </a>
+              <a href="https://www.ginosar.co.il/" target="_blank" rel="noopener noreferrer">
+                <img src={youtubeLogo} alt="YouTube" className="h-10 md:h-12 object-contain" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
