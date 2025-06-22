@@ -218,7 +218,7 @@ const Games = () => {
                       </div>
                       <div className="flex items-center justify-end gap-2 text-muted-foreground">
                           <Calendar className="w-4 h-4"/>
-                          <span>{new Date(game.date).toLocaleDateString('he-IL')}, {game.time}</span>
+                          <span>{new Date(game.date).toLocaleDateString('he-IL')}, {new Date(game.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
                       </div>
                       <div className="flex items-center justify-end gap-2 text-muted-foreground">
                           <MapPin className="w-4 h-4"/>
@@ -259,7 +259,7 @@ const Games = () => {
                             <img src={getCompetitionLogo(game.competition)} alt={game.competition} className="h-6 w-6 object-contain" />
                         </div>
                         <div className="flex items-center justify-end gap-2 text-muted-foreground">
-                            <span>{new Date(game.date).toLocaleDateString('he-IL')}, {game.time}</span>
+                            <span>{new Date(game.date).toLocaleDateString('he-IL')}, {new Date(game.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
                             <Calendar className="w-4 h-4"/>
                         </div>
                         <div className="flex items-center justify-end gap-2 text-muted-foreground">
@@ -342,7 +342,7 @@ const Games = () => {
                           </div>
                           <div className="flex items-center justify-end gap-2 text-muted-foreground">
                               <Calendar className="w-4 h-4"/>
-                              <span>{new Date(game.date).toLocaleDateString('he-IL')}</span>
+                              <span>{new Date(game.date).toLocaleDateString('he-IL')}, {new Date(game.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
                           <div className="flex items-center justify-end gap-2 text-muted-foreground">
                               <MapPin className="w-4 h-4"/>
