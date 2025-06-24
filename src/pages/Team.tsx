@@ -4,27 +4,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import IdoSharon from "@/assets/lovable-uploads/Ido Sharon.webp";
-import OndrejBaco from "@/assets/lovable-uploads/Ondrej Baco.webp";
-import SambaKonte from "@/assets/lovable-uploads/Samba.webp";
-import OmerYitzhak from "@/assets/lovable-uploads/Omer Yitzhak.webp";
-import HaroonShapso from "@/assets/lovable-uploads/Haroon Shapso.webp";
-import EliBalilti from "@/assets/lovable-uploads/Eli Balilti.webp";
-import RonUnger from "@/assets/lovable-uploads/Ron Unger.webp";
+import OndrejBaco from "@/assets/lovable-uploads/Ondrej Baco.png";
+import SambaKonte from "@/assets/lovable-uploads/Samba.png";
+import OmerYitzhak from "@/assets/lovable-uploads/Omer Yitzhak.png";
+import HaroonShapso from "@/assets/lovable-uploads/Haroon Shapso.png";
+import EliBalilti from "@/assets/lovable-uploads/Eli Balilti.png";
+import RonUnger from "@/assets/lovable-uploads/Ron Unger.png";
 import DavidKeltjens from "@/assets/lovable-uploads/David Keltjens.webp";
 import IlayElmkies from "@/assets/lovable-uploads/Ilay Elmkies.webp";
 import Usman from "@/assets/lovable-uploads/Usman.png";
 import YonatanTeper from "@/assets/lovable-uploads/Yonatan Teper.webp";
-import NivTubul from "@/assets/lovable-uploads/53254.png";
+import NivGotliv from "@/assets/lovable-uploads/Niv Gotliv.png";
 import WahebHabiballah from "@/assets/lovable-uploads/Waheb Habiballah.webp";
 import StanislavBilenkyi from "@/assets/lovable-uploads/Stanislav Bilenkyi.webp";
 import EliranHodada from "@/assets/lovable-uploads/Eliran.jpg";
 import MotiIvanir from "@/assets/lovable-uploads/Moti.png";
+import NivTubul from "@/assets/lovable-uploads/53254.png";
+
 
 const Team = () => {
   const players = [
     { name: "עידו שרון", position: "שוער", number: 1, age: 22, image: IdoSharon, country: "ישראל" },
     { name: "אונדז'יי באצ'ו", position: "הגנה", number: 37, age: 29, image: OndrejBaco, country: "צ'כיה" },
-    { name: "סאמבה קונטה", position: "הגנה", number: 4, age: 32, image: SambaKonte, country: "גינאה-ביסאו" },
+    { name: "סמביניה", position: "הגנה", number: 4, age: 32, image: SambaKonte, country: "גינאה-ביסאו" },
     { name: "עומר יצחק", position: "הגנה", number: 17, age: 24, image: OmerYitzhak, country: "ישראל" },
     { name: "הארון שפסו", position: "הגנה", number: 99, age: 26, image: HaroonShapso, country: "ישראל" },
     { name: "אלי בלילתי", position: "הגנה", number: 15, age: 31, image: EliBalilti, country: "ישראל" },
@@ -33,7 +35,7 @@ const Team = () => {
     { name: "עילאי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
     { name: "מוחמד אוסמן", position: "קשר", number: 10, age: 31, image: Usman, country: "ניגריה" },
     { name: "יונתן טפר", position: "קשר", number: 5, age: 24, image: YonatanTeper, country: "ישראל" },
-    { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivTubul, country: "ישראל" },
+    { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivGotliv, country: "ישראל" },
     { name: "וואהיב חביבאללה", position: "התקפה", number: 14, age: 27, image: WahebHabiballah, country: "ישראל" },
     { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" }
   ];
