@@ -5,6 +5,11 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import sponsorLogo1 from "@/assets/lovable-uploads/ae653618-f246-48c4-84fb-31e6114b0b25.png";
 import sponsorLogo2 from "@/assets/lovable-uploads/3eca3ff4-bae0-4b66-9c31-46793b15f049.png";
+import burgerSaloonLogo from "@/assets/sponsors/burger-saloon.jpg";
+import dorotLogo from "@/assets/sponsors/dorot.png";
+import goOutLogo from "@/assets/sponsors/go-out.png";
+import nofGinosarLogo from "@/assets/sponsors/nof-ginosar.png";
+import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 
 const sponsorLogos = [
   "https://www.likud.org.il/wp-content/uploads/2021/09/likud-logo.png",
@@ -71,6 +76,29 @@ const Index = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <NewsFeed />
+        </div>
+      </section>
+
+      {/* Sponsors Section - Bottom of the Page */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center">
+            <div className="flex justify-center items-center">
+              <img src={burgerSaloonLogo} alt="Burger Saloon" className="h-24 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={dorotLogo} alt="Dorot Group" className="h-29 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={goOutLogo} alt="Go-Out" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={nofGinosarLogo} alt="Nof Ginosar" className="h-29 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={leagueManagerLogo} alt="מנהלת הליגות לכדורגל" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+          </div>
         </div>
       </section>
 

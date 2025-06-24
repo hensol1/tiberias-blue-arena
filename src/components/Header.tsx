@@ -8,6 +8,11 @@ import facebookLogo from "@/assets/lovable-uploads/ccb18f9d-a882-4a2b-917a-ec289
 import instagramLogo from "@/assets/lovable-uploads/dd6e1668-d05f-453f-b2f6-8634e77d314f.png";
 import youtubeLogo from "@/assets/lovable-uploads/8bb54cc5-8f24-41e6-aa2b-c554ae0e0136.png";
 import mainLogo from "@/assets/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png";
+import burgerSaloonLogo from "@/assets/sponsors/burger-saloon.jpg";
+import dorotLogo from "@/assets/sponsors/dorot.png";
+import goOutLogo from "@/assets/sponsors/go-out.png";
+import nofGinosarLogo from "@/assets/sponsors/nof-ginosar.png";
+import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -156,6 +161,32 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {/* Sponsors Section */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-team-dark">
+            הספונסרים של המועדון
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center">
+            <div className="flex justify-center items-center">
+              <img src={burgerSaloonLogo} alt="Burger Saloon" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={dorotLogo} alt="Dorot Group" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={goOutLogo} alt="Go-Out" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={nofGinosarLogo} alt="Nof Ginosar" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={leagueManagerLogo} alt="מנהלת הליגות לכדורגל" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
