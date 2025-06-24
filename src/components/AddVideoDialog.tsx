@@ -33,7 +33,7 @@ const AddVideoDialog = ({ isOpen, onClose, onVideoAdded, onVideoUpdated, videoTo
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [youtubeUrl, setYoutubeUrl] = useState("");
-    const [category, setCategory] = useState("סיכומי משחקים");
+    const [category, setCategory] = useState("תקצירים");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const isEditMode = !!videoToEdit;
@@ -43,12 +43,12 @@ const AddVideoDialog = ({ isOpen, onClose, onVideoAdded, onVideoUpdated, videoTo
             setTitle(videoToEdit.title || "");
             setDescription(videoToEdit.description || "");
             setYoutubeUrl(videoToEdit.youtubeUrl || "");
-            setCategory(videoToEdit.category || "סיכומי משחקים");
+            setCategory(videoToEdit.category || "תקצירים");
         } else {
             setTitle("");
             setDescription("");
             setYoutubeUrl("");
-            setCategory("סיכומי משחקים");
+            setCategory("תקצירים");
         }
     }, [isEditMode, videoToEdit, isOpen]);
 
@@ -111,7 +111,7 @@ const AddVideoDialog = ({ isOpen, onClose, onVideoAdded, onVideoUpdated, videoTo
     };
 
     const categories = [
-        "סיכומי משחקים",
+        "תקצירים",
         "ראיונות", 
         "אימונים",
         "אירועי מועדון",

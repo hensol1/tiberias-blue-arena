@@ -22,7 +22,7 @@ const demoVideos: Record<string, VideoData> = {
     title: "סיכום המשחק נגד הפועל רעננה",
     description: "כל השערים וההזדמנויות מהניצחון המרשים 2-1. המשחק התקיים באצטדיון הבית שלנו עם תמיכה גדולה מהקהל הנאמן.",
     youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    category: "סיכומי משחקים",
+    category: "תקצירים",
     date: new Date().toISOString(),
     views: 2340
   },
