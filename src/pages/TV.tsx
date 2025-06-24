@@ -30,7 +30,7 @@ const demoVideos: VideoItem[] = [
     title: "סיכום המשחק נגד הפועל רעננה",
     description: "כל השערים וההזדמנויות מהניצחון המרשים 2-1",
     youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    category: "סיכומי משחקים",
+    category: "תקצירים",
     date: new Date().toISOString(),
     views: 2340,
     featured: true
