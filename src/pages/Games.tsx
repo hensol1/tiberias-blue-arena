@@ -347,18 +347,20 @@ const Games = () => {
                       <div className="flex justify-between items-center">
                         {/* Matchup */}
                         <div className="flex-1 flex items-center justify-center gap-2 sm:gap-4">
-                          <div className="flex flex-col items-center text-center w-20">
-                            <img src={getTeamLogo(awayTeam)} alt={awayTeam} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
-                            <h4 className="font-semibold text-xs sm:text-sm text-center">{awayTeam}</h4>
-                          </div>
-                          <div className="text-3xl sm:text-4xl font-bold text-team-dark px-1">
-                            <span>{awayScore}</span>
-                            <span className="mx-1">-</span>
-                            <span>{homeScore}</span>
-                          </div>
-                          <div className="flex flex-col items-center text-center w-20">
+                          {/* Home team on the right */}
+                          <div className="flex flex-col items-center text-center w-20 order-1">
                             <img src={getTeamLogo(homeTeam)} alt={homeTeam} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
                             <h4 className="font-semibold text-xs sm:text-sm text-center">{homeTeam}</h4>
+                          </div>
+                          <div className="text-3xl sm:text-4xl font-bold text-team-dark px-1 order-2">
+                            <span>{homeScore}</span>
+                            <span className="mx-1">-</span>
+                            <span>{awayScore}</span>
+                          </div>
+                          {/* Away team on the left */}
+                          <div className="flex flex-col items-center text-center w-20 order-3">
+                            <img src={getTeamLogo(awayTeam)} alt={awayTeam} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center">{awayTeam}</h4>
                           </div>
                         </div>
 
@@ -366,19 +368,22 @@ const Games = () => {
 
                         {/* Game Details */}
                         <div className="flex flex-col text-right text-xs sm:text-sm space-y-1 text-muted-foreground w-28">
-                            <p className="font-bold text-team-dark">{game.competition}</p>
+                          <p className="font-bold text-team-dark">{game.competition}</p>
+                          {/* Only show מחזור if not already in competition */}
+                          {!(game.competition && game.competition.includes("מחזור")) && (
                             <p>מחזור {game.stage}</p>
-                            <div className="pt-2 flex items-center justify-end gap-1.5">
-                                <span>{new Date(game.date).toLocaleDateString('he-IL', {day: '2-digit', month: '2-digit', year: 'numeric'})}</span>
-                                <Calendar className="w-3 h-3" />
-                            </div>
-                            <div className="flex items-center justify-end gap-1.5">
-                                <span>{new Date(game.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
-                            </div>
-                            <div className="flex items-center justify-end gap-1.5">
-                                <span className="truncate">{game.venue}</span>
-                                <MapPin className="w-3 h-3" />
-                            </div>
+                          )}
+                          <div className="pt-2 flex items-center justify-end gap-1.5">
+                            <span>{new Date(game.date).toLocaleDateString('he-IL', {day: '2-digit', month: '2-digit', year: 'numeric'})}</span>
+                            <Calendar className="w-3 h-3" />
+                          </div>
+                          <div className="flex items-center justify-end gap-1.5">
+                            <span>{new Date(game.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
+                          </div>
+                          <div className="flex items-center justify-end gap-1.5">
+                            <span className="truncate">{game.venue}</span>
+                            <MapPin className="w-3 h-3" />
+                          </div>
                         </div>
                       </div>
                       {game.notes && (
