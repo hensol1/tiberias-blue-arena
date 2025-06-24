@@ -48,7 +48,7 @@ const Footer = () => {
         <div className="border-t border-team-secondary/20 mt-5 pt-4">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm">
             <p className="text-blue-200">
-              © 2024 עירוני טבריה. כל הזכויות שמורות.
+              © 2025 עירוני טבריה. כל הזכויות שמורות.
             </p>
             <div className="flex space-x-6 space-x-reverse mt-2 md:mt-0">
               <Link to="/terms" className="text-blue-200 hover:text-white transition-colors">
