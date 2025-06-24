@@ -162,31 +162,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Sponsors Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-team-dark">
-            הספונסרים של המועדון
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center">
-            <div className="flex justify-center items-center">
-              <img src={burgerSaloonLogo} alt="Burger Saloon" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
-            </div>
-            <div className="flex justify-center items-center">
-              <img src={dorotLogo} alt="Dorot Group" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
-            </div>
-            <div className="flex justify-center items-center">
-              <img src={goOutLogo} alt="Go-Out" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
-            </div>
-            <div className="flex justify-center items-center">
-              <img src={nofGinosarLogo} alt="Nof Ginosar" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
-            </div>
-            <div className="flex justify-center items-center">
-              <img src={leagueManagerLogo} alt="מנהלת הליגות לכדורגל" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
