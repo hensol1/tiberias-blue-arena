@@ -96,7 +96,7 @@ const Header = () => {
               <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Youtube className="h-5 w-5" />
               </a>
             </div>
