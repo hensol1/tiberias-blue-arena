@@ -399,126 +399,128 @@ const Games = () => {
         </section>
 
         {/* Israeli Premier League Table */}
-        <section className="mt-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-team-dark">פלייאוף תחתון - מחזור 33</h2>
-          </div>
-          
-          <Card className="overflow-hidden">
-            {/* Desktop Table */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full min-w-[600px]">
-                <thead className="bg-gray-50 border-b">
-                  <tr>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">מיקום</th>
-                    <th className="px-4 py-3 text-right font-semibold text-gray-700">קבוצה</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">משחקים</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">נצחונות</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">תיקו</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">הפסדים</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">זכות</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">חובה</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">הפרש</th>
-                    <th className="px-4 py-3 text-center font-semibold text-gray-700">נקודות</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {lowerPlayoffTable.map((team) => (
-                    <tr 
-                      key={team.team} 
-                      className={`border-b hover:bg-gray-50 transition-colors ${
-                        team.team === "עירוני טבריה" ? "bg-blue-50 border-l-4 border-r-4 border-team-primary" : ""
-                      } ${
-                        team.position >= 13 ? "bg-red-50" : ""
-                      }`}
-                    >
-                      <td className="px-4 py-3 text-center font-semibold">
-                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                          team.position >= 13 ? "bg-red-500 text-white" : 
-                          "bg-gray-200 text-gray-700"
-                        }`}>
-                          {team.position}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <img src={getTeamLogo(team.team)} alt={team.team} className="w-6 h-6 object-contain" />
-                          <span className="font-medium">{team.team}</span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-center">{team.played}</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-semibold">{team.won}</td>
-                      <td className="px-4 py-3 text-center text-yellow-600 font-semibold">{team.drawn}</td>
-                      <td className="px-4 py-3 text-center text-red-600 font-semibold">{team.lost}</td>
-                      <td className="px-4 py-3 text-center">{team.goalsFor}</td>
-                      <td className="px-4 py-3 text-center">{team.goalsAgainst}</td>
-                      <td className={`px-4 py-3 text-center font-semibold ${
-                        team.goalsFor - team.goalsAgainst > 0 ? "text-green-600" : 
-                        team.goalsFor - team.goalsAgainst < 0 ? "text-red-600" : "text-gray-600"
-                      }`}>
-                        {team.goalsFor - team.goalsAgainst > 0 ? "+" : ""}{team.goalsFor - team.goalsAgainst}
-                      </td>
-                      <td className="px-4 py-3 text-center font-bold text-lg">{team.points}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        {selectedTeam === 'senior' && (
+          <section className="mt-16">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-bold text-team-dark">פלייאוף תחתון - מחזור 33</h2>
             </div>
-
-            {/* Mobile Table */}
-            <div className="md:hidden">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b">
-                  <tr>
-                    <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">#</th>
-                    <th className="px-2 py-2 text-right font-semibold text-gray-700 text-xs">קבוצה</th>
-                    <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">מש'</th>
-                    <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">הפרש</th>
-                    <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">נק'</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {lowerPlayoffTable.map((team) => {
-                    const goalDifference = team.goalsFor - team.goalsAgainst;
-                    return (
+            
+            <Card className="overflow-hidden">
+              {/* Desktop Table */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full min-w-[600px]">
+                  <thead className="bg-gray-50 border-b">
+                    <tr>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">מיקום</th>
+                      <th className="px-4 py-3 text-right font-semibold text-gray-700">קבוצה</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">משחקים</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">נצחונות</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">תיקו</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">הפסדים</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">זכות</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">חובה</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">הפרש</th>
+                      <th className="px-4 py-3 text-center font-semibold text-gray-700">נקודות</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lowerPlayoffTable.map((team) => (
                       <tr 
                         key={team.team} 
-                        className={`border-b ${
-                          team.team === "עירוני טבריה" ? "bg-blue-50" : ""
+                        className={`border-b hover:bg-gray-50 transition-colors ${
+                          team.team === "עירוני טבריה" ? "bg-blue-50 border-l-4 border-r-4 border-team-primary" : ""
                         } ${
                           team.position >= 13 ? "bg-red-50" : ""
                         }`}
                       >
-                        <td className="px-1 py-2 text-center font-semibold">
-                          <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold ${
+                        <td className="px-4 py-3 text-center font-semibold">
+                          <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                             team.position >= 13 ? "bg-red-500 text-white" : 
                             "bg-gray-200 text-gray-700"
                           }`}>
                             {team.position}
                           </span>
                         </td>
-                        <td className="px-2 py-2 text-right">
-                          <div className="flex items-center gap-2">
-                            <img src={getTeamLogo(team.team)} alt={team.team} className="w-5 h-5 object-contain" />
-                            <span className="font-medium text-sm">{team.team}</span>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            <img src={getTeamLogo(team.team)} alt={team.team} className="w-6 h-6 object-contain" />
+                            <span className="font-medium">{team.team}</span>
                           </div>
                         </td>
-                        <td className="px-1 py-2 text-center text-sm">{team.played}</td>
-                        <td className={`px-1 py-2 text-center font-semibold text-sm ${
-                          goalDifference > 0 ? "text-green-600" : 
-                          goalDifference < 0 ? "text-red-600" : "text-gray-600"
+                        <td className="px-4 py-3 text-center">{team.played}</td>
+                        <td className="px-4 py-3 text-center text-green-600 font-semibold">{team.won}</td>
+                        <td className="px-4 py-3 text-center text-yellow-600 font-semibold">{team.drawn}</td>
+                        <td className="px-4 py-3 text-center text-red-600 font-semibold">{team.lost}</td>
+                        <td className="px-4 py-3 text-center">{team.goalsFor}</td>
+                        <td className="px-4 py-3 text-center">{team.goalsAgainst}</td>
+                        <td className={`px-4 py-3 text-center font-semibold ${
+                          team.goalsFor - team.goalsAgainst > 0 ? "text-green-600" : 
+                          team.goalsFor - team.goalsAgainst < 0 ? "text-red-600" : "text-gray-600"
                         }`}>
-                          {goalDifference > 0 ? `+${goalDifference}` : goalDifference}
+                          {team.goalsFor - team.goalsAgainst > 0 ? "+" : ""}{team.goalsFor - team.goalsAgainst}
                         </td>
-                        <td className="px-1 py-2 text-center font-bold">{team.points}</td>
+                        <td className="px-4 py-3 text-center font-bold text-lg">{team.points}</td>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </Card>
-        </section>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Table */}
+              <div className="md:hidden">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b">
+                    <tr>
+                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">#</th>
+                      <th className="px-2 py-2 text-right font-semibold text-gray-700 text-xs">קבוצה</th>
+                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">מש'</th>
+                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">הפרש</th>
+                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">נק'</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lowerPlayoffTable.map((team) => {
+                      const goalDifference = team.goalsFor - team.goalsAgainst;
+                      return (
+                        <tr 
+                          key={team.team} 
+                          className={`border-b ${
+                            team.team === "עירוני טבריה" ? "bg-blue-50" : ""
+                          } ${
+                            team.position >= 13 ? "bg-red-50" : ""
+                          }`}
+                        >
+                          <td className="px-1 py-2 text-center font-semibold">
+                            <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold ${
+                              team.position >= 13 ? "bg-red-500 text-white" : 
+                              "bg-gray-200 text-gray-700"
+                            }`}>
+                              {team.position}
+                            </span>
+                          </td>
+                          <td className="px-2 py-2 text-right">
+                            <div className="flex items-center gap-2">
+                              <img src={getTeamLogo(team.team)} alt={team.team} className="w-5 h-5 object-contain" />
+                              <span className="font-medium text-sm">{team.team}</span>
+                            </div>
+                          </td>
+                          <td className="px-1 py-2 text-center text-sm">{team.played}</td>
+                          <td className={`px-1 py-2 text-center font-semibold text-sm ${
+                            goalDifference > 0 ? "text-green-600" : 
+                            goalDifference < 0 ? "text-red-600" : "text-gray-600"
+                          }`}>
+                            {goalDifference > 0 ? `+${goalDifference}` : goalDifference}
+                          </td>
+                          <td className="px-1 py-2 text-center font-bold">{team.points}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </section>
+        )}
       </div>
 
       <Footer />
