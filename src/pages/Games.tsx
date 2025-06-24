@@ -24,6 +24,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import burgerSaloonLogo from "@/assets/sponsors/burger-saloon.jpg";
+import dorotLogo from "@/assets/sponsors/dorot.png";
+import goOutLogo from "@/assets/sponsors/go-out.png";
+import nofGinosarLogo from "@/assets/sponsors/nof-ginosar.png";
+import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 
 const Games = () => {
   const [selectedTeam, setSelectedTeam] = useState<'senior' | 'youth'>('senior');
@@ -527,6 +532,30 @@ const Games = () => {
           </section>
         )}
       </div>
+
+      {/* Sponsors Section - Bottom of the Page */}
+
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center">
+            <div className="flex justify-center items-center">
+              <img src={burgerSaloonLogo} alt="Burger Saloon" className="h-24 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={dorotLogo} alt="Dorot Group" className="h-29 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={goOutLogo} alt="Go-Out" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={nofGinosarLogo} alt="Nof Ginosar" className="h-29 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+            <div className="flex justify-center items-center">
+              <img src={leagueManagerLogo} alt="מנהלת הליגות לכדורגל" className="h-20 object-contain grayscale hover:grayscale-0 transition duration-300" />
+            </div>
+          </div>
+        </div>        
+      </section>
 
       <Footer />
     </div>
