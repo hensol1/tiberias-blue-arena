@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-import IdoSharon from "@/assets/lovable-uploads/Ido Sharon.webp";
+import IdoSharon from "@/assets/lovable-uploads/Ido Sharon.png";
 import OndrejBaco from "@/assets/lovable-uploads/Ondrej Baco.png";
 import SambaKonte from "@/assets/lovable-uploads/Samba.png";
 import OmerYitzhak from "@/assets/lovable-uploads/Omer Yitzhak.png";
@@ -18,6 +18,7 @@ import YonatanTeper from "@/assets/lovable-uploads/Yonatan Teper.webp";
 import NivGotliv from "@/assets/lovable-uploads/Niv Gotliv.png";
 import WahebHabiballah from "@/assets/lovable-uploads/Waheb Habiballah.webp";
 import StanislavBilenkyi from "@/assets/lovable-uploads/Stanislav Bilenkyi.webp";
+import IdanDahan from "@/assets/lovable-uploads/Idan Dahan.png";
 import EliranHodada from "@/assets/lovable-uploads/Eliran.jpg";
 import MotiIvanir from "@/assets/lovable-uploads/Moti.png";
 import NivTubul from "@/assets/lovable-uploads/53254.png";
@@ -32,7 +33,7 @@ import mobileSponsors from "@/assets/sponsors/mobile sponsors.png";
 
 const Team = () => {
   const players = [
-    { name: "עידו שרון", position: "שוער", number: 1, age: 22, image: IdoSharon, country: "ישראל" },
+    { name: "עידו שרון", position: "שוער", number: 1, age: 23, image: IdoSharon, country: "ישראל" },
     { name: "אונדז'יי באצ'ו", position: "הגנה", number: 37, age: 29, image: OndrejBaco, country: "צ'כיה" },
     { name: "סמביניה", position: "הגנה", number: 4, age: 32, image: SambaKonte, country: "גינאה-ביסאו" },
     { name: "עומר יצחק", position: "הגנה", number: 17, age: 24, image: OmerYitzhak, country: "ישראל" },
@@ -45,7 +46,8 @@ const Team = () => {
     { name: "יונתן טפר", position: "קשר", number: 5, age: 24, image: YonatanTeper, country: "ישראל" },
     { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivGotliv, country: "ישראל" },
     { name: "וואהיב חביבאללה", position: "התקפה", number: 14, age: 27, image: WahebHabiballah, country: "ישראל" },
-    { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" }
+    { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" },
+    { name: "עידן דהאן", position: "התקפה", number: 11, age: 24, image: IdanDahan, country: "ישראל" }
   ];
 
   const staff = [
