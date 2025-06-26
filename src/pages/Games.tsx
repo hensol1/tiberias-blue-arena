@@ -31,6 +31,7 @@ import nofGinosarLogo from "@/assets/sponsors/nof-ginosar.png";
 import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 import mobileSponsors from "@/assets/sponsors/mobile sponsors.png";
+import fansHero from "@/assets/lovable-uploads/fans-hero.jpg";
 
 const Games = () => {
   const [selectedTeam, setSelectedTeam] = useState<'senior' | 'youth'>('senior');
@@ -120,10 +121,15 @@ const Games = () => {
   const closeAddOrEditDialog = () => {
     setShowAddDialog(false);
     setEditingGame(null);
-  }
+  };
 
   const upcomingGames = allGames.filter(g => g.team === selectedTeam && g.status === 'upcoming');
   const recentResults = allGames.filter(g => g.team === selectedTeam && g.status === 'result');
+
+  // Sort upcoming games by date and separate the next game
+  const sortedUpcomingGames = upcomingGames.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const nextGame = sortedUpcomingGames.length > 0 ? sortedUpcomingGames[0] : null;
+  const remainingUpcomingGames = sortedUpcomingGames.slice(1);
 
   const teamName = selectedTeam === 'senior' ? 'הקבוצה הבוגרת' : 'קבוצת הנוער';
 
@@ -138,12 +144,17 @@ const Games = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-l from-team-primary to-team-dark text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">משחקים</h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            לוח משחקים, תוצאות ועדכונים מהעונה הנוכחית
-          </p>
+      <section className="w-full">
+        <div className="relative h-64 md:h-96">
+          <img
+            src={fansHero}
+            alt="אוהדים עירוני טבריה"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <div className="container mx-auto px-4 text-center z-10">
+            </div>
+          </div>
         </div>
       </section>
 
@@ -193,12 +204,130 @@ const Games = () => {
             />
         )}
 
+        {/* Next Game */}
+        {nextGame && (
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">המשחק הבא</h2>
+            <div className="space-y-4">
+              <Card className="hover:shadow-lg transition-shadow relative group border-2 border-team-primary">
+                {isAuthenticated && (
+                  <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                    {hasPermission('edit_game') && (
+                      <Button variant="outline" size="icon" className="h-8 w-8 bg-white" onClick={() => openEditDialog(nextGame)}>
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    )}
+                    {hasPermission('delete_game') && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="icon" className="h-8 w-8">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent dir="rtl">
+                          <AlertDialogHeader><AlertDialogTitle>האם למחוק את המשחק?</AlertDialogTitle></AlertDialogHeader>
+                          <AlertDialogDescription>פעולה זו לא ניתנת לשחזור.</AlertDialogDescription>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>ביטול</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteGame(nextGame.id)}>מחק</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                  </div>
+                )}
+                {/* Desktop View */}
+                <div className="hidden md:flex flex-row items-center p-4 gap-4 justify-between">
+                  <div className="flex-grow flex items-center justify-center gap-4 md:gap-8">
+                      <div className="flex items-center flex-row-reverse gap-3">
+                          <h3 className="text-lg font-bold text-right hidden sm:block">עירוני טבריה</h3>
+                          <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 object-contain" />
+                      </div>
+                      <span className="text-xl font-light text-muted-foreground">VS</span>
+                      <div className="flex items-center gap-3">
+                          <img src={getTeamLogo(nextGame.opponent)} alt={nextGame.opponent} className="w-12 h-12 object-contain" />
+                          <h3 className="text-lg font-bold text-left hidden sm:block">{nextGame.opponent}</h3>
+                      </div>
+                    </div>
+                  <Separator orientation="vertical" className="h-16 hidden md:block" />
+                  <div className="hidden md:flex flex-col gap-2 text-right text-sm w-48">
+                      <div className="flex items-center justify-end gap-2">
+                          <span>{nextGame.competition}{nextGame.stage && ` - ${nextGame.stage}`}</span>
+                          <img src={getCompetitionLogo(nextGame.competition)} alt={nextGame.competition} className="h-8 w-8 object-contain" />
+                      </div>
+                      <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                          <Calendar className="w-4 h-4"/>
+                          <span>{new Date(nextGame.date).toLocaleDateString('he-IL')}, {new Date(nextGame.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
+                      <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                          <MapPin className="w-4 h-4"/>
+                          <span>{nextGame.venue}</span>
+                      </div>
+                    </div>
+                  <div className="pr-4">
+                     {nextGame.ticketLink && (
+                        <Button 
+                          asChild 
+                          className="bg-team-primary hover:bg-team-secondary"
+                        >
+                          <a href={nextGame.ticketLink} target="_blank" rel="noopener noreferrer">
+                            קנה כרטיסים
+                          </a>
+                        </Button>
+                     )}
+                    </div>
+                  </div>
+
+                {/* Mobile View */}
+                <CardContent className="md:hidden flex flex-col gap-4 p-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex flex-col items-center text-center w-20">
+                            <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 object-contain"/>
+                            <h4 className="font-semibold text-sm mt-1">עירוני טבריה</h4>
+                        </div>
+                        <span className="text-xl font-light text-muted-foreground">VS</span>
+                        <div className="flex flex-col items-center text-center w-20">
+                            <img src={getTeamLogo(nextGame.opponent)} alt={nextGame.opponent} className="w-12 h-12 object-contain"/>
+                            <h4 className="font-semibold text-sm mt-1">{nextGame.opponent}</h4>
+                        </div>
+                    </div>
+                    <Separator />
+                    <div className="text-sm text-right space-y-2">
+                        <div className="flex items-center justify-end gap-2">
+                            <span>{nextGame.competition}{nextGame.stage && ` - ${nextGame.stage}`}</span>
+                            <img src={getCompetitionLogo(nextGame.competition)} alt={nextGame.competition} className="h-6 w-6 object-contain" />
+                        </div>
+                        <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                            <span>{new Date(nextGame.date).toLocaleDateString('he-IL')}, {new Date(nextGame.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
+                            <Calendar className="w-4 h-4"/>
+                        </div>
+                        <div className="flex items-center justify-end gap-2 text-muted-foreground">
+                            <span>{nextGame.venue}</span>
+                            <MapPin className="w-4 h-4"/>
+                        </div>
+                    </div>
+                    {nextGame.ticketLink && (
+                        <Button 
+                          asChild 
+                          className="bg-team-primary hover:bg-team-secondary w-full mt-2"
+                        >
+                           <a href={nextGame.ticketLink} target="_blank" rel="noopener noreferrer">
+                            קנה כרטיסים
+                          </a>
+                        </Button>
+                    )}
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+        )}
+
         {/* Upcoming Games */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
-          <div className="space-y-4">
-            {isLoading ? <p>טוען משחקים...</p> : upcomingGames.length > 0 ? (
-              upcomingGames.map((game) => (
+        {remainingUpcomingGames.length > 0 && (
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
+            <div className="space-y-4">
+              {remainingUpcomingGames.map((game) => (
               <Card key={game.id} className="hover:shadow-lg transition-shadow relative group">
                 {isAuthenticated && (
                   <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
@@ -308,9 +437,18 @@ const Games = () => {
                     )}
                 </CardContent>
               </Card>
-            ))) : <p className="text-center text-muted-foreground">אין משחקים קרובים.</p>}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Show message if no upcoming games */}
+        {upcomingGames.length === 0 && !isLoading && (
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
+            <p className="text-center text-muted-foreground">אין משחקים קרובים.</p>
+          </section>
+        )}
 
         {/* Recent Results */}
         <section>
