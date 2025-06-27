@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Menu, Facebook, Instagram, Youtube } from "lucide-react";
+import { Menu, Facebook, Instagram, Youtube, LogOut, User } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 import facebookLogo from "@/assets/lovable-uploads/ccb18f9d-a882-4a2b-917a-ec289bf2bdba.png";
 import instagramLogo from "@/assets/lovable-uploads/dd6e1668-d05f-453f-b2f6-8634e77d314f.png";
@@ -17,6 +18,7 @@ import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { user, logout, isAuthenticated } = useAuth();
 
   const navigation = [
     { name: "עמוד ראשי", href: "/" },
@@ -28,6 +30,11 @@ const Header = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    await logout();
+    setIsOpen(false);
+  };
 
   return (
     <div>
@@ -93,8 +100,9 @@ const Header = () => {
               </div>
             </nav>
 
-            {/* Social Media Icons - Modern Design */}
+            {/* Right side - Social Media and Auth */}
             <div className="hidden md:flex items-center space-x-3 space-x-reverse">
+              {/* Social Media Icons */}
               <a href="https://www.facebook.com/Tiberias.FC/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Facebook className="h-5 w-5" />
               </a>
@@ -104,6 +112,30 @@ const Header = () => {
               <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Youtube className="h-5 w-5" />
               </a>
+              
+              {/* Auth Section */}
+              {isAuthenticated ? (
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <div className="text-right">
+                    <p className="text-sm font-medium">{user?.name}</p>
+                    <p className="text-xs opacity-80">{user?.email}</p>
+                  </div>
+                  <Button
+                    onClick={handleLogout}
+                    variant="ghost"
+                    size="sm"
+                    className="text-white hover:bg-white/20 rounded-full p-2"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <Link to="/login">
+                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 rounded-full p-2">
+                    <User className="h-4 w-4" />
+                  </Button>
+                </Link>
+              )}
             </div>
 
             {/* Mobile menu */}
@@ -142,6 +174,35 @@ const Header = () => {
                       </Link>
                     ))}
                   </nav>
+
+                  {/* Auth Section in Mobile Menu */}
+                  <div className="mt-8">
+                    {isAuthenticated ? (
+                      <div className="space-y-4">
+                        <div className="text-right p-4 bg-white/10 rounded-xl">
+                          <p className="text-white font-medium">{user?.name}</p>
+                          <p className="text-white/80 text-sm">{user?.email}</p>
+                        </div>
+                        <Button
+                          onClick={handleLogout}
+                          variant="ghost"
+                          className="w-full text-white hover:bg-white/20 border border-white/20"
+                        >
+                          <LogOut className="h-4 w-4 ml-2" />
+                          התנתק
+                        </Button>
+                      </div>
+                    ) : (
+                      <Link
+                        to="/login"
+                        onClick={() => setIsOpen(false)}
+                        className="block text-right py-3 px-6 rounded-xl transition-all duration-300 border text-white hover:bg-white/20 border-white/20 hover:border-white/40"
+                      >
+                        <User className="h-4 w-4 ml-2 inline" />
+                        התחברות
+                      </Link>
+                    )}
+                  </div>
 
                   {/* Social Media Icons in Mobile Menu */}
                   <div className="flex items-center justify-center space-x-4 space-x-reverse mt-8">

@@ -71,13 +71,36 @@ export const useAuth = () => {
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    console.log("useAuth login called with:", { email, password });
+    console.log("Firebase auth available:", !!auth);
+    
+    // If Firebase is not available, use demo authentication
     if (!auth) {
-      console.warn("Firebase auth not available - login failed");
-      return false;
+      console.log("Using demo authentication");
+      const demoUser = DEMO_USERS[email as keyof typeof DEMO_USERS];
+      console.log("Demo user found:", demoUser);
+      
+      if (demoUser && demoUser.password === password) {
+        console.log("Demo login successful");
+        const user: AppUser = {
+          uid: demoUser.uid,
+          email: email,
+          role: demoUser.role,
+          name: demoUser.name
+        };
+        setUser(user);
+        return true;
+      } else {
+        console.log("Demo login failed - invalid credentials");
+        return false;
+      }
     }
 
+    // Use Firebase authentication
     try {
+      console.log("Attempting Firebase login");
       await signInWithEmailAndPassword(auth, email, password);
+      console.log("Firebase login successful");
       return true;
     } catch (error) {
       console.error("Firebase login error:", error);
@@ -87,7 +110,8 @@ export const useAuth = () => {
 
   const logout = async () => {
     if (!auth) {
-      console.warn("Firebase auth not available - logout failed");
+      console.log("Demo logout");
+      setUser(null);
       return;
     }
 
