@@ -113,8 +113,8 @@ const Header = () => {
                 <Youtube className="h-5 w-5" />
               </a>
               
-              {/* Auth Section */}
-              {isAuthenticated ? (
+              {/* Auth Section - Only show when logged in */}
+              {isAuthenticated && (
                 <div className="flex items-center space-x-2 space-x-reverse">
                   <div className="text-right">
                     <p className="text-sm font-medium">{user?.name}</p>
@@ -129,12 +129,6 @@ const Header = () => {
                     <LogOut className="h-4 w-4" />
                   </Button>
                 </div>
-              ) : (
-                <Link to="/login">
-                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 rounded-full p-2">
-                    <User className="h-4 w-4" />
-                  </Button>
-                </Link>
               )}
             </div>
 
@@ -177,7 +171,7 @@ const Header = () => {
 
                   {/* Auth Section in Mobile Menu */}
                   <div className="mt-8">
-                    {isAuthenticated ? (
+                    {isAuthenticated && (
                       <div className="space-y-4">
                         <div className="text-right p-4 bg-white/10 rounded-xl">
                           <p className="text-white font-medium">{user?.name}</p>
@@ -192,15 +186,6 @@ const Header = () => {
                           התנתק
                         </Button>
                       </div>
-                    ) : (
-                      <Link
-                        to="/login"
-                        onClick={() => setIsOpen(false)}
-                        className="block text-right py-3 px-6 rounded-xl transition-all duration-300 border text-white hover:bg-white/20 border-white/20 hover:border-white/40"
-                      >
-                        <User className="h-4 w-4 ml-2 inline" />
-                        התחברות
-                      </Link>
                     )}
                   </div>
 
