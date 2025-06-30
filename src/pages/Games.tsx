@@ -462,7 +462,7 @@ const Games = () => {
                 const [homeScore, awayScore] = game.score.split('-').map((s: string) => s.trim());
 
                 return (
-                  <Card key={game.id} className="hover:shadow-lg transition-shadow relative group">
+                  <Card key={game.id} className="hover:shadow-lg transition-shadow relative group w-full box-border">
                     {isAuthenticated && (
                       <div className="absolute top-3 left-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
                         {hasPermission('edit_game') && (
@@ -489,14 +489,14 @@ const Games = () => {
                         )}
                       </div>
                     )}
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-center">
+                    <CardContent className="p-4 px-6 w-full box-border">
+                      <div className="flex justify-between items-center flex-wrap">
                         {/* Matchup */}
-                        <div className="flex-1 flex items-center justify-center gap-2 sm:gap-4">
+                        <div className="flex-1 flex items-center justify-center gap-2 sm:gap-4 min-w-0">
                           {/* Home team on the right */}
-                          <div className="flex flex-col items-center text-center w-20 order-1">
+                          <div className="flex flex-col items-center text-center w-20 order-1 min-w-0">
                             <img src={getTeamLogo(homeTeam)} alt={homeTeam} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
-                            <h4 className="font-semibold text-xs sm:text-sm text-center">{homeTeam}</h4>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center break-words">{homeTeam}</h4>
                           </div>
                           <div className="text-3xl sm:text-4xl font-bold text-team-dark px-1 order-2">
                             <span>{homeScore}</span>
@@ -504,17 +504,17 @@ const Games = () => {
                             <span>{awayScore}</span>
                           </div>
                           {/* Away team on the left */}
-                          <div className="flex flex-col items-center text-center w-20 order-3">
+                          <div className="flex flex-col items-center text-center w-20 order-3 min-w-0">
                             <img src={getTeamLogo(awayTeam)} alt={awayTeam} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
-                            <h4 className="font-semibold text-xs sm:text-sm text-center">{awayTeam}</h4>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center break-words">{awayTeam}</h4>
                           </div>
                         </div>
 
-                        <Separator orientation="vertical" className="h-20 mx-4" />
+                        <Separator orientation="vertical" className="h-20 mx-4 hidden xs:block" />
 
                         {/* Game Details */}
-                        <div className="flex flex-col text-right text-xs sm:text-sm space-y-1 text-muted-foreground w-28">
-                          <p className="font-bold text-team-dark">{game.competition}</p>
+                        <div className="flex flex-col text-right text-xs sm:text-sm space-y-1 text-muted-foreground w-28 min-w-0 break-words">
+                          <p className="font-bold text-team-dark break-words">{game.competition}</p>
                           {/* Only show מחזור if not already in competition */}
                           {!(game.competition && game.competition.includes("מחזור")) && (
                             <p>מחזור {game.stage}</p>
@@ -535,9 +535,9 @@ const Games = () => {
                       {game.notes && (
                         <>
                           <Separator className="my-3" />
-                          <div className="text-sm text-right text-muted-foreground">
+                          <div className="text-sm text-right text-muted-foreground break-words">
                             <span className="font-semibold text-team-dark">כובשים: </span>
-                            <span className="whitespace-pre-line">{game.notes}</span>
+                            <span className="whitespace-pre-line break-words">{game.notes}</span>
                           </div>
                         </>
                       )}
