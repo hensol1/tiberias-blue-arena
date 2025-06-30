@@ -280,15 +280,15 @@ const Games = () => {
 
                 {/* Mobile View */}
                 <CardContent className="md:hidden flex flex-col gap-4 p-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-20">
-                            <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 object-contain"/>
-                            <h4 className="font-semibold text-sm mt-1">עירוני טבריה</h4>
+                            <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center">עירוני טבריה</h4>
                         </div>
-                        <span className="text-xl font-light text-muted-foreground">VS</span>
+                        <span className="text-2xl sm:text-3xl font-light text-muted-foreground mx-2">VS</span>
                         <div className="flex flex-col items-center text-center w-20">
-                            <img src={getTeamLogo(nextGame.opponent)} alt={nextGame.opponent} className="w-12 h-12 object-contain"/>
-                            <h4 className="font-semibold text-sm mt-1">{nextGame.opponent}</h4>
+                            <img src={getTeamLogo(nextGame.opponent)} alt={nextGame.opponent} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center">{nextGame.opponent}</h4>
                         </div>
                     </div>
                     <Separator />
@@ -399,15 +399,15 @@ const Games = () => {
 
                 {/* Mobile View */}
                 <CardContent className="md:hidden flex flex-col gap-4 p-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-20">
-                            <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-12 h-12 object-contain"/>
-                            <h4 className="font-semibold text-sm mt-1">עירוני טבריה</h4>
+                            <img src={getTeamLogo("עירוני טבריה")} alt="עירוני טבריה" className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center">עירוני טבריה</h4>
                         </div>
-                        <span className="text-xl font-light text-muted-foreground">VS</span>
+                        <span className="text-2xl sm:text-3xl font-light text-muted-foreground mx-2">VS</span>
                         <div className="flex flex-col items-center text-center w-20">
-                            <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-12 h-12 object-contain"/>
-                            <h4 className="font-semibold text-sm mt-1">{game.opponent}</h4>
+                            <img src={getTeamLogo(game.opponent)} alt={game.opponent} className="w-10 h-10 sm:w-12 sm:h-12 mb-1 object-contain"/>
+                            <h4 className="font-semibold text-xs sm:text-sm text-center">{game.opponent}</h4>
                         </div>
                     </div>
                     <Separator />
