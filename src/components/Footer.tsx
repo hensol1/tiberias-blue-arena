@@ -36,7 +36,7 @@ const Footer = () => {
                 <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
                   <Instagram className="h-5 w-5" />
                 </a>
-                <a href="#" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
+                <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" className="bg-team-secondary/20 p-2 rounded-full hover:bg-team-secondary transition-colors">
                   <Youtube className="h-5 w-5" />
                 </a>
               </div>
