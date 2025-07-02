@@ -12,7 +12,7 @@ import {
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Eye, Trash2 } from "lucide-react";
+import { Calendar, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface NewsCardProps {
@@ -22,13 +22,12 @@ interface NewsCardProps {
   image: string;
   date: string;
   category: string;
-  views?: number;
   featured?: boolean;
   showDelete?: boolean;
   onDelete?: (id: string) => void;
 }
 
-const NewsCard = ({ id, title, excerpt, image, date, category, views = 0, featured = false, showDelete = false, onDelete }: NewsCardProps) => {
+const NewsCard = ({ id, title, excerpt, image, date, category, featured = false, showDelete = false, onDelete }: NewsCardProps) => {
   const handleDelete = () => {
     if (onDelete) {
       onDelete(id);
@@ -96,13 +95,9 @@ const NewsCard = ({ id, title, excerpt, image, date, category, views = 0, featur
           </p>
         </CardContent>
         
-        <CardFooter className="px-4 pb-4 pt-0 flex items-center justify-between">
+        <CardFooter className="px-4 pb-4 pt-0 flex items-center justify-end">
           <div className="flex items-center text-xs text-muted-foreground">
-            <span className="ml-1">{views}</span>
-            <Eye className="h-3 w-3" />
-          </div>
-          <div className="flex items-center text-xs text-muted-foreground">
-            <span className="ml-1">{date}</span>
+            <span className="ml-1">{new Date(date).toLocaleDateString('he-IL')}</span>
             <Calendar className="h-3 w-3" />
           </div>
         </CardFooter>

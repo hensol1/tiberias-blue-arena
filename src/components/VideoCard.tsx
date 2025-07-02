@@ -12,7 +12,7 @@ import {
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Eye, Trash2, Play } from "lucide-react";
+import { Calendar, Trash2, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface VideoCardProps {
@@ -22,7 +22,6 @@ interface VideoCardProps {
   youtubeUrl: string;
   category: string;
   date: string;
-  views?: number;
   featured?: boolean;
   showDelete?: boolean;
   onDelete?: (id: string) => void;
@@ -35,7 +34,6 @@ const VideoCard = ({
   youtubeUrl, 
   category, 
   date, 
-  views = 0, 
   featured = false, 
   showDelete = false, 
   onDelete 
@@ -119,11 +117,7 @@ const VideoCard = ({
         </CardContent>
 
         <CardFooter className="p-4 pt-0">
-          <div className="flex items-center justify-between text-xs text-muted-foreground w-full">
-            <div className="flex items-center">
-              <span className="ml-1">{views}</span>
-              <Eye className="h-3 w-3" />
-            </div>
+          <div className="flex items-center justify-end text-xs text-muted-foreground w-full">
             <div className="flex items-center">
               <span className="ml-1">{new Date(date).toLocaleDateString('he-IL')}</span>
               <Calendar className="h-3 w-3" />
