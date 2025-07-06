@@ -14,6 +14,7 @@ import dorotLogo from "@/assets/sponsors/dorot.png";
 import goOutLogo from "@/assets/sponsors/go-out.png";
 import nofGinosarLogo from "@/assets/sponsors/nof-ginosar.png";
 import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
+import ylogon2Logo from "@/assets/sponsors/ylogon2.png";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,9 +51,12 @@ const Header = () => {
             >
               <Button variant="secondary" className="text-white">לרכישת מנוי</Button>
             </a>
-            <div className="flex items-center justify-end md:justify-center space-x-2 md:space-x-8 space-x-reverse">
+            <div className="flex items-center justify-end md:justify-center space-x-2 md:space-x-12 space-x-reverse">
               <a href="https://www.facebook.com/groupdorot" target="_blank" rel="noopener noreferrer">
-                <img src={facebookLogo} alt="Facebook" className="h-10 md:h-12 object-contain" />
+                <img src={dorotLogo} alt="Dorot Group" className="h-10 md:h-12 object-contain" />
+              </a>
+              <a href="https://y-group.co.il/" target="_blank" rel="noopener noreferrer" className="md:ml-8">
+                <img src={ylogon2Logo} alt="Yochelman Group" className="h-10 md:h-12 object-contain" />
               </a>
               <a href="https://www.ginosar.co.il/" target="_blank" rel="noopener noreferrer">
                 <img src={youtubeLogo} alt="YouTube" className="h-10 md:h-12 object-contain" />
