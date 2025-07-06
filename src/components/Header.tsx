@@ -52,10 +52,10 @@ const Header = () => {
               <Button variant="secondary" className="text-white">לרכישת מנוי</Button>
             </a>
             <div className="flex items-center justify-end md:justify-center space-x-2 md:space-x-12 space-x-reverse">
-              <a href="https://www.facebook.com/groupdorot" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.facebook.com/groupdorot" target="_blank" rel="noopener noreferrer" className="md:mx-8">
                 <img src={dorotLogo} alt="Dorot Group" className="h-10 md:h-12 object-contain" />
               </a>
-              <a href="https://y-group.co.il/" target="_blank" rel="noopener noreferrer" className="md:ml-8">
+              <a href="https://y-group.co.il/" target="_blank" rel="noopener noreferrer" className="md:mx-8">
                 <img src={ylogon2Logo} alt="Yochelman Group" className="h-10 md:h-12 object-contain" />
               </a>
               <a href="https://www.ginosar.co.il/" target="_blank" rel="noopener noreferrer">
