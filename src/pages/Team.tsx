@@ -22,6 +22,7 @@ import IdanDahan from "@/assets/lovable-uploads/Idan Dahan.png";
 import EliranHodada from "@/assets/lovable-uploads/Eliran.jpg";
 import MotiIvanir from "@/assets/lovable-uploads/Moti.png";
 import NivTubul from "@/assets/lovable-uploads/53254.png";
+import PeterMichael from "@/assets/lovable-uploads/Peter Michael.webp";
 import burgerSaloonLogo from "@/assets/sponsors/burger-saloon.jpg";
 import dorotLogo from "@/assets/sponsors/dorot.png";
 import goOutLogo from "@/assets/sponsors/go-out.png";
@@ -47,7 +48,8 @@ const Team = () => {
     { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivGotliv, country: "ישראל" },
     { name: "וואהיב חביבאללה", position: "התקפה", number: 14, age: 27, image: WahebHabiballah, country: "ישראל" },
     { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" },
-    { name: "עידן דהאן", position: "התקפה", number: 11, age: 24, image: IdanDahan, country: "ישראל" }
+    { name: "עידן דהאן", position: "התקפה", number: 11, age: 24, image: IdanDahan, country: "ישראל" },
+    { name: "פיטר מייקל", position: "התקפה", number: 10, age: 27, image: PeterMichael, country: "ניגריה" }
   ];
 
   const staff = [
