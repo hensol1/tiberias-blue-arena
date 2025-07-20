@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Menu, Facebook, Instagram, Youtube, LogOut, User } from "lucide-react";
+import TikTokIcon from "./TikTokIcon";
+import XIcon from "./XIcon";
 import { useAuth } from "@/hooks/use-auth";
 
 import facebookLogo from "@/assets/lovable-uploads/ccb18f9d-a882-4a2b-917a-ec289bf2bdba.png";
@@ -113,8 +115,14 @@ const Header = () => {
               <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Instagram className="h-5 w-5" />
               </a>
+              <a href="https://x.com/Ironi_Tiberias?t=3CGy4FaGpirWHP765MTfsg&s=08" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
+                <XIcon className="h-5 w-5" />
+              </a>
               <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Youtube className="h-5 w-5" />
+              </a>
+              <a href="https://www.tiktok.com/@iron_tiberias_f.c?_t=ZS-8yBwrzAqeqw&_r=1" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
+                <TikTokIcon className="h-5 w-5" />
               </a>
               
               {/* Auth Section - Only show when logged in */}
@@ -201,8 +209,14 @@ const Header = () => {
                     <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Instagram className="h-6 w-6" />
                     </a>
-                    <a href="#" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
+                    <a href="https://x.com/Ironi_Tiberias?t=3CGy4FaGpirWHP765MTfsg&s=08" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
+                      <XIcon className="h-6 w-6" />
+                    </a>
+                    <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Youtube className="h-6 w-6" />
+                    </a>
+                    <a href="https://www.tiktok.com/@iron_tiberias_f.c?_t=ZS-8yBwrzAqeqw&_r=1" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
+                      <TikTokIcon className="h-6 w-6" />
                     </a>
                   </div>
                 </div>
