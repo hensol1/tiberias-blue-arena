@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Calendar, Eye, Upload, LogOut, User } from "lucide-react";
+import { Plus, Calendar, Eye, Upload, LogOut, User, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsMobile } from "@/hooks/use-mobile";
 import NewsCard from "./NewsCard";
 
 interface NewsItem {
@@ -52,11 +53,14 @@ const demoNews: NewsItem[] = [
 const NewsFeed = () => {
   const { toast } = useToast();
   const { user, logout, hasPermission, isAuthenticated } = useAuth();
+  const isMobile = useIsMobile();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [showAllNews, setShowAllNews] = useState(false);
   const [newNews, setNewNews] = useState({
     title: "",
     excerpt: "",
@@ -170,6 +174,26 @@ const NewsFeed = () => {
     logout();
     toast({ title: "התנתקת בהצלחה מהמערכת." });
   };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % news.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + news.length) % news.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  // Get news to display (last 5 or all) - only used for desktop
+  const displayedNews = showAllNews ? news : news.slice(0, 5);
+  
+  // Reset current slide when switching between show all and show less
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, [showAllNews]);
   
   const categories = ["כללי", "משחקים", "העברות", "נוער", "אימונים"];
 
@@ -298,16 +322,109 @@ const NewsFeed = () => {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {news.map((item) => (
-          <NewsCard
-            key={item.id}
-            {...item}
-            showDelete={isAuthenticated && hasPermission('delete_news')}
-            onDelete={() => handleDeleteNews(item.id)}
-          />
-        ))}
-      </div>
+      {isMobile ? (
+        // Mobile Layout
+        <div className="space-y-6">
+          {/* Carousel for first 5 items */}
+          <div className="relative">
+            <div className="overflow-hidden rounded-lg">
+              <div 
+                className="flex transition-transform duration-300 ease-in-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {news.slice(0, 5).map((item) => (
+                  <div key={item.id} className="w-full flex-shrink-0">
+                    <NewsCard
+                      {...item}
+                      showDelete={isAuthenticated && hasPermission('delete_news')}
+                      onDelete={() => handleDeleteNews(item.id)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Navigation Arrows */}
+            {news.slice(0, 5).length > 1 && (
+              <>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg"
+                  onClick={prevSlide}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg"
+                  onClick={nextSlide}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </>
+            )}
+            
+            {/* Dots Indicator */}
+            {news.slice(0, 5).length > 1 && (
+              <div className="flex justify-center mt-4 space-x-2 space-x-reverse">
+                {news.slice(0, 5).map((_, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentSlide ? 'bg-team-primary' : 'bg-gray-300'
+                    }`}
+                    onClick={() => goToSlide(index)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Additional news cards when showAllNews is true */}
+          {showAllNews && news.length > 5 && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-right text-gray-700">חדשות נוספות</h3>
+              <div className="grid grid-cols-1 gap-4">
+                {news.slice(5).map((item) => (
+                  <NewsCard
+                    key={item.id}
+                    {...item}
+                    showDelete={isAuthenticated && hasPermission('delete_news')}
+                    onDelete={() => handleDeleteNews(item.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        // Desktop Grid
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayedNews.map((item) => (
+            <NewsCard
+              key={item.id}
+              {...item}
+              showDelete={isAuthenticated && hasPermission('delete_news')}
+              onDelete={() => handleDeleteNews(item.id)}
+            />
+          ))}
+        </div>
+      )}
+      
+      {/* Show More/Less Button */}
+      {!isLoading && news.length > 5 && (
+        <div className="flex justify-center mt-6">
+          <Button
+            onClick={() => setShowAllNews(!showAllNews)}
+            variant="outline"
+            className="bg-team-primary hover:bg-team-secondary text-white border-team-primary hover:border-team-secondary"
+          >
+            {showAllNews ? "הצג פחות חדשות" : "עוד חדשות"}
+          </Button>
+        </div>
+      )}
       
       {!isLoading && news.length === 0 && (
         <div className="text-center py-12">

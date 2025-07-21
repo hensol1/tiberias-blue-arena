@@ -74,6 +74,7 @@ const NewsCard = ({ id, title, excerpt, image, date, category, featured = false,
               src={image} 
               alt={title}
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+              style={{ objectPosition: 'center top' }}
             />
             {featured && (
               <Badge className="absolute top-3 right-3 bg-team-secondary hover:bg-team-secondary">
