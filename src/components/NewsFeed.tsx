@@ -176,11 +176,13 @@ const NewsFeed = () => {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % news.length);
+    const carouselItems = Math.min(5, news.length);
+    setCurrentSlide((prev) => (prev + 1) % carouselItems);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + news.length) % news.length);
+    const carouselItems = Math.min(5, news.length);
+    setCurrentSlide((prev) => (prev - 1 + carouselItems) % carouselItems);
   };
 
   const goToSlide = (index: number) => {
@@ -193,7 +195,7 @@ const NewsFeed = () => {
   // Reset current slide when switching between show all and show less
   useEffect(() => {
     setCurrentSlide(0);
-  }, [showAllNews]);
+  }, [showAllNews, news.length]);
   
   const categories = ["כללי", "משחקים", "העברות", "נוער", "אימונים"];
 
