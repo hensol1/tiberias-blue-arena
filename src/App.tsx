@@ -20,26 +20,31 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 const queryClient = new QueryClient();
 
 const AppContent = () => {
-  useAnalytics(); // Initialize and track page views
-
   return (
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/club" element={<Club />} />
-        <Route path="/team" element={<Team />} />
-        <Route path="/games" element={<Games />} />
-        <Route path="/tv" element={<TV />} />
-        <Route path="/video/:id" element={<VideoPage />} />
-        <Route path="/youth" element={<Youth />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/article/:id" element={<ArticlePage />} />
-        <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <AnalyticsWrapper>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/club" element={<Club />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/tv" element={<TV />} />
+          <Route path="/video/:id" element={<VideoPage />} />
+          <Route path="/youth" element={<Youth />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/article/:id" element={<ArticlePage />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnalyticsWrapper>
     </HashRouter>
   );
+};
+
+const AnalyticsWrapper = ({ children }: { children: React.ReactNode }) => {
+  useAnalytics(); // Initialize and track page views
+  return <>{children}</>;
 };
 
 const App = () => (

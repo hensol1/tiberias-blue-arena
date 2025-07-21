@@ -7,11 +7,21 @@ export const useAnalytics = () => {
 
   useEffect(() => {
     // Initialize Google Analytics on first load
-    initGA();
+    try {
+      initGA();
+    } catch (error) {
+      console.error('Failed to initialize analytics:', error);
+    }
   }, []);
 
   useEffect(() => {
     // Track page views when location changes
-    logPageView(location.pathname + location.search);
+    try {
+      if (location) {
+        logPageView(location.pathname + location.search);
+      }
+    } catch (error) {
+      console.error('Failed to log page view:', error);
+    }
   }, [location]);
 }; 

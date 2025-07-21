@@ -1,38 +1,57 @@
-import ReactGA from 'react-ga4';
-
-// Replace this with your actual Google Analytics Measurement ID
+// Google Analytics 4 Configuration
 const GA_MEASUREMENT_ID = 'G-EEQE60DDDV'; // Ironi Dorot Tiberias
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+  }
+}
+
 export const initGA = () => {
-  if (typeof window !== 'undefined') {
-    ReactGA.initialize(GA_MEASUREMENT_ID);
+  try {
+    if (typeof window !== 'undefined' && window.gtag) {
+      console.log('Google Analytics initialized successfully');
+    }
+  } catch (error) {
+    console.error('Failed to initialize Google Analytics:', error);
   }
 };
 
 export const logPageView = (path: string) => {
-  if (typeof window !== 'undefined') {
-    ReactGA.send({ hitType: 'pageview', page: path });
+  try {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('config', GA_MEASUREMENT_ID, {
+        page_path: path,
+      });
+    }
+  } catch (error) {
+    console.error('Failed to log page view:', error);
   }
 };
 
 export const logEvent = (action: string, category: string, label?: string, value?: number) => {
-  if (typeof window !== 'undefined') {
-    ReactGA.event({
-      action,
-      category,
-      label,
-      value,
-    });
+  try {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', action, {
+        event_category: category,
+        event_label: label,
+        value: value,
+      });
+    }
+  } catch (error) {
+    console.error('Failed to log event:', error);
   }
 };
 
 export const logException = (description: string, fatal = false) => {
-  if (typeof window !== 'undefined') {
-    ReactGA.event({
-      action: 'exception',
-      category: 'error',
-      label: description,
-      value: fatal ? 1 : 0,
-    });
+  try {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'exception', {
+        description: description,
+        fatal: fatal,
+      });
+    }
+  } catch (error) {
+    console.error('Failed to log exception:', error);
   }
 }; 

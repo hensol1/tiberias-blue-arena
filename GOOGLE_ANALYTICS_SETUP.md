@@ -5,9 +5,9 @@
 Your Google Analytics is now configured with:
 - **Measurement ID**: `G-EEQE60DDDV`
 - **Property**: Ironi Dorot Tiberias
-- **React GA4 Integration**: Installed and configured
+- **Native GA4 Integration**: Using gtag.js (more reliable)
 - **Automatic Page View Tracking**: Enabled
-- **Google Tag Manager Script**: Added to HTML
+- **Google Analytics Script**: Added to HTML
 
 ## 📊 What You Can Track
 
@@ -119,7 +119,7 @@ logException('Payment failed', false);
 ## 📞 Need Help?
 
 - **Google Analytics Help**: https://support.google.com/analytics/
-- **React GA4 Documentation**: https://github.com/PriceRunner/react-ga4
+- **GA4 gtag.js Documentation**: https://developers.google.com/analytics/devguides/collection/ga4
 - **GA4 Events Reference**: https://developers.google.com/analytics/devguides/collection/ga4/events
 
 ## 🔒 Privacy Considerations
