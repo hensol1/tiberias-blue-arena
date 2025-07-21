@@ -177,11 +177,13 @@ const NewsFeed = () => {
 
   const nextSlide = () => {
     const carouselItems = Math.min(5, news.length);
+    console.log('Next slide - current:', currentSlide, 'total items:', carouselItems);
     setCurrentSlide((prev) => (prev + 1) % carouselItems);
   };
 
   const prevSlide = () => {
     const carouselItems = Math.min(5, news.length);
+    console.log('Prev slide - current:', currentSlide, 'total items:', carouselItems);
     setCurrentSlide((prev) => (prev - 1 + carouselItems) % carouselItems);
   };
 
@@ -329,13 +331,17 @@ const NewsFeed = () => {
         <div className="space-y-6">
           {/* Carousel for first 5 items */}
           <div className="relative">
+            {/* Debug info */}
+            <div className="text-xs text-gray-500 mb-2">
+              Debug: Current slide: {currentSlide}, Total news: {news.length}, Carousel items: {Math.min(5, news.length)}
+            </div>
             <div className="overflow-hidden rounded-lg">
               <div 
                 className="flex transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                {news.slice(0, 5).map((item) => (
-                  <div key={item.id} className="w-full flex-shrink-0">
+                {news.slice(0, 5).map((item, index) => (
+                  <div key={item.id} className="w-full flex-shrink-0" style={{ minWidth: '100%' }}>
                     <NewsCard
                       {...item}
                       showDelete={isAuthenticated && hasPermission('delete_news')}
