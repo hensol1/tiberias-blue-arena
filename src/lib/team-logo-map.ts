@@ -35,11 +35,15 @@ const teamLogoMap: TeamLogoMap = {
     "הפועל חדרה": hapoelHadera,
     "הפועל תל אביב": hapoelTelAviv,
     "מ.ס. אשדוד": fcAshdod,
+    "מועדון ספורט אשדוד": fcAshdod,
     "בית\"ר ירושלים": beitarJerusalem,
     "מכבי נתניה": maccabiNetanya,
     "הפועל פתח תקוה": hapoelPetachTikva,
+    "הפועל פתח תקווה": hapoelPetachTikva,
     "איחוד בני סכנין": ihudBneiSakhnin,
+    "בני סכנין": ihudBneiSakhnin,
     "עירוני קרית שמונה": ironiKiryatShmona,
+    "עירוני קריית שמונה": ironiKiryatShmona,
 };
 
 /**

@@ -44,16 +44,22 @@ const Games = () => {
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
-  // Israeli Premier League Lower Playoff Table - Round 33
-  const lowerPlayoffTable = [
-    { position: 7, team: "הפועל ירושלים", played: 33, won: 11, drawn: 11, lost: 11, goalsFor: 47, goalsAgainst: 42, points: 44 },
-    { position: 8, team: "מכבי בני ריינה", played: 33, won: 12, drawn: 5, lost: 16, goalsFor: 36, goalsAgainst: 43, points: 41 },
-    { position: 9, team: "עירוני קרית שמונה", played: 33, won: 11, drawn: 4, lost: 18, goalsFor: 32, goalsAgainst: 52, points: 37 },
-    { position: 10, team: "איחוד בני סכנין", played: 33, won: 10, drawn: 7, lost: 16, goalsFor: 26, goalsAgainst: 44, points: 36 },
-    { position: 11, team: "מ.ס. אשדוד", played: 33, won: 8, drawn: 11, lost: 14, goalsFor: 48, goalsAgainst: 55, points: 35 },
-    { position: 12, team: "עירוני טבריה", played: 33, won: 8, drawn: 11, lost: 14, goalsFor: 28, goalsAgainst: 45, points: 35 },
-    { position: 13, team: "מכבי פתח תקוה", played: 33, won: 8, drawn: 9, lost: 16, goalsFor: 31, goalsAgainst: 50, points: 33 },
-    { position: 14, team: "הפועל חדרה", played: 33, won: 5, drawn: 12, lost: 16, goalsFor: 31, goalsAgainst: 57, points: 27 },
+  // Israeli Premier League Table 2025/26 Season
+  const premierLeagueTable = [
+    { position: 1, team: "בית\"ר ירושלים", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 2, team: "בני סכנין", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 3, team: "הפועל באר שבע", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 4, team: "הפועל חיפה", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 5, team: "הפועל ירושלים", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 6, team: "עירוני טבריה", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 7, team: "הפועל תל אביב", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 8, team: "מועדון ספורט אשדוד", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 9, team: "מכבי בני ריינה", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 10, team: "מכבי חיפה", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 11, team: "מכבי נתניה", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 12, team: "מכבי תל אביב", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 13, team: "הפועל פתח תקווה", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
+    { position: 14, team: "עירוני קריית שמונה", played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 },
   ];
 
   const getFormIcon = (result: string) => {
@@ -130,6 +136,9 @@ const Games = () => {
   const sortedUpcomingGames = upcomingGames.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const nextGame = sortedUpcomingGames.length > 0 ? sortedUpcomingGames[0] : null;
   const remainingUpcomingGames = sortedUpcomingGames.slice(1);
+
+  // State for showing more upcoming games
+  const [showMoreUpcoming, setShowMoreUpcoming] = useState(false);
 
   const teamName = selectedTeam === 'senior' ? 'הקבוצה הבוגרת' : 'קבוצת הנוער';
 
@@ -347,7 +356,8 @@ const Games = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">משחקים קרובים</h2>
             <div className="space-y-4">
-              {remainingUpcomingGames.map((game) => (
+              {/* Show only the next upcoming game initially */}
+              {remainingUpcomingGames.slice(0, showMoreUpcoming ? remainingUpcomingGames.length : 1).map((game) => (
               <Card key={game.id} className="hover:shadow-lg transition-shadow relative group">
                 {isAuthenticated && (
                   <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
@@ -478,6 +488,19 @@ const Games = () => {
                 </CardContent>
               </Card>
               ))}
+              
+              {/* Show More/Less Button */}
+              {remainingUpcomingGames.length > 1 && (
+                <div className="flex justify-center mt-6">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowMoreUpcoming(!showMoreUpcoming)}
+                    className="bg-white hover:bg-gray-50 border-team-primary text-team-primary hover:text-team-secondary"
+                  >
+                    {showMoreUpcoming ? "הצג פחות" : "עוד"}
+                  </Button>
+                </div>
+              )}
             </div>
           </section>
         )}
@@ -593,7 +616,7 @@ const Games = () => {
         {selectedTeam === 'senior' && (
           <section className="mt-16">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-team-dark">פלייאוף תחתון - מחזור 33</h2>
+              <h2 className="text-3xl font-bold text-team-dark">טבלת הליגה - עונה 2025/26</h2>
             </div>
             
             <Card className="overflow-hidden">
@@ -615,13 +638,13 @@ const Games = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {lowerPlayoffTable.map((team) => (
+                    {premierLeagueTable.map((team) => (
                       <tr 
                         key={team.team} 
                         className={`border-b hover:bg-gray-50 transition-colors ${
                           team.team === "עירוני טבריה" ? "bg-blue-50 border-l-4 border-r-4 border-team-primary" : ""
                         } ${
-                          team.position >= 13 ? "bg-red-50" : ""
+                          team.position >= 13 && team.team !== "עירוני טבריה" ? "bg-red-50" : ""
                         }`}
                       >
                         <td className="px-4 py-3 text-center font-semibold">
@@ -670,7 +693,7 @@ const Games = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {lowerPlayoffTable.map((team) => {
+                    {premierLeagueTable.map((team) => {
                       const goalDifference = team.goalsFor - team.goalsAgainst;
                       return (
                         <tr 
@@ -678,7 +701,7 @@ const Games = () => {
                           className={`border-b ${
                             team.team === "עירוני טבריה" ? "bg-blue-50" : ""
                           } ${
-                            team.position >= 13 ? "bg-red-50" : ""
+                            team.position >= 13 && team.team !== "עירוני טבריה" ? "bg-red-50" : ""
                           }`}
                         >
                           <td className="px-1 py-2 text-center font-semibold">
