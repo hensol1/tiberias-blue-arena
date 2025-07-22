@@ -248,10 +248,10 @@ const Index = () => {
             </div>
 
             {/* Mobile Layout */}
-            <div className="md:hidden space-y-4">
+            <div className="md:hidden space-y-2">
               {/* Countdown Timer */}
               <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="flex items-center justify-center gap-2 mb-1">
                   <span className="text-white font-semibold text-sm">עד המשחק הבא:</span>
                 </div>
                 <div className="flex justify-center">
@@ -260,7 +260,7 @@ const Index = () => {
               </div>
               
               {/* Teams */}
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center justify-center gap-3">
                 {(() => {
                   const isHomeGame = nextGame.venue.includes("גרין") || nextGame.venue.includes("הגליל") || nextGame.venue.includes("טבריה");
                   const homeTeam = isHomeGame ? "עירוני טבריה" : nextGame.opponent;
@@ -269,12 +269,12 @@ const Index = () => {
                   return (
                     <>
                       <div className="flex flex-col items-center text-center">
-                        <img src={getTeamLogo(homeTeam)} alt={homeTeam} className="w-12 h-12 mb-1 object-contain"/>
+                        <img src={getTeamLogo(homeTeam)} alt={homeTeam} className="w-10 h-10 mb-0.5 object-contain"/>
                         <span className="text-white font-semibold text-xs text-center leading-tight">{homeTeam}</span>
                       </div>
-                      <span className="text-white font-bold text-lg">VS</span>
+                      <span className="text-white font-bold text-base">VS</span>
                       <div className="flex flex-col items-center text-center">
-                        <img src={getTeamLogo(awayTeam)} alt={awayTeam} className="w-12 h-12 mb-1 object-contain"/>
+                        <img src={getTeamLogo(awayTeam)} alt={awayTeam} className="w-10 h-10 mb-0.5 object-contain"/>
                         <span className="text-white font-semibold text-xs text-center leading-tight">{awayTeam}</span>
                       </div>
                     </>
@@ -282,36 +282,31 @@ const Index = () => {
                 })()}
               </div>
               
-              {/* Competition */}
+              {/* Competition and Game Info Combined */}
               <div className="text-center">
-                <div className="flex items-center justify-center gap-1 text-white/90 text-xs">
-                  <img src={getCompetitionLogo(nextGame.competition)} alt={nextGame.competition} className="h-4 w-4 object-contain" />
+                <div className="flex items-center justify-center gap-2 text-white/90 text-xs">
+                  <img src={getCompetitionLogo(nextGame.competition)} alt={nextGame.competition} className="h-3 w-3 object-contain" />
                   <span className="font-semibold">{nextGame.competition}{nextGame.stage && ` - ${nextGame.stage}`}</span>
+                  <span>•</span>
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-2.5 h-2.5"/>
+                    <span>{new Date(nextGame.date).toLocaleDateString('he-IL')}</span>
+                  </div>
+                  <span>•</span>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-2.5 h-2.5"/>
+                    <span>{new Date(nextGame.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
                 </div>
-              </div>
-              
-              {/* Game Info */}
-              <div className="flex items-center justify-center gap-4 text-white/90 text-xs">
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3"/>
-                  <span>{new Date(nextGame.date).toLocaleDateString('he-IL')}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="w-3 h-3"/>
-                  <span>{new Date(nextGame.date).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}</span>
-                </div>
-              </div>
-              
-              {/* Venue */}
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 text-white/90 text-xs">
-                  <MapPin className="w-3 h-3"/>
+                
+                <div className="flex items-center justify-center gap-1 text-white/90 text-xs mt-1">
+                  <MapPin className="w-2.5 h-2.5"/>
                   <span className="max-w-48 truncate">{nextGame.venue}</span>
                 </div>
               </div>
               
               {/* Buy Tickets Button */}
-              <div className="flex justify-center">
+              <div className="flex justify-center pt-1">
                 {nextGame.ticketLink ? (
                   <Button 
                     asChild 
