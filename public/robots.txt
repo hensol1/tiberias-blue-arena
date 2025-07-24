@@ -1,14 +1,29 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://idtiberias.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /login
+Disallow: /admin
+Disallow: /private
+
+# Allow all major search engines
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: Twitterbot
+User-agent: Slurp
 Allow: /
 
-User-agent: facebookexternalhit
+User-agent: DuckDuckBot
 Allow: /
 
-User-agent: *
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
 Allow: /
