@@ -36,7 +36,7 @@ VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 4. גלול למטה ל-"Your apps" ובחר את האפליקציה
 5. העתק את הערכים מה-config object
 
-## הגדרת Firebase Services
+## הגדרת Firestore Security Rules
 
 ### התקנת Firebase CLI
 
@@ -52,15 +52,10 @@ firebase login
 
 3. אתחל את הפרויקט:
 ```bash
-firebase init
+firebase init firestore
 ```
 
-בחר את השירותים הבאים:
-- Firestore Database
-- Storage
-- Hosting (אופציונלי)
-
-### הגדרת Firestore Security Rules
+### פריסת Security Rules
 
 1. העתק את הקובץ `firestore.rules` לתיקיית הפרויקט
 2. פרוס את הכללים:
@@ -68,60 +63,13 @@ firebase init
 firebase deploy --only firestore:rules
 ```
 
-### הגדרת Storage Security Rules
-
-1. העתק את הקובץ `storage.rules` לתיקיית הפרויקט
-2. פרוס את הכללים:
-```bash
-firebase deploy --only storage
-```
-
-### הגדרת CORS Rules (חשוב!)
-
-**זה השלב החשוב ביותר לפתרון שגיאות CORS:**
-
-1. העתק את הקובץ `cors.json` לתיקיית הפרויקט
-2. התקן את gsutil (Google Cloud Storage utility):
-   ```bash
-   # Windows (PowerShell)
-   curl https://sdk.cloud.google.com | bash
-   
-   # macOS/Linux
-   curl https://sdk.cloud.google.com | bash
-   ```
-
-3. הגדר את CORS rules:
-   ```bash
-   gsutil cors set cors.json gs://YOUR_STORAGE_BUCKET_NAME
-   ```
-   
-   החלף `YOUR_STORAGE_BUCKET_NAME` בשם ה-bucket שלך (למשל: `ironi-dorot-tiberias.appspot.com`)
-
 ### או דרך Firebase Console
 
-#### Firestore Rules
 1. לך ל-[Firebase Console](https://console.firebase.google.com/)
 2. בחר את הפרויקט שלך
 3. לך ל-Firestore Database > Rules
 4. העתק את התוכן מקובץ `firestore.rules`
 5. לחץ על "Publish"
-
-#### Storage Rules
-1. לך ל-[Firebase Console](https://console.firebase.google.com/)
-2. בחר את הפרויקט שלך
-3. לך ל-Storage > Rules
-4. העתק את התוכן מקובץ `storage.rules`
-5. לחץ על "Publish"
-
-#### CORS Rules (דרך Google Cloud Console)
-1. לך ל-[Google Cloud Console](https://console.cloud.google.com/)
-2. בחר את הפרויקט שלך
-3. לך ל-Cloud Storage > Browser
-4. בחר את ה-bucket שלך
-5. לך ל-Settings > CORS
-6. לחץ על "Edit CORS configuration"
-7. העתק את התוכן מקובץ `cors.json`
-8. לחץ על "Save"
 
 ## הגדרת Authentication
 
@@ -129,67 +77,16 @@ firebase deploy --only storage
 2. בחר את הפרויקט שלך
 3. לך ל-Authentication > Sign-in method
 4. הפעל Email/Password
-5. הוסף משתמשים:
+5. צור משתמשים:
    - admin@tiberias.com (מנהל)
    - editor@tiberias.com (עורך)
 
-## הגדרת Storage
+## הרשאות משתמשים
 
-1. לך ל-[Firebase Console](https://console.firebase.google.com/)
-2. בחר את הפרויקט שלך
-3. לך ל-Storage
-4. לחץ על "Get started"
-5. בחר את מיקום השרת הקרוב אליך
-6. בחר "Start in test mode" (אפשר לשנות מאוחר יותר)
+- **admin@tiberias.com**: יכול להוסיף, לערוך ולמחוק חדשות, משחקים וסרטונים
+- **editor@tiberias.com**: יכול להוסיף ולערוך חדשות, משחקים וסרטונים (לא למחוק)
+- **משתמשים אחרים**: יכולים רק לצפות בתוכן
 
-## פתרון בעיות CORS
+## פתרון זמני
 
-אם אתה עדיין נתקל בשגיאות CORS:
-
-### 1. בדוק את שם ה-Domain
-וודא שה-domain שלך מופיע ב-`cors.json`:
-```json
-"origin": [
-  "https://idtiberias.com",
-  "https://www.idtiberias.com"
-]
-```
-
-### 2. בדוק את שם ה-Bucket
-וודא שאתה משתמש בשם הנכון של ה-bucket:
-```bash
-gsutil cors set cors.json gs://ironi-dorot-tiberias.appspot.com
-```
-
-### 3. בדוק את Storage Rules
-וודא שה-Storage Rules מאפשרים כתיבה:
-```
-match /games/{allPaths=**} {
-  allow read: if true;
-  allow write: if isEditorOrAdmin();
-}
-```
-
-### 4. בדוק את Authentication
-וודא שהמשתמש מחובר ובעל הרשאות מתאימות.
-
-## תכונות חדשות - גלריית תמונות למשחקים
-
-המערכת כוללת כעת תמיכה בגלריית תמונות למשחקים:
-
-### תכונות:
-- העלאת תמונות מרובות לכל משחק
-- תצוגת גלריה עם תמונות ממוזערות
-- Lightbox לצפייה בתמונות בגודל מלא
-- ניווט בין תמונות עם מקשים או כפתורים
-- מחיקת תמונות (למשתמשים מורשים בלבד)
-
-### הרשאות:
-- רק עורכים ומנהלים יכולים להעלות תמונות
-- כולם יכולים לצפות בתמונות
-- רק מנהלים יכולים למחוק תמונות
-
-### מגבלות:
-- גודל קובץ מקסימלי: 5MB
-- סוגי קבצים נתמכים: תמונות בלבד
-- מיקום אחסון: `/games/` ב-Firebase Storage 
+אם אתה רוצה לבדוק את האתר בלי Firebase, תוכל להעיר את השימוש ב-Firebase בקוד. 

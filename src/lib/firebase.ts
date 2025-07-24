@@ -2,7 +2,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth"; // Import auth service
-import { getStorage } from "firebase/storage"; // Import storage service
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,7 +20,6 @@ const firebaseConfig = {
 let app;
 let db;
 let auth;
-let storage;
 
 try {
   // Check if we have real Firebase config (not demo values)
@@ -29,7 +27,6 @@ try {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
-    storage = getStorage(app);
     console.log("Firebase initialized successfully");
   } else {
     console.warn("Firebase not configured - using demo mode");
@@ -39,4 +36,4 @@ try {
 }
 
 // Export Firebase services (will be undefined if not initialized)
-export { db, auth, storage }; 
+export { db, auth }; 
