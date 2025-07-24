@@ -101,11 +101,6 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
         const files = event.target.files;
         if (!files || files.length === 0) return;
 
-        if (!storage) {
-            toast({ title: "Firebase Storage לא זמין", variant: "destructive" });
-            return;
-        }
-
         setUploadingImages(true);
         const uploadedUrls: string[] = [];
 
@@ -125,29 +120,96 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                     continue;
                 }
 
-                const timestamp = Date.now();
-                const fileName = `games/${timestamp}_${file.name}`;
-                const storageRef = ref(storage, fileName);
-                
-                await uploadBytes(storageRef, file);
-                const downloadURL = await getDownloadURL(storageRef);
-                uploadedUrls.push(downloadURL);
+                // Try Firebase Storage first
+                if (storage) {
+                    const timestamp = Date.now();
+                    const fileName = `games/${timestamp}_${file.name}`;
+                    const storageRef = ref(storage, fileName);
+                    
+                    try {
+                        console.log(`Uploading file: ${fileName}`);
+                        const snapshot = await uploadBytes(storageRef, file);
+                        console.log(`File uploaded successfully: ${snapshot.ref.fullPath}`);
+                        
+                        const downloadURL = await getDownloadURL(snapshot.ref);
+                        console.log(`Download URL: ${downloadURL}`);
+                        uploadedUrls.push(downloadURL);
+                    } catch (uploadError) {
+                        console.error(`Error uploading file ${fileName}:`, uploadError);
+                        
+                        // Check for specific error types
+                        if (uploadError instanceof Error) {
+                            if (uploadError.message.includes('CORS')) {
+                                console.warn("CORS error detected, falling back to base64");
+                                // Fallback to base64
+                                const base64Url = await convertToBase64(file);
+                                uploadedUrls.push(base64Url);
+                            } else if (uploadError.message.includes('permission')) {
+                                toast({ 
+                                    title: "אין הרשאה להעלות תמונות", 
+                                    description: "בדוק את הרשאות המשתמש",
+                                    variant: "destructive" 
+                                });
+                            } else {
+                                console.warn("Upload error, falling back to base64");
+                                // Fallback to base64 for other errors
+                                const base64Url = await convertToBase64(file);
+                                uploadedUrls.push(base64Url);
+                            }
+                        } else {
+                            console.warn("Unknown upload error, falling back to base64");
+                            // Fallback to base64
+                            const base64Url = await convertToBase64(file);
+                            uploadedUrls.push(base64Url);
+                        }
+                    }
+                } else {
+                    // No Firebase Storage available, use base64
+                    console.log("Firebase Storage not available, using base64");
+                    const base64Url = await convertToBase64(file);
+                    uploadedUrls.push(base64Url);
+                }
             }
 
-            setImages(prev => [...prev, ...uploadedUrls]);
-            toast({ title: "התמונות הועלו בהצלחה" });
+            if (uploadedUrls.length > 0) {
+                setImages(prev => [...prev, ...uploadedUrls]);
+                toast({ 
+                    title: `${uploadedUrls.length} תמונות הועלו בהצלחה`,
+                    description: uploadedUrls.length < files.length ? `${files.length - uploadedUrls.length} תמונות נכשלו` : undefined
+                });
+            }
         } catch (error) {
-            console.error("Error uploading images:", error);
+            console.error("Error in image upload process:", error);
             toast({ title: "שגיאה בהעלאת התמונות", variant: "destructive" });
         } finally {
             setUploadingImages(false);
         }
     };
 
+    // Helper function to convert file to base64
+    const convertToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result as string);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
+
     const removeImage = async (imageUrl: string, index: number) => {
-        if (!storage) {
-            // If storage is not available, just remove from state
+        // If it's a base64 URL, just remove from state
+        if (imageUrl.startsWith('data:')) {
             setImages(prev => prev.filter((_, i) => i !== index));
+            toast({ title: "התמונה נמחקה בהצלחה" });
+            return;
+        }
+
+        // If Firebase Storage is not available, just remove from state
+        if (!storage) {
+            setImages(prev => prev.filter((_, i) => i !== index));
+            toast({ title: "התמונה נמחקה בהצלחה" });
             return;
         }
 
@@ -166,6 +228,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
             console.error("Error deleting image:", error);
             // Even if deletion fails, remove from state
             setImages(prev => prev.filter((_, i) => i !== index));
+            toast({ title: "התמונה נמחקה מהרשימה" });
         }
     };
 
@@ -345,6 +408,15 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                                     </Button>
                                 </div>
                                 
+                                {/* Storage Status */}
+                                <div className="text-xs text-muted-foreground">
+                                    {storage ? (
+                                        <span className="text-green-600">✓ תמונות יישמרו ב-Firebase Storage</span>
+                                    ) : (
+                                        <span className="text-orange-600">⚠ תמונות יישמרו כקובץ מקומי (base64)</span>
+                                    )}
+                                </div>
+                                
                                 {/* Image Gallery */}
                                 {images.length > 0 && (
                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -364,6 +436,12 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                                                 >
                                                     <X className="h-3 w-3" />
                                                 </Button>
+                                                {/* Storage indicator */}
+                                                {imageUrl.startsWith('data:') && (
+                                                    <div className="absolute bottom-1 left-1 bg-orange-500 text-white text-xs px-1 py-0.5 rounded">
+                                                        מקומי
+                                                    </div>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
