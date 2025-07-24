@@ -10,6 +10,7 @@ import { db } from "@/lib/firebase";
 import { collection, addDoc, getDocs, query, orderBy, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import AddGameDialog from "@/components/AddGameDialog";
+import GameImageGallery from "@/components/GameImageGallery";
 import { getTeamLogo } from "@/lib/team-logo-map";
 import { getCompetitionLogo } from "@/lib/competition-logo-map";
 import { Separator } from "@/components/ui/separator";
@@ -345,6 +346,14 @@ const Games = () => {
                           </a>
                         </Button>
                     )}
+                    
+                    {/* Game Images Gallery */}
+                    {nextGame.images && nextGame.images.length > 0 && (
+                      <GameImageGallery 
+                        images={nextGame.images} 
+                        gameTitle={`${nextGame.opponent} - ${nextGame.competition}`}
+                      />
+                    )}
                 </CardContent>
               </Card>
             </div>
@@ -485,6 +494,14 @@ const Games = () => {
                           </a>
                         </Button>
                     )}
+                    
+                    {/* Game Images Gallery */}
+                    {game.images && game.images.length > 0 && (
+                      <GameImageGallery 
+                        images={game.images} 
+                        gameTitle={`${game.opponent} - ${game.competition}`}
+                      />
+                    )}
                 </CardContent>
               </Card>
               ))}
@@ -603,6 +620,14 @@ const Games = () => {
                             <span className="whitespace-pre-line break-words">{game.notes}</span>
                           </div>
                         </>
+                      )}
+                      
+                      {/* Game Images Gallery */}
+                      {game.images && game.images.length > 0 && (
+                        <GameImageGallery 
+                          images={game.images} 
+                          gameTitle={`${game.opponent} - ${game.competition}`}
+                        />
                       )}
                     </CardContent>
                   </Card>

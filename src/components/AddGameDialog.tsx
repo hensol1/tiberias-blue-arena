@@ -18,11 +18,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
-import { db } from "@/lib/firebase";
+import { db, storage } from "@/lib/firebase";
 import { collection, addDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { useToast } from "@/hooks/use-toast";
 import { TEAM_NAMES } from "@/lib/team-logo-map";
 import { COMPETITION_NAMES } from "@/lib/competition-logo-map";
+import { X, Upload, Image as ImageIcon } from "lucide-react";
 
 const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit }: {
     isOpen: boolean;
@@ -40,6 +42,8 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
     const [ticketLink, setTicketLink] = useState("");
     const [score, setScore] = useState("");
     const [notes, setNotes] = useState("");
+    const [images, setImages] = useState<string[]>([]);
+    const [uploadingImages, setUploadingImages] = useState(false);
     const { toast } = useToast();
 
     const isEditMode = !!gameToEdit;
@@ -55,6 +59,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
             setScore(gameToEdit.score || "");
             setTicketLink(gameToEdit.ticketLink || "");
             setNotes(gameToEdit.notes || "");
+            setImages(gameToEdit.images || []);
         } else {
              // Reset form when opening for a new game
             setTeam("senior");
@@ -66,9 +71,9 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
             setScore("");
             setTicketLink("");
             setNotes("");
+            setImages([]);
         }
     }, [gameToEdit, isEditMode, isOpen]);
-
 
     const getGameStatus = (gameDate: string, gameScore: string) => {
         if (gameScore) {
@@ -92,6 +97,77 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
         return null; // Draw
     };
 
+    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        if (!storage) {
+            toast({ title: "Firebase Storage לא זמין", variant: "destructive" });
+            return;
+        }
+
+        setUploadingImages(true);
+        const uploadedUrls: string[] = [];
+
+        try {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    toast({ title: "רק קבצי תמונה נתמכים", variant: "destructive" });
+                    continue;
+                }
+
+                // Validate file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    toast({ title: "גודל הקובץ חייב להיות פחות מ-5MB", variant: "destructive" });
+                    continue;
+                }
+
+                const timestamp = Date.now();
+                const fileName = `games/${timestamp}_${file.name}`;
+                const storageRef = ref(storage, fileName);
+                
+                await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(storageRef);
+                uploadedUrls.push(downloadURL);
+            }
+
+            setImages(prev => [...prev, ...uploadedUrls]);
+            toast({ title: "התמונות הועלו בהצלחה" });
+        } catch (error) {
+            console.error("Error uploading images:", error);
+            toast({ title: "שגיאה בהעלאת התמונות", variant: "destructive" });
+        } finally {
+            setUploadingImages(false);
+        }
+    };
+
+    const removeImage = async (imageUrl: string, index: number) => {
+        if (!storage) {
+            // If storage is not available, just remove from state
+            setImages(prev => prev.filter((_, i) => i !== index));
+            return;
+        }
+
+        try {
+            // Extract the file path from the URL
+            const urlParts = imageUrl.split('/');
+            const fileName = urlParts[urlParts.length - 1];
+            const filePath = `games/${fileName}`;
+            
+            const storageRef = ref(storage, filePath);
+            await deleteObject(storageRef);
+            
+            setImages(prev => prev.filter((_, i) => i !== index));
+            toast({ title: "התמונה נמחקה בהצלחה" });
+        } catch (error) {
+            console.error("Error deleting image:", error);
+            // Even if deletion fails, remove from state
+            setImages(prev => prev.filter((_, i) => i !== index));
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -110,6 +186,7 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
             score,
             notes,
             ticketLink,
+            images,
             status: getGameStatus(date, score),
             won: determineWon(score),
             lastUpdated: serverTimestamp()
@@ -136,10 +213,9 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
         }
     };
 
-
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-2xl" dir="rtl">
+            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto" dir="rtl">
                 <DialogHeader>
                     <DialogTitle>{isEditMode ? "עריכת משחק" : "הוספת משחק חדש"}</DialogTitle>
                     <DialogDescription>
@@ -244,6 +320,57 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                             />
                         </div>
 
+                        {/* Images Upload */}
+                        <div className="space-y-2 md:col-span-2">
+                            <Label htmlFor="images">תמונות מהמשחק</Label>
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2">
+                                    <Input
+                                        id="images"
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleImageUpload}
+                                        disabled={uploadingImages}
+                                        className="flex-1"
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        disabled={uploadingImages}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <Upload className="h-4 w-4" />
+                                        {uploadingImages ? "מעלה..." : "העלה תמונות"}
+                                    </Button>
+                                </div>
+                                
+                                {/* Image Gallery */}
+                                {images.length > 0 && (
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                                        {images.map((imageUrl, index) => (
+                                            <div key={index} className="relative group">
+                                                <img
+                                                    src={imageUrl}
+                                                    alt={`תמונה ${index + 1}`}
+                                                    className="w-full h-24 object-cover rounded-md"
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="destructive"
+                                                    size="icon"
+                                                    className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    onClick={() => removeImage(imageUrl, index)}
+                                                >
+                                                    <X className="h-3 w-3" />
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                         {/* Notes */}
                         <div className="space-y-2 md:col-span-2">
                             <Label htmlFor="notes">הערות</Label>
@@ -258,7 +385,9 @@ const AddGameDialog = ({ isOpen, onClose, onGameAdded, onGameUpdated, gameToEdit
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={onClose}>ביטול</Button>
-                        <Button type="submit">{isEditMode ? "שמור שינויים" : "הוסף משחק"}</Button>
+                        <Button type="submit" disabled={uploadingImages}>
+                            {isEditMode ? "שמור שינויים" : "הוסף משחק"}
+                        </Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

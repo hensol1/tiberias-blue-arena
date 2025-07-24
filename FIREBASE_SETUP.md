@@ -36,7 +36,7 @@ VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 4. גלול למטה ל-"Your apps" ובחר את האפליקציה
 5. העתק את הערכים מה-config object
 
-## הגדרת Firestore Security Rules
+## הגדרת Firebase Services
 
 ### התקנת Firebase CLI
 
@@ -52,10 +52,15 @@ firebase login
 
 3. אתחל את הפרויקט:
 ```bash
-firebase init firestore
+firebase init
 ```
 
-### פריסת Security Rules
+בחר את השירותים הבאים:
+- Firestore Database
+- Storage
+- Hosting (אופציונלי)
+
+### הגדרת Firestore Security Rules
 
 1. העתק את הקובץ `firestore.rules` לתיקיית הפרויקט
 2. פרוס את הכללים:
@@ -63,12 +68,28 @@ firebase init firestore
 firebase deploy --only firestore:rules
 ```
 
+### הגדרת Storage Security Rules
+
+1. העתק את הקובץ `storage.rules` לתיקיית הפרויקט
+2. פרוס את הכללים:
+```bash
+firebase deploy --only storage
+```
+
 ### או דרך Firebase Console
 
+#### Firestore Rules
 1. לך ל-[Firebase Console](https://console.firebase.google.com/)
 2. בחר את הפרויקט שלך
 3. לך ל-Firestore Database > Rules
 4. העתק את התוכן מקובץ `firestore.rules`
+5. לחץ על "Publish"
+
+#### Storage Rules
+1. לך ל-[Firebase Console](https://console.firebase.google.com/)
+2. בחר את הפרויקט שלך
+3. לך ל-Storage > Rules
+4. העתק את התוכן מקובץ `storage.rules`
 5. לחץ על "Publish"
 
 ## הגדרת Authentication
@@ -77,16 +98,36 @@ firebase deploy --only firestore:rules
 2. בחר את הפרויקט שלך
 3. לך ל-Authentication > Sign-in method
 4. הפעל Email/Password
-5. צור משתמשים:
+5. הוסף משתמשים:
    - admin@tiberias.com (מנהל)
    - editor@tiberias.com (עורך)
 
-## הרשאות משתמשים
+## הגדרת Storage
 
-- **admin@tiberias.com**: יכול להוסיף, לערוך ולמחוק חדשות, משחקים וסרטונים
-- **editor@tiberias.com**: יכול להוסיף ולערוך חדשות, משחקים וסרטונים (לא למחוק)
-- **משתמשים אחרים**: יכולים רק לצפות בתוכן
+1. לך ל-[Firebase Console](https://console.firebase.google.com/)
+2. בחר את הפרויקט שלך
+3. לך ל-Storage
+4. לחץ על "Get started"
+5. בחר את מיקום השרת הקרוב אליך
+6. בחר "Start in test mode" (אפשר לשנות מאוחר יותר)
 
-## פתרון זמני
+## תכונות חדשות - גלריית תמונות למשחקים
 
-אם אתה רוצה לבדוק את האתר בלי Firebase, תוכל להעיר את השימוש ב-Firebase בקוד. 
+המערכת כוללת כעת תמיכה בגלריית תמונות למשחקים:
+
+### תכונות:
+- העלאת תמונות מרובות לכל משחק
+- תצוגת גלריה עם תמונות ממוזערות
+- Lightbox לצפייה בתמונות בגודל מלא
+- ניווט בין תמונות עם מקשים או כפתורים
+- מחיקת תמונות (למשתמשים מורשים בלבד)
+
+### הרשאות:
+- רק עורכים ומנהלים יכולים להעלות תמונות
+- כולם יכולים לצפות בתמונות
+- רק מנהלים יכולים למחוק תמונות
+
+### מגבלות:
+- גודל קובץ מקסימלי: 5MB
+- סוגי קבצים נתמכים: תמונות בלבד
+- מיקום אחסון: `/games/` ב-Firebase Storage 
