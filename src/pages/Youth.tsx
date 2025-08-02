@@ -5,6 +5,7 @@ import dorotLogo from "@/assets/sponsors/dorot.png";
 import goOutLogo from "@/assets/sponsors/go-out.png";
 import nofGinosarLogo from "@/assets/sponsors/nof-ginosar.png";
 import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
+import academyImage from "@/assets/youth/academy.jpeg";
 import { useIsMobile } from "@/hooks/use-mobile";
 import mobileSponsors from "@/assets/sponsors/mobile sponsors.png";
 
@@ -15,11 +16,16 @@ const Youth = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Header />
       
-      {/* Coming Soon Section */}
-      <section className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold text-team-dark mb-4">Coming Soon</h1>
-          <p className="text-xl text-muted-foreground">מחלקת הנוער - בקרוב</p>
+      {/* Academy Photo Section */}
+      <section className="flex items-center justify-center min-h-[60vh] py-8">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <img 
+              src={academyImage} 
+              alt="Ironi Dorot Tiberias F.C. Academy" 
+              className="w-full h-auto rounded-lg shadow-lg"
+            />
+          </div>
         </div>
       </section>
 
