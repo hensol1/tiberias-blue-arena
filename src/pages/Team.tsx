@@ -41,6 +41,19 @@ import MatanDegani from "@/assets/lovable-uploads/Matan Dgani.png";
 
 
 
+// Function to get country flag image URL
+const getCountryFlagUrl = (country: string): string => {
+  const flagMap: { [key: string]: string } = {
+    "ישראל": "https://flagcdn.com/w40/il.png",
+    "פורטוגל": "https://flagcdn.com/w40/pt.png",
+    "צ'כיה": "https://flagcdn.com/w40/cz.png",
+    "גינאה-ביסאו": "https://flagcdn.com/w40/gw.png",
+    "ניגריה": "https://flagcdn.com/w40/ng.png",
+    "אוקראינה": "https://flagcdn.com/w40/ua.png"
+  };
+  return flagMap[country] || "https://flagcdn.com/w40/xx.png";
+};
+
 const Team = () => {
   const players = [
     { name: "רוג'ריו סנטוס", position: "שוער", number: 1, age: 26, image: santos, country: "פורטוגל" },
@@ -86,43 +99,60 @@ const Team = () => {
   const forwards = players.filter(p => p.position === 'התקפה');
 
   const renderPlayerCard = (player, index) => (
-    <div key={index} className="relative w-full h-64 md:h-80 group perspective-1000">
-      <div className="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
-        {/* Front of card */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rounded-lg overflow-hidden shadow-lg">
-          <div className="relative w-full h-full">
-            <img 
-              src={player.image} 
-              alt={player.name}
-              className="w-full h-full object-cover object-top"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-          </div>
-        </div>
-        
-        {/* Back of card */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-team-primary to-team-dark rotate-y-180">
-          {/* Background image */}
-          <img 
-              src={player.image} 
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover object-top opacity-30"
-          />
-           {/* Overlay to ensure text readability */}
-          <div className="absolute inset-0 w-full h-full bg-team-dark/60"></div>
+    <div key={index} className="relative w-full aspect-[3/4] max-h-[280px] rounded-lg overflow-hidden shadow-lg group">
+      {/* Background with grid pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-sky-300 via-blue-400 to-blue-500 z-0">
+        {/* Grid pattern overlay */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)
+            `,
+            backgroundSize: '30px 30px'
+          }}
+        ></div>
+      </div>
 
-          <div className="relative flex flex-col justify-center items-center h-full p-4 md:p-6 text-white text-center">
-            <h3 className="text-xl md:text-2xl font-bold mb-4">{player.name}</h3>
-            <div className="flex flex-col items-center space-y-2 md:space-y-3 text-base md:text-lg">
-              <p><span className="font-semibold">גיל:</span> {player.age}</p>
-              <p><span className="font-semibold">עמדה:</span> {player.position}</p>
-              <p><span className="font-semibold">מדינה:</span> {player.country}</p>
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-full flex items-center justify-center mt-3 md:mt-4">
-                <span className="text-lg md:text-xl font-bold">{player.number}</span>
-              </div>
-            </div>
-          </div>
+      {/* Player image */}
+      <div className="absolute inset-0 z-10">
+        <img 
+          src={player.image} 
+          alt={player.name}
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+      </div>
+
+      {/* Player number - top right */}
+      <div className="absolute top-2 right-2 z-20">
+        <span className="text-3xl md:text-4xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+          {player.number}
+        </span>
+      </div>
+
+      {/* Country flag icon - top left */}
+      <div className="absolute top-2 left-2 z-30">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center border-2 border-white shadow-xl ring-1 ring-blue-200/50 overflow-hidden p-0.5">
+          <img 
+            src={getCountryFlagUrl(player.country)} 
+            alt={player.country}
+            className="w-full h-full object-cover rounded-full"
+            onError={(e) => {
+              // Fallback to placeholder if image fails to load
+              e.currentTarget.src = "https://flagcdn.com/w40/xx.png";
+            }}
+          />
         </div>
+      </div>
+
+      {/* Player name - bottom */}
+      <div className="absolute bottom-0 left-0 right-0 bg-white p-2 md:p-3 z-20 border-t-2 border-blue-200">
+        <h3 className="text-sm md:text-base font-bold text-blue-900 uppercase tracking-tight text-center leading-tight">
+          {player.name}
+        </h3>
       </div>
     </div>
   );
@@ -130,51 +160,41 @@ const Team = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-white">
       <Header />
       
-      {/* Hero Section */}
-      <section className="bg-gradient-to-l from-team-primary to-team-dark text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">הקבוצה</h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            הכירו את השחקנים והצוות המקצועי של עירוני דורות טבריה
-          </p>
-        </div>
-      </section>
-
-      <div className="container mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-8 md:py-12">
         {/* Players Section */}
         <section className="mb-16">
 
           {/* Goalkeepers */}
           <div className="mb-12">
-            <h3 className="text-2xl font-bold mb-6 text-right text-team-primary border-r-4 border-team-secondary pr-4">שוערים</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-sky-500 uppercase tracking-wide">שוערים</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
               {goalkeepers.map(renderPlayerCard)}
             </div>
           </div>
 
           {/* Defenders */}
           <div className="mb-12">
-            <h3 className="text-2xl font-bold mb-6 text-right text-team-primary border-r-4 border-team-secondary pr-4">הגנה</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-sky-500 uppercase tracking-wide">הגנה</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
               {defenders.map(renderPlayerCard)}
             </div>
           </div>
 
           {/* Midfielders */}
           <div className="mb-12">
-            <h3 className="text-2xl font-bold mb-6 text-right text-team-primary border-r-4 border-team-secondary pr-4">קישור</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-sky-500 uppercase tracking-wide">קישור</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
               {midfielders.map(renderPlayerCard)}
             </div>
           </div>
 
           {/* Forwards */}
           <div>
-            <h3 className="text-2xl font-bold mb-6 text-right text-team-primary border-r-4 border-team-secondary pr-4">התקפה</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-sky-500 uppercase tracking-wide">התקפה</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
               {forwards.map(renderPlayerCard)}
             </div>
           </div>
@@ -207,7 +227,7 @@ const Team = () => {
 
       {/* Sponsors Section - Bottom of the Page */}
       <section className="py-10 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           {/* Desktop sponsors grid */}
           {!isMobile && (
             <div className="hidden md:grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-5 items-center">
