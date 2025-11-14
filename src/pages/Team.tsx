@@ -4,52 +4,72 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+import santos from "@/assets/lovable-uploads/santos.png";
 import IdoSharon from "@/assets/lovable-uploads/Ido Sharon.png";
+import jonas from "@/assets/lovable-uploads/jonas.png";
 import OndrejBaco from "@/assets/lovable-uploads/Ondrej Baco.png";
 import SambaKonte from "@/assets/lovable-uploads/Samba.png";
 import OmerYitzhak from "@/assets/lovable-uploads/Omer Yitzhak.png";
 import HaroonShapso from "@/assets/lovable-uploads/Haroon Shapso.png";
 import EliBalilti from "@/assets/lovable-uploads/Eli Balilti.png";
 import RonUnger from "@/assets/lovable-uploads/Ron Unger.png";
-import DavidKeltjens from "@/assets/lovable-uploads/David Keltjens.webp";
-import IlayElmkies from "@/assets/lovable-uploads/Ilay Elmkies.webp";
+import DavidKeltjens from "@/assets/lovable-uploads/David Keltjens.png";
 import Usman from "@/assets/lovable-uploads/Usman.png";
-import YonatanTeper from "@/assets/lovable-uploads/Yonatan Teper.webp";
+import YonatanTeper from "@/assets/lovable-uploads/Yonatan Teper.png";
 import NivGotliv from "@/assets/lovable-uploads/Niv Gotliv.png";
-import WahebHabiballah from "@/assets/lovable-uploads/Waheb Habiballah.webp";
-import StanislavBilenkyi from "@/assets/lovable-uploads/Stanislav Bilenkyi.webp";
-import IdanDahan from "@/assets/lovable-uploads/Idan Dahan.png";
+import WahebHabiballah from "@/assets/lovable-uploads/Waheb Habiballah.png";
+import StanislavBilenkyi from "@/assets/lovable-uploads/Stanislav Bilenkyi.png";
 import EliranHodada from "@/assets/lovable-uploads/Eliran.jpg";
 import MotiIvanir from "@/assets/lovable-uploads/Moti.png";
 import NivTubul from "@/assets/lovable-uploads/53254.png";
-import PeterMichael from "@/assets/lovable-uploads/Peter Michael.webp";
+import PeterMichael from "@/assets/lovable-uploads/Peter Michael.png";
 import burgerSaloonLogo from "@/assets/sponsors/burger-saloon.jpg";
 import dorotLogo from "@/assets/sponsors/dorot.png";
 import goOutLogo from "@/assets/sponsors/go-out.png";
 import nofGinosarLogo from "@/assets/sponsors/nof-ginosar.png";
 import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 import mobileSponsors from "@/assets/sponsors/mobile sponsors.png";
+import ItamarShabir from "@/assets/lovable-uploads/Itamar Shvir.png";
+import PiraAbuAkla from "@/assets/lovable-uploads/Feras Abu Akel.png";
+import ItanWolblum from "@/assets/lovable-uploads/Eitan Velblum.png";
+import YoniKashon from "@/assets/lovable-uploads/Yonatan Hason.png";
+import hen from "@/assets/lovable-uploads/Nehoray Chen.png";
+import swisa from "@/assets/lovable-uploads/Yarin Swisa.png";
+import baranes from "@/assets/lovable-uploads/Idan Baranes.png";
+import DanielGolony from "@/assets/lovable-uploads/Daniel Joulani.png";
+import MatanDegani from "@/assets/lovable-uploads/Matan Dgani.png";
 
 
 
 const Team = () => {
   const players = [
-    { name: "עידו שרון", position: "שוער", number: 1, age: 23, image: IdoSharon, country: "ישראל" },
+    { name: "רוג'ריו סנטוס", position: "שוער", number: 1, age: 26, image: santos, country: "פורטוגל" },
+    { name: "עידו שרון", position: "שוער", number: 22, age: 23, image: IdoSharon, country: "ישראל" },
+    { name: "ג'ונאס אבו גאנימה", position: "שוער", number: 33, age: 21, image: jonas, country: "ישראל" },
     { name: "אונדז'יי באצ'ו", position: "הגנה", number: 37, age: 29, image: OndrejBaco, country: "צ'כיה" },
     { name: "סמביניה", position: "הגנה", number: 4, age: 32, image: SambaKonte, country: "גינאה-ביסאו" },
-    { name: "עומר יצחק", position: "הגנה", number: 17, age: 24, image: OmerYitzhak, country: "ישראל" },
+    { name: "עומר יצחק", position: "הגנה", number: 2, age: 24, image: OmerYitzhak, country: "ישראל" },
     { name: "הארון שפסו", position: "הגנה", number: 99, age: 26, image: HaroonShapso, country: "ישראל" },
     { name: "אלי בלילתי", position: "הגנה", number: 15, age: 31, image: EliBalilti, country: "ישראל" },
-    { name: "רון אונגר", position: "הגנה", number: 2, age: 23, image: RonUnger, country: "ישראל" },
+    { name: "רון אונגר", position: "הגנה", number: 17, age: 23, image: RonUnger, country: "ישראל" },
+    { name: "דניאל גולני", position: "הגנה", number: 47, age: 22, image: DanielGolony, country: "ישראל" },
+    { name: "נהוראי חן", position: "הגנה", number: 74, age: 20, image: hen, country: "ישראל" },
+    { name: "יונתן חסון", position: "הגנה", number: 20, age: 20, image: YoniKashon, country: "ישראל" },
     { name: "דויד קלטינס", position: "קשר", number: 3, age: 30, image: DavidKeltjens, country: "ישראל" },
-    { name: "עילאי אלמקייס", position: "קשר", number: 10, age: 25, image: IlayElmkies, country: "ישראל" },
+    { name: "פיראס אבו עקל", position: "קשר", number: 6, age: 28, image: PiraAbuAkla, country: "ישראל" },
     { name: "מוחמד אוסמן", position: "קשר", number: 10, age: 31, image: Usman, country: "ניגריה" },
     { name: "יונתן טפר", position: "קשר", number: 5, age: 24, image: YonatanTeper, country: "ישראל" },
-    { name: "ניב גוטליב", position: "קשר", number: 80, age: 22, image: NivGotliv, country: "ישראל" },
+    { name: "ניב גוטליב", position: "קשר", number: 11, age: 22, image: NivGotliv, country: "ישראל" },
+    { name: "איתן וולבלום", position: "קשר", number: 8, age: 28, image: ItanWolblum, country: "ישראל" },
+    { name: "ירין סויסה", position: "קשר", number: 27, age: 20, image: swisa, country: "ישראל" },
+    { name: "מתן דגני", position: "קשר", number: 28, age: 20, image: MatanDegani, country: "ישראל" },
     { name: "וואהיב חביבאללה", position: "התקפה", number: 14, age: 27, image: WahebHabiballah, country: "ישראל" },
     { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה" },
-    { name: "עידן דהאן", position: "התקפה", number: 11, age: 24, image: IdanDahan, country: "ישראל" },
-    { name: "פיטר מייקל", position: "התקפה", number: 10, age: 27, image: PeterMichael, country: "ניגריה" }
+    { name: "פיטר מייקל", position: "התקפה", number: 90, age: 27, image: PeterMichael, country: "ניגריה" },
+    { name: "איתמר שבירו", position: "התקפה", number: 19, age: 27, image: ItamarShabir, country: "ישראל" },
+    { name: "עידן ברנס", position: "התקפה", number: 18, age: 21, image: baranes, country: "ישראל" }
+
+
   ];
 
   const staff = [
