@@ -35,7 +35,7 @@ const Footer = () => {
                 <a href="https://www.facebook.com/Tiberias.FC/" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-1.5 md:p-2 rounded-full hover:bg-team-secondary transition-colors">
                   <Facebook className="h-4 w-4 md:h-5 md:w-5" />
                 </a>
-                <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-1.5 md:p-2 rounded-full hover:bg-team-secondary transition-colors">
+                <a href="https://www.instagram.com/ironitiberiasf.c/" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-1.5 md:p-2 rounded-full hover:bg-team-secondary transition-colors">
                   <Instagram className="h-4 w-4 md:h-5 md:w-5" />
                 </a>
                 <a href="https://x.com/Ironi_Tiberias?t=3CGy4FaGpirWHP765MTfsg&s=08" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-1.5 md:p-2 rounded-full hover:bg-team-secondary transition-colors">
@@ -44,7 +44,7 @@ const Footer = () => {
                 <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" className="bg-team-secondary/20 p-1.5 md:p-2 rounded-full hover:bg-team-secondary transition-colors">
                   <Youtube className="h-4 w-4 md:h-5 md:w-5" />
                 </a>
-                <a href="https://www.tiktok.com/@iron_tiberias_f.c?_t=ZS-8yBwrzAqeqw&_r=1" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-1.5 md:p-2 rounded-full hover:bg-team-secondary transition-colors">
+                <a href="https://www.tiktok.com/@ironitiberias" target="_blank" rel="noopener noreferrer" className="bg-team-secondary/20 p-1.5 md:p-2 rounded-full hover:bg-team-secondary transition-colors">
                   <TikTokIcon className="h-4 w-4 md:h-5 md:w-5" />
                 </a>
               </div>

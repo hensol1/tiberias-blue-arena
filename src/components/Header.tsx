@@ -112,7 +112,7 @@ const Header = () => {
               <a href="https://www.facebook.com/Tiberias.FC/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://www.instagram.com/ironitiberiasf.c/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Instagram className="h-5 w-5" />
               </a>
               <a href="https://x.com/Ironi_Tiberias?t=3CGy4FaGpirWHP765MTfsg&s=08" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
@@ -121,7 +121,7 @@ const Header = () => {
               <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <Youtube className="h-5 w-5" />
               </a>
-              <a href="https://www.tiktok.com/@iron_tiberias_f.c?_t=ZS-8yBwrzAqeqw&_r=1" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://www.tiktok.com/@ironitiberias" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-team-primary transition-all duration-300 hover:scale-110 border border-white/20">
                 <TikTokIcon className="h-5 w-5" />
               </a>
               
@@ -206,7 +206,7 @@ const Header = () => {
                     <a href="https://www.facebook.com/Tiberias.FC/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Facebook className="h-6 w-6" />
                     </a>
-                    <a href="https://www.instagram.com/iron_tiberias_f.c?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
+                    <a href="https://www.instagram.com/ironitiberiasf.c/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Instagram className="h-6 w-6" />
                     </a>
                     <a href="https://x.com/Ironi_Tiberias?t=3CGy4FaGpirWHP765MTfsg&s=08" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
@@ -215,7 +215,7 @@ const Header = () => {
                     <a href="https://www.youtube.com/@IroniDorotTiberiasF.C.Official" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <Youtube className="h-6 w-6" />
                     </a>
-                    <a href="https://www.tiktok.com/@iron_tiberias_f.c?_t=ZS-8yBwrzAqeqw&_r=1" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
+                    <a href="https://www.tiktok.com/@ironitiberias" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-white/20 text-white hover:bg-white hover:text-team-primary transition-all duration-300">
                       <TikTokIcon className="h-6 w-6" />
                     </a>
                   </div>
