@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NewsFeed from "@/components/NewsFeed";
+import NextFixtures from "@/components/NextFixtures";
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
@@ -325,10 +326,22 @@ const Index = () => {
         </section>
       )}
 
-      {/* Main Content - News Feed */}
-      <section className="py-16">
+      {/* Main Content - News and Fixtures in Two Columns */}
+      <section className="py-8 bg-white">
         <div className="container mx-auto px-4">
-          <NewsFeed />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - ALL NEWS */}
+            <div className="lg:col-span-2">
+              <h2 className="text-xl font-bold text-right mb-3 text-gray-900">ALL NEWS</h2>
+              <NewsFeed isCompact={true} />
+            </div>
+
+            {/* Right Column - NEXT FIXTURES */}
+            <div className="lg:col-span-1">
+              <h2 className="text-xl font-bold text-right mb-3 text-gray-900">NEXT FIXTURES</h2>
+              <NextFixtures nextGame={nextGame} isLoadingGame={isLoadingGame} />
+            </div>
+          </div>
         </div>
       </section>
 

@@ -12,7 +12,7 @@ import {
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Trash2 } from "lucide-react";
+import { Calendar, Trash2, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface NewsCardProps {
@@ -25,14 +25,89 @@ interface NewsCardProps {
   featured?: boolean;
   showDelete?: boolean;
   onDelete?: (id: string) => void;
+  isLarge?: boolean;
+  duration?: string;
 }
 
-const NewsCard = ({ id, title, excerpt, image, date, category, featured = false, showDelete = false, onDelete }: NewsCardProps) => {
+// Map Hebrew categories to English labels
+const getCategoryLabel = (category: string): string => {
+  const categoryMap: { [key: string]: string } = {
+    'כללי': 'FEATURES',
+    'משחקים': 'MATCHES',
+    'אימונים': 'TRAINING',
+    'העברות': 'TRANSFERS',
+    'נוער': 'YOUTH',
+    'ראיונות': 'INTERVIEWS',
+    'תמונות': 'PICTURE SPECIAL'
+  };
+  return categoryMap[category] || category.toUpperCase();
+};
+
+const NewsCard = ({ id, title, excerpt, image, date, category, featured = false, showDelete = false, onDelete, isLarge = false, duration }: NewsCardProps) => {
   const handleDelete = () => {
     if (onDelete) {
       onDelete(id);
     }
   };
+
+  if (isLarge) {
+    return (
+      <div className="group relative hover:shadow-lg transition-all duration-300">
+        {showDelete && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="destructive"
+                size="icon"
+                className="absolute top-2 left-2 z-10 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                title="מחק חדשה"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent dir="rtl">
+              <AlertDialogHeader>
+                <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  פעולה זו תמחק את החדשה לצמיתות. לא ניתן לשחזר את הפעולה.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>ביטול</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
+                  מחק
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
+
+        <Link to={`/article/${id}`} className="cursor-pointer block">
+          <div className="relative mb-1.5">
+            <img 
+              src={image} 
+              alt={title}
+              className="w-full max-h-32 object-contain group-hover:opacity-90 transition-opacity duration-300"
+            />
+            <div className="absolute top-1.5 right-1.5 flex flex-col gap-1">
+              <Badge className="bg-black/70 text-white text-[10px] font-semibold px-1.5 py-0.5">
+                {getCategoryLabel(category)}
+              </Badge>
+              {duration && (
+                <Badge className="bg-black/70 text-white text-[10px] font-semibold px-1.5 py-0.5 flex items-center gap-0.5">
+                  <Play className="h-2.5 w-2.5" />
+                  {duration}
+                </Badge>
+              )}
+            </div>
+          </div>
+          <h3 className="text-sm font-semibold text-right mb-0 group-hover:text-team-primary transition-colors line-clamp-2 leading-tight">
+            {title}
+          </h3>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <Card className={`group relative hover:shadow-lg transition-all duration-300 overflow-hidden ${

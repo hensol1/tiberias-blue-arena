@@ -83,7 +83,11 @@ const demoNews: NewsItem[] = [
   }
 ];
 
-const NewsFeed = () => {
+interface NewsFeedProps {
+  isCompact?: boolean;
+}
+
+const NewsFeed = ({ isCompact = false }: NewsFeedProps) => {
   const { toast } = useToast();
   const { user, logout, hasPermission, isAuthenticated } = useAuth();
   const isMobile = useIsMobile();
@@ -217,27 +221,29 @@ const NewsFeed = () => {
   }
   
   return (
-    <div className="space-y-6">
-      <div className="relative flex justify-center items-center">
-        <h2 className="text-2xl font-bold">חדשות ועדכונים</h2>
-        <div className="absolute right-0 flex items-center space-x-2 space-x-reverse">
-          {isAuthenticated && hasPermission('add_news') && db && (
-            <Button onClick={() => setShowAddForm(s => !s)} className="bg-team-primary hover:bg-team-secondary">
-              <Plus className="h-4 w-4 ml-2" />
-              {showAddForm ? "בטל" : "הוסף חדשה"}
-            </Button>
-          )}
-          {isAuthenticated && (
-             <div className="flex items-center space-x-2 space-x-reverse">
-              <span className="text-sm text-gray-600">שלום, {user?.name}</span>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 ml-1" />
-                התנתק
+    <div className={isCompact ? "space-y-3" : "space-y-6"}>
+      {!isCompact && (
+        <div className="relative flex justify-center items-center">
+          <h2 className="text-2xl font-bold">חדשות ועדכונים</h2>
+          <div className="absolute right-0 flex items-center space-x-2 space-x-reverse">
+            {isAuthenticated && hasPermission('add_news') && db && (
+              <Button onClick={() => setShowAddForm(s => !s)} className="bg-team-primary hover:bg-team-secondary">
+                <Plus className="h-4 w-4 ml-2" />
+                {showAddForm ? "בטל" : "הוסף חדשה"}
               </Button>
-            </div>
-          )}
+            )}
+            {isAuthenticated && (
+               <div className="flex items-center space-x-2 space-x-reverse">
+                <span className="text-sm text-gray-600">שלום, {user?.name}</span>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4 ml-1" />
+                  התנתק
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {!db && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-right">
@@ -338,16 +344,30 @@ const NewsFeed = () => {
       )}
 
       {/* News Feed Layout - Responsive grid for desktop, vertical stack for mobile */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        {displayedNews.map((item) => (
-          <NewsCard
-            key={item.id}
-            {...item}
-            showDelete={isAuthenticated && hasPermission('delete_news')}
-            onDelete={() => handleDeleteNews(item.id)}
-          />
-        ))}
-      </div>
+      {isCompact ? (
+        <div className="space-y-3">
+          {displayedNews.map((item) => (
+            <NewsCard
+              key={item.id}
+              {...item}
+              isLarge={true}
+              showDelete={isAuthenticated && hasPermission('delete_news')}
+              onDelete={() => handleDeleteNews(item.id)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {displayedNews.map((item) => (
+            <NewsCard
+              key={item.id}
+              {...item}
+              showDelete={isAuthenticated && hasPermission('delete_news')}
+              onDelete={() => handleDeleteNews(item.id)}
+            />
+          ))}
+        </div>
+      )}
       
       {/* Show More/Less Button */}
       {!isLoading && news.length > 5 && (
