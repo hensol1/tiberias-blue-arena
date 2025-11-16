@@ -374,27 +374,37 @@ const NewsFeed = ({ isCompact = false }: NewsFeedProps) => {
           {/* Secondary smaller items */}
           <div className="space-y-3">
             {displayedNews.slice(1).map((item) => (
-              <Link
+              <div
                 key={item.id}
-                to={`/article/${item.id}`}
-                className="flex items-center gap-3 group"
+                className="border-t border-gray-200 first:border-t-0 pt-3"
               >
-                <div className="w-24 h-16 md:w-28 md:h-18 rounded-md overflow-hidden flex-shrink-0">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="flex-1 text-right">
-                  <div className="text-[10px] md:text-xs font-semibold text-blue-600 mb-0.5">
-                    {getCategoryLabel(item.category)}
+                <Link
+                  to={`/article/${item.id}`}
+                  className="flex items-center gap-3 group"
+                >
+                  <div className="w-24 h-16 md:w-28 md:h-20 rounded-md overflow-hidden flex-shrink-0 bg-gray-100">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-                  <div className="text-sm md:text-base font-semibold leading-tight line-clamp-2 group-hover:text-team-primary transition-colors">
-                    {item.title}
+                  <div className="flex-1 text-right">
+                    <div className="text-[10px] md:text-xs font-semibold text-blue-600 mb-0.5 uppercase tracking-wide">
+                      {getCategoryLabel(item.category)}
+                    </div>
+                    <div className="text-sm md:text-base font-semibold leading-tight line-clamp-2 group-hover:text-team-primary transition-colors">
+                      {item.title}
+                    </div>
+                    <div className="flex items-center justify-end gap-1 mt-1 text-[11px] text-gray-500">
+                      <span className="ml-1">
+                        {new Date(item.date).toLocaleDateString('he-IL')}
+                      </span>
+                      <Calendar className="w-3 h-3" />
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
             ))}
           </div>
         </div>

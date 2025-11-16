@@ -52,7 +52,7 @@ const NewsCard = ({ id, title, excerpt, image, date, category, featured = false,
 
   if (isLarge) {
     return (
-      <div className="group relative hover:shadow-lg transition-all duration-300">
+      <div className="group relative hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-black">
         {showDelete && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -83,27 +83,39 @@ const NewsCard = ({ id, title, excerpt, image, date, category, featured = false,
         )}
 
         <Link to={`/article/${id}`} className="cursor-pointer block">
-          <div className="relative mb-1.5">
+          <div className="relative h-56 md:h-64 w-full overflow-hidden">
             <img 
               src={image} 
               alt={title}
-              className="w-full max-h-32 object-contain group-hover:opacity-90 transition-opacity duration-300"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              style={{ objectPosition: 'center' }}
             />
-            <div className="absolute top-1.5 right-1.5 flex flex-col gap-1">
-              <Badge className="bg-black/70 text-white text-[10px] font-semibold px-1.5 py-0.5">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+            <div className="absolute top-3 right-3 flex flex-col gap-1 items-end">
+              <Badge className="bg-white/10 backdrop-blur text-[10px] font-semibold px-2 py-0.5 border border-white/30">
                 {getCategoryLabel(category)}
               </Badge>
               {duration && (
-                <Badge className="bg-black/70 text-white text-[10px] font-semibold px-1.5 py-0.5 flex items-center gap-0.5">
-                  <Play className="h-2.5 w-2.5" />
+                <Badge className="bg-white/10 backdrop-blur text-[10px] font-semibold px-2 py-0.5 flex items-center gap-1 border border-white/30">
+                  <Play className="h-3 w-3" />
                   {duration}
                 </Badge>
               )}
             </div>
+
+            <div className="absolute bottom-4 right-4 left-4 text-right">
+              <h3 className="text-lg md:text-xl font-bold text-white leading-snug mb-1 line-clamp-2 group-hover:text-team-secondary transition-colors">
+                {title}
+              </h3>
+              <div className="flex items-center justify-end gap-1 text-[11px] text-gray-200/90">
+                <span className="ml-1">
+                  {new Date(date).toLocaleDateString('he-IL')}
+                </span>
+                <Calendar className="h-3 w-3" />
+              </div>
+            </div>
           </div>
-          <h3 className="text-sm font-semibold text-right mb-0 group-hover:text-team-primary transition-colors line-clamp-2 leading-tight">
-            {title}
-          </h3>
         </Link>
       </div>
     );
