@@ -773,55 +773,81 @@ const Games = () => {
         {selectedTeam === 'senior' && (
           <section className="mt-16">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-team-dark">טבלת הליגה - עונה 2025/26</h2>
+              <h2 className="text-xl md:text-3xl font-bold text-team-dark">
+                טבלת הליגה - עונה 2025/26
+              </h2>
             </div>
             
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden shadow-md border-0 bg-white/80 backdrop-blur">
               {/* Desktop Table */}
               <div className="hidden md:block overflow-x-auto">
-                <table className="w-full min-w-[600px]">
-                  <thead className="bg-gray-50 border-b">
+                <table className="w-full min-w-[600px] border-separate border-spacing-0">
+                  <thead className="bg-gradient-to-l from-team-primary/90 to-team-secondary/80 text-white">
                     <tr>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">מיקום</th>
-                      <th className="px-4 py-3 text-right font-semibold text-gray-700">קבוצה</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">משחקים</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">נצחונות</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">תיקו</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">הפסדים</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">זכות</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">חובה</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">הפרש</th>
-                      <th className="px-4 py-3 text-center font-semibold text-gray-700">נקודות</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">מיקום</th>
+                      <th className="px-4 py-3 text-right text-xs font-semibold tracking-wide">קבוצה</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">משחקים</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">נצחונות</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">תיקו</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">הפסדים</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">זכות</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">חובה</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">הפרש</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold tracking-wide">נקודות</th>
                     </tr>
                   </thead>
                   <tbody>
                     {premierLeagueTable.map((team) => (
                       <tr 
                         key={team.team} 
-                        className={`border-b hover:bg-gray-50 transition-colors ${
-                          team.team === "עירוני טבריה" ? "bg-blue-50 border-l-4 border-r-4 border-team-primary" : ""
-                        } ${
-                          team.position >= 13 && team.team !== "עירוני טבריה" ? "bg-red-50" : ""
-                        }`}
+                        className={`
+                          transition-colors
+                          ${team.team === "עירוני טבריה" ? "bg-blue-50/80" : "odd:bg-white even:bg-slate-50/70"}
+                          ${team.position >= 13 && team.team !== "עירוני טבריה" ? "bg-red-50/80" : ""}
+                          hover:bg-slate-100
+                        `}
                       >
-                        <td className="px-4 py-3 text-center font-semibold">
-                          <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                            team.position >= 13 ? "bg-red-500 text-white" : 
-                            "bg-gray-200 text-gray-700"
+                        <td className="px-4 py-3 text-center font-semibold sticky right-0 bg-inherit">
+                          <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold shadow-sm ${
+                            team.position === 1
+                              ? "bg-amber-400 text-slate-900"
+                              : team.position <= 3
+                                ? "bg-emerald-500 text-white"
+                                : team.position >= 13
+                                  ? "bg-red-500 text-white"
+                                  : "bg-slate-200 text-slate-800"
                           }`}>
                             {team.position}
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            <img src={getTeamLogo(team.team)} alt={team.team} className="w-6 h-6 object-contain" />
-                            <span className="font-medium">{team.team}</span>
+                          <div className="flex items-center gap-3 justify-start">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200">
+                              <img src={getTeamLogo(team.team)} alt={team.team} className="w-6 h-6 object-contain" />
+                            </div>
+                            <span className={`font-semibold text-sm ${
+                              team.team === "עירוני טבריה" ? "text-team-primary" : "text-slate-800"
+                            }`}>
+                              {team.team}
+                            </span>
                           </div>
                         </td>
                         <td className="px-4 py-3 text-center">{team.played}</td>
-                        <td className="px-4 py-3 text-center text-green-600 font-semibold">{team.won}</td>
-                        <td className="px-4 py-3 text-center text-yellow-600 font-semibold">{team.drawn}</td>
-                        <td className="px-4 py-3 text-center text-red-600 font-semibold">{team.lost}</td>
+                        <td className="px-4 py-3 text-center">
+                          <span className="inline-flex min-w-[2.5rem] justify-center rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">
+                            {team.won}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <span className="inline-flex min-w-[2.5rem] justify-center rounded-full bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-700">
+                            {team.drawn}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <span className="inline-flex min-w-[2.5rem] justify-center rounded-full bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">
+                            {team.lost}
+                          </span>
+                        </td>
                         <td className="px-4 py-3 text-center">{team.goalsFor}</td>
                         <td className="px-4 py-3 text-center">{team.goalsAgainst}</td>
                         <td className={`px-4 py-3 text-center font-semibold ${
@@ -830,7 +856,11 @@ const Games = () => {
                         }`}>
                           {team.goalsFor - team.goalsAgainst > 0 ? "+" : ""}{team.goalsFor - team.goalsAgainst}
                         </td>
-                        <td className="px-4 py-3 text-center font-bold text-lg">{team.points}</td>
+                        <td className="px-4 py-3 text-center">
+                          <span className="inline-flex min-w-[3rem] justify-center rounded-full bg-team-primary text-white text-sm font-bold shadow-sm">
+                            {team.points}
+                          </span>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -839,14 +869,14 @@ const Games = () => {
 
               {/* Mobile Table */}
               <div className="md:hidden">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b">
+                <table className="w-full border-separate border-spacing-y-1">
+                  <thead className="bg-gradient-to-l from-team-primary/90 to-team-secondary/80 text-white">
                     <tr>
-                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">#</th>
-                      <th className="px-2 py-2 text-right font-semibold text-gray-700 text-xs">קבוצה</th>
-                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">מש'</th>
-                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">הפרש</th>
-                      <th className="px-1 py-2 text-center font-semibold text-gray-700 text-xs">נק'</th>
+                      <th className="px-1 py-2 text-center font-semibold text-xs">#</th>
+                      <th className="px-2 py-2 text-right font-semibold text-xs">קבוצה</th>
+                      <th className="px-1 py-2 text-center font-semibold text-xs">מש'</th>
+                      <th className="px-1 py-2 text-center font-semibold text-xs">הפרש</th>
+                      <th className="px-1 py-2 text-center font-semibold text-xs">נק'</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -855,11 +885,11 @@ const Games = () => {
                       return (
                         <tr 
                           key={team.team} 
-                          className={`border-b ${
-                            team.team === "עירוני טבריה" ? "bg-blue-50" : ""
-                          } ${
-                            team.position >= 13 && team.team !== "עירוני טבריה" ? "bg-red-50" : ""
-                          }`}
+                          className={`
+                            rounded-xl overflow-hidden bg-white shadow-sm
+                            ${team.team === "עירוני טבריה" ? "ring-2 ring-team-primary/60" : ""}
+                            ${team.position >= 13 && team.team !== "עירוני טבריה" ? "ring-1 ring-red-200 bg-red-50/80" : ""}
+                          `}
                         >
                           <td className="px-1 py-2 text-center font-semibold">
                             <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold ${
@@ -872,7 +902,9 @@ const Games = () => {
                           <td className="px-2 py-2 text-right">
                             <div className="flex items-center gap-2">
                               <img src={getTeamLogo(team.team)} alt={team.team} className="w-5 h-5 object-contain" />
-                              <span className="font-medium text-sm">{team.team}</span>
+                              <span className={`font-semibold text-xs ${
+                                team.team === "עירוני טבריה" ? "text-team-primary" : "text-slate-800"
+                              }`}>{team.team}</span>
                             </div>
                           </td>
                           <td className="px-1 py-2 text-center text-sm">{team.played}</td>
