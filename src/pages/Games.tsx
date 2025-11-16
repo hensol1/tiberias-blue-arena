@@ -282,6 +282,9 @@ const Games = () => {
   // State for showing more upcoming games
   const [showMoreUpcoming, setShowMoreUpcoming] = useState(false);
 
+  // Number of recent results to show (load more in chunks of 3)
+  const [resultsToShow, setResultsToShow] = useState(3);
+
   const teamName = selectedTeam === 'senior' ? 'הקבוצה הבוגרת' : 'קבוצת הנוער';
 
   const getResultBadge = (won: boolean | null) => {
@@ -659,8 +662,8 @@ const Games = () => {
         <section>
           <h2 className="text-3xl font-bold mb-8 text-right text-team-dark">תוצאות אחרונות</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {isLoading ? <p>טוען תוצאות...</p> : recentResults.length > 0 ? (
-              recentResults.map((game) => {
+          {isLoading ? <p>טוען תוצאות...</p> : recentResults.length > 0 ? (
+          recentResults.slice(0, resultsToShow).map((game) => {
                 const isHomeGame = game.venue.includes("גרין") || game.venue.includes("הגליל") || game.venue.includes("טבריה");
                 const homeTeam = isHomeGame ? "עירוני טבריה" : game.opponent;
                 const awayTeam = isHomeGame ? game.opponent : "עירוני טבריה";
@@ -752,6 +755,18 @@ const Games = () => {
               })
             ) : <p className="text-center text-muted-foreground col-span-full">אין תוצאות אחרונות.</p>}
           </div>
+          {/* Load more results */}
+          {recentResults.length > resultsToShow && (
+            <div className="flex justify-center mt-6">
+              <Button
+                variant="outline"
+                onClick={() => setResultsToShow(prev => prev + 3)}
+                className="bg-white hover:bg-gray-50 border-team-primary text-team-primary hover:text-team-secondary"
+              >
+                טען עוד
+              </Button>
+            </div>
+          )}
         </section>
 
         {/* Israeli Premier League Table */}
