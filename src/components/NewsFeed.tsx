@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsMobile } from "@/hooks/use-mobile";
 import NewsCard from "./NewsCard";
+import { Link } from "react-router-dom";
 
 interface NewsItem {
   id: string; // Firestore uses string IDs
@@ -216,6 +217,19 @@ const NewsFeed = ({ isCompact = false }: NewsFeedProps) => {
   
   const categories = ["כללי", "משחקים", "העברות", "נוער", "אימונים"];
 
+  const getCategoryLabel = (category: string): string => {
+    const categoryMap: { [key: string]: string } = {
+      'כללי': 'FEATURES',
+      'משחקים': 'MATCHES',
+      'אימונים': 'TRAINING',
+      'העברות': 'TRANSFERS',
+      'נוער': 'YOUTH',
+      'ראיונות': 'INTERVIEWS',
+      'תמונות': 'PICTURE SPECIAL'
+    };
+    return categoryMap[category] || category.toUpperCase();
+  };
+
   if (isLoading) {
     return <div className="text-center py-12">טוען חדשות...</div>;
   }
@@ -343,18 +357,46 @@ const NewsFeed = ({ isCompact = false }: NewsFeedProps) => {
         </Card>
       )}
 
-      {/* News Feed Layout - Responsive grid for desktop, vertical stack for mobile */}
+      {/* News Feed Layout - headline first, then smaller items (mobile + desktop) */}
       {isCompact ? (
-        <div className="space-y-3">
-          {displayedNews.map((item) => (
+        <div className="space-y-4">
+          {/* Main headline */}
+          {displayedNews[0] && (
             <NewsCard
-              key={item.id}
-              {...item}
+              key={displayedNews[0].id}
+              {...displayedNews[0]}
               isLarge={true}
               showDelete={isAuthenticated && hasPermission('delete_news')}
-              onDelete={() => handleDeleteNews(item.id)}
+              onDelete={() => handleDeleteNews(displayedNews[0].id)}
             />
-          ))}
+          )}
+
+          {/* Secondary smaller items */}
+          <div className="space-y-3">
+            {displayedNews.slice(1).map((item) => (
+              <Link
+                key={item.id}
+                to={`/article/${item.id}`}
+                className="flex items-center gap-3 group"
+              >
+                <div className="w-24 h-16 md:w-28 md:h-18 rounded-md overflow-hidden flex-shrink-0">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="flex-1 text-right">
+                  <div className="text-[10px] md:text-xs font-semibold text-blue-600 mb-0.5">
+                    {getCategoryLabel(item.category)}
+                  </div>
+                  <div className="text-sm md:text-base font-semibold leading-tight line-clamp-2 group-hover:text-team-primary transition-colors">
+                    {item.title}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
