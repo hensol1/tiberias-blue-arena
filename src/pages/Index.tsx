@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight, ChevronRight } from "lucide-react";
+import { Play, ArrowRight, ChevronRight, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
@@ -17,6 +17,31 @@ import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 import mobileSponsors from "@/assets/sponsors/mobile sponsors.png";
 import NewsCard from "@/components/NewsCard";
+import santos from "@/assets/lovable-uploads/santos.png";
+import IdoSharon from "@/assets/lovable-uploads/Ido Sharon.png";
+import jonas from "@/assets/lovable-uploads/jonas.png";
+import OndrejBaco from "@/assets/lovable-uploads/Ondrej Baco.png";
+import SambaKonte from "@/assets/lovable-uploads/Samba.png";
+import OmerYitzhak from "@/assets/lovable-uploads/Omer Yitzhak.png";
+import HaroonShapso from "@/assets/lovable-uploads/Haroon Shapso.png";
+import EliBalilti from "@/assets/lovable-uploads/Eli Balilti.png";
+import RonUnger from "@/assets/lovable-uploads/Ron Unger.png";
+import DavidKeltjens from "@/assets/lovable-uploads/David Keltjens.png";
+import Usman from "@/assets/lovable-uploads/Usman.png";
+import YonatanTeper from "@/assets/lovable-uploads/Yonatan Teper.png";
+import NivGotliv from "@/assets/lovable-uploads/Niv Gotliv.png";
+import WahebHabiballah from "@/assets/lovable-uploads/Waheb Habiballah.png";
+import StanislavBilenkyi from "@/assets/lovable-uploads/Stanislav Bilenkyi.png";
+import ItamarShabir from "@/assets/lovable-uploads/Itamar Shvir.png";
+import PiraAbuAkla from "@/assets/lovable-uploads/Feras Abu Akel.png";
+import ItanWolblum from "@/assets/lovable-uploads/Eitan Velblum.png";
+import YoniKashon from "@/assets/lovable-uploads/Yonatan Hason.png";
+import hen from "@/assets/lovable-uploads/Nehoray Chen.png";
+import swisa from "@/assets/lovable-uploads/Yarin Swisa.png";
+import baranes from "@/assets/lovable-uploads/Idan Baranes.png";
+import DanielGolony from "@/assets/lovable-uploads/Daniel Joulani.png";
+import MatanDegani from "@/assets/lovable-uploads/Matan Dgani.png";
+import PeterMichael from "@/assets/lovable-uploads/Peter Michael.png";
 
 // League table data - showing only relevant teams (team position + 1 above and 1 below)
 const leagueTable = [
@@ -54,11 +79,53 @@ interface VideoItem {
   duration?: string;
 }
 
+interface Player {
+  name: string;
+  position: string;
+  number: number;
+  age: number;
+  image: string;
+  country: string;
+  appearances?: number;
+  goals?: number;
+  instagramLink?: string;
+}
+
+// Players data
+const players: Player[] = [
+  { name: "רוג'ריו סנטוס", position: "שוער", number: 1, age: 26, image: santos, country: "פורטוגל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "עידו שרון", position: "שוער", number: 22, age: 23, image: IdoSharon, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "ג'ונאס אבו גאנימה", position: "שוער", number: 33, age: 21, image: jonas, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "אונדז'יי באצ'ו", position: "הגנה", number: 37, age: 29, image: OndrejBaco, country: "צ'כיה", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "סמביניה", position: "הגנה", number: 4, age: 32, image: SambaKonte, country: "גינאה-ביסאו", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "עומר יצחק", position: "הגנה", number: 2, age: 24, image: OmerYitzhak, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "הארון שפסו", position: "הגנה", number: 99, age: 26, image: HaroonShapso, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "אלי בלילתי", position: "הגנה", number: 15, age: 31, image: EliBalilti, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "רון אונגר", position: "הגנה", number: 17, age: 23, image: RonUnger, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "דניאל גולני", position: "הגנה", number: 47, age: 22, image: DanielGolony, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "נהוראי חן", position: "הגנה", number: 74, age: 20, image: hen, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "יונתן חסון", position: "הגנה", number: 20, age: 20, image: YoniKashon, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "דויד קלטינס", position: "קשר", number: 3, age: 30, image: DavidKeltjens, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "פיראס אבו עקל", position: "קשר", number: 6, age: 28, image: PiraAbuAkla, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "מוחמד אוסמן", position: "קשר", number: 10, age: 31, image: Usman, country: "ניגריה", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "יונתן טפר", position: "קשר", number: 5, age: 24, image: YonatanTeper, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "ניב גוטליב", position: "קשר", number: 11, age: 22, image: NivGotliv, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "איתן וולבלום", position: "קשר", number: 8, age: 28, image: ItanWolblum, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "ירין סויסה", position: "קשר", number: 27, age: 20, image: swisa, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "מתן דגני", position: "קשר", number: 28, age: 20, image: MatanDegani, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "וואהיב חביבאללה", position: "התקפה", number: 14, age: 27, image: WahebHabiballah, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "סטניסלב בילנקי", position: "התקפה", number: 9, age: 26, image: StanislavBilenkyi, country: "אוקראינה", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "פיטר מייקל", position: "התקפה", number: 90, age: 27, image: PeterMichael, country: "ניגריה", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "איתמר שבירו", position: "התקפה", number: 19, age: 27, image: ItamarShabir, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+  { name: "עידן ברנס", position: "התקפה", number: 18, age: 21, image: baranes, country: "ישראל", instagramLink: "https://www.instagram.com/ironitiberiasf.c/" },
+];
+
 const Index = () => {
   const [nextGame, setNextGame] = useState<any>(null);
   const [lastGame, setLastGame] = useState<any>(null);
   const [featuredNews, setFeaturedNews] = useState<any[]>([]);
   const [latestVideos, setLatestVideos] = useState<VideoItem[]>([]);
+  const [featuredPlayer, setFeaturedPlayer] = useState<Player | null>(null);
   const [isLoadingGame, setIsLoadingGame] = useState(true);
   const [isLoadingNews, setIsLoadingNews] = useState(true);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
@@ -149,6 +216,19 @@ const Index = () => {
     };
 
     fetchVideos();
+  }, []);
+
+  // Select featured player (rotates every time component mounts or refreshes)
+  useEffect(() => {
+    const selectFeaturedPlayer = () => {
+      // Use current time to rotate players
+      const now = new Date();
+      const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000);
+      const playerIndex = dayOfYear % players.length;
+      setFeaturedPlayer(players[playerIndex]);
+    };
+
+    selectFeaturedPlayer();
   }, []);
 
   // Extract YouTube video ID from URL
@@ -394,7 +474,16 @@ const Index = () => {
                             }`}
                           >
                             <td className="py-2">{team.position}</td>
-                            <td className="py-2">{team.team}</td>
+                            <td className="py-2">
+                              <div className="flex items-center gap-2">
+                                <img 
+                                  src={getTeamLogo(team.team)} 
+                                  alt={team.team} 
+                                  className="w-6 h-6 object-contain"
+                                />
+                                <span>{team.team}</span>
+                              </div>
+                            </td>
                             <td className="text-center py-2">{team.played}</td>
                             <td className="text-center py-2">{team.goalsDiff > 0 ? '+' : ''}{team.goalsDiff}</td>
                             <td className="text-center py-2 font-semibold">{team.points}</td>
@@ -562,6 +651,152 @@ const Index = () => {
           )}
         </div>
       </section>
+
+      {/* Featured Player Section */}
+      {featuredPlayer && (
+        <section className="bg-white py-8 md:py-12 relative overflow-hidden">
+          <div className="container mx-auto px-4">
+            <div className="relative bg-white rounded-lg shadow-xl overflow-hidden">
+              {/* Mobile Layout */}
+              <div className="lg:hidden">
+                <div className="grid grid-cols-2 gap-0">
+                  {/* Left Section - White Background */}
+                  <div className="relative bg-white p-4 md:p-6 flex flex-col justify-between">
+                    {/* Watermark */}
+                    <div className="absolute inset-0 opacity-5 pointer-events-none">
+                      <div className="absolute top-4 right-4 text-6xl font-bold text-gray-400">טבריה</div>
+                    </div>
+                    
+                    <div className="relative z-10">
+                      {/* Player Number */}
+                      <div className="text-5xl md:text-6xl font-bold text-red-600 mb-2 leading-none">
+                        {featuredPlayer.number}
+                      </div>
+                      
+                      {/* Player Name */}
+                      <div className="mb-3">
+                        <div className="text-base md:text-lg font-bold text-gray-900 uppercase tracking-tight">
+                          {featuredPlayer.name.split(' ')[0]}
+                        </div>
+                        <div className="text-xl md:text-2xl font-bold text-gray-900 uppercase tracking-tight">
+                          {featuredPlayer.name.split(' ').slice(1).join(' ')}
+                        </div>
+                      </div>
+                      
+                      {/* Position */}
+                      <div className="mb-4 inline-block border-2 border-blue-500 px-3 py-1 rounded">
+                        <span className="text-xs font-semibold text-gray-900 uppercase">
+                          {featuredPlayer.position}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom Section */}
+                    <div className="relative z-10 mt-auto">
+                      <Link to="/team" className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors">
+                        <span className="text-xs md:text-sm font-semibold uppercase">כל השחקנים</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                      {featuredPlayer.instagramLink && (
+                        <div className="mt-3">
+                          <a 
+                            href={featuredPlayer.instagramLink} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="inline-flex items-center justify-center w-8 h-8"
+                          >
+                            <Instagram className="w-6 h-6 text-blue-600" />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right Section - Player Image */}
+                  <div className="relative flex items-center justify-center bg-gradient-to-br from-blue-50 to-white overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600 opacity-20 rounded-bl-full"></div>
+                    <img
+                      src={featuredPlayer.image}
+                      alt={featuredPlayer.name}
+                      className="w-full h-full object-cover object-center min-h-[300px] md:min-h-[400px]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop Layout */}
+              <div className="hidden lg:grid grid-cols-3 gap-0" style={{ minHeight: '500px' }}>
+                {/* Left Section - Blue Background */}
+                <div className="relative bg-gradient-to-br from-blue-600 to-blue-800 p-8 lg:p-12 flex flex-col justify-between text-white">
+                  {/* Bottom Red Section */}
+                  <div className="mt-auto bg-red-600 rounded-lg p-4 flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white/20 rounded flex items-center justify-center">
+                      <div className="text-2xl font-bold">{featuredPlayer.number}</div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-lg font-bold uppercase">{featuredPlayer.name.split(' ').slice(-1)[0]}</div>
+                      <div className="text-sm opacity-90">{featuredPlayer.number}</div>
+                    </div>
+                    <Link to="/team">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-xs font-semibold rounded">
+                        כל השחקנים ►
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Center - Player Image (Full Width) */}
+                <div className="relative flex items-center justify-center bg-gradient-to-br from-blue-50 to-white overflow-hidden">
+                  <img
+                    src={featuredPlayer.image}
+                    alt={featuredPlayer.name}
+                    className="w-full h-full object-cover object-center min-h-[500px]"
+                  />
+                </div>
+
+                {/* Right Section - White Background */}
+                <div className="relative bg-white p-8 lg:p-12 flex flex-col justify-between">
+                  {/* Player Number */}
+                  <div className="text-8xl md:text-9xl font-bold text-red-600 mb-4 leading-none">
+                    {featuredPlayer.number}
+                  </div>
+                  
+                  {/* Player Name */}
+                  <div className="mb-4">
+                    <div className="text-2xl md:text-3xl font-bold text-gray-900 uppercase tracking-tight">
+                      {featuredPlayer.name.split(' ')[0]}
+                    </div>
+                    <div className="text-4xl md:text-5xl font-bold text-gray-900 uppercase tracking-tight">
+                      {featuredPlayer.name.split(' ').slice(1).join(' ')}
+                    </div>
+                  </div>
+                  
+                  {/* Position */}
+                  <div className="mb-8 inline-block border-2 border-blue-500 px-4 py-2 rounded">
+                    <span className="text-sm font-semibold text-gray-900 uppercase">
+                      {featuredPlayer.position}
+                    </span>
+                  </div>
+
+                  {/* Instagram Link */}
+                  {featuredPlayer.instagramLink && (
+                    <div className="mt-auto">
+                      <a 
+                        href={featuredPlayer.instagramLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="inline-flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded hover:border-gray-400 transition-colors"
+                      >
+                        <Instagram className="w-5 h-5 text-gray-600" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Sponsors Section - Bottom of the Page */}
       <section className="py-10 bg-white">
