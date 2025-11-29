@@ -2,13 +2,16 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight, ChevronRight, Instagram } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Play, ArrowRight, ChevronRight, Instagram, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
 import { getTeamLogo } from "@/lib/team-logo-map";
+import { useAuth } from "@/hooks/use-auth";
 import burgerSaloonLogo from "@/assets/sponsors/burger-saloon.jpg";
 import dorotLogo from "@/assets/sponsors/dorot.png";
 import goOutLogo from "@/assets/sponsors/go-out.png";
@@ -129,7 +132,18 @@ const Index = () => {
   const [isLoadingGame, setIsLoadingGame] = useState(true);
   const [isLoadingNews, setIsLoadingNews] = useState(true);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
+  const [showAddNewsForm, setShowAddNewsForm] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [newNews, setNewNews] = useState({
+    title: "",
+    excerpt: "",
+    content: "",
+    category: "כללי",
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop"
+  });
   const { toast } = useToast();
+  const { isAuthenticated, hasPermission } = useAuth();
   const isMobile = useIsMobile();
   const videoScrollRef = useRef<HTMLDivElement>(null);
 
@@ -287,6 +301,61 @@ const Index = () => {
     const minutes = Math.ceil(words / 200);
     return `${minutes} MINS READ`;
   };
+
+  // Handle image upload for news
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setImagePreview(result);
+        setNewNews({...newNews, image: result});
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Handle add news
+  const handleAddNews = async () => {
+    if (!newNews.title || !newNews.excerpt) {
+      toast({ title: "נא למלא את כל השדות", variant: "destructive" });
+      return;
+    }
+
+    if (!db) {
+      toast({ title: "Firebase לא זמין - לא ניתן להוסיף חדשות", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const newsCollectionRef = collection(db, "news");
+      const docRef = await addDoc(newsCollectionRef, {
+        ...newNews,
+        date: new Date().toISOString(),
+        views: 0,
+        featured: false,
+      });
+      
+      // Refresh news list
+      const q = query(newsCollectionRef, orderBy("date", "desc"));
+      const newsSnapshot = await getDocs(q);
+      const newsList = newsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+      setFeaturedNews(newsList.slice(0, 7));
+
+      setShowAddNewsForm(false);
+      setNewNews({ title: "", excerpt: "", content: "", category: "כללי", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop" });
+      setImageFile(null);
+      setImagePreview("");
+      toast({ title: "החדשה נוספה בהצלחה!" });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      toast({ title: "שגיאה בהוספת חדשה", variant: "destructive" });
+    }
+  };
+
+  const categories = ["כללי", "משחקים", "העברות", "נוער", "אימונים"];
 
   // Scroll videos horizontally
   const scrollVideos = (direction: 'left' | 'right') => {
@@ -502,7 +571,110 @@ const Index = () => {
       {/* News Grid Section */}
       <section className="bg-white py-8">
         <div className="container mx-auto px-4">
-          <h2 className="text-xl font-bold text-right mb-6 text-gray-900">חדשות</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-right text-gray-900">חדשות</h2>
+            {isAuthenticated && hasPermission('add_news') && db && (
+              <Button 
+                onClick={() => setShowAddNewsForm(!showAddNewsForm)} 
+                className="bg-team-primary hover:bg-team-secondary"
+              >
+                <Plus className="h-4 w-4 ml-2" />
+                {showAddNewsForm ? "בטל" : "הוסף חדשה"}
+              </Button>
+            )}
+          </div>
+
+          {/* Add News Form */}
+          {showAddNewsForm && (
+            <Card className="mb-6 animate-fade-in">
+              <CardHeader>
+                <CardTitle className="text-right">הוסף חדשה חדשה</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-right block">כותרת</label>
+                  <Input
+                    value={newNews.title}
+                    onChange={(e) => setNewNews({...newNews, title: e.target.value})}
+                    placeholder="הכנס כותרת לחדשה..."
+                    className="text-right"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-right block">תקציר</label>
+                  <Textarea
+                    value={newNews.excerpt}
+                    onChange={(e) => setNewNews({...newNews, excerpt: e.target.value})}
+                    placeholder="הכנס תקציר קצר..."
+                    className="text-right"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-right block">תוכן מלא</label>
+                  <Textarea
+                    value={newNews.content}
+                    onChange={(e) => setNewNews({...newNews, content: e.target.value})}
+                    placeholder="הכנס את תוכן הכתבה המלא..."
+                    className="text-right"
+                    rows={6}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-right block">קטגוריה</label>
+                  <select 
+                    value={newNews.category}
+                    onChange={(e) => setNewNews({...newNews, category: e.target.value})}
+                    className="w-full p-2 border rounded-md text-right"
+                  >
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-right block">תמונה</label>
+                  <div className="flex flex-col space-y-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="text-right"
+                    />
+                    {imagePreview && (
+                      <div className="relative w-full h-32 rounded-md overflow-hidden">
+                        <img 
+                          src={imagePreview} 
+                          alt="תצוגה מקדימה" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex space-x-2 space-x-reverse">
+                  <Button 
+                    onClick={handleAddNews}
+                    className="bg-team-primary hover:bg-team-secondary"
+                  >
+                    פרסם חדשה
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowAddNewsForm(false)}
+                  >
+                    ביטול
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {isLoadingNews ? (
             <div className="text-center py-12">טוען חדשות...</div>
           ) : gridNews.length > 0 ? (
