@@ -6,10 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Play, ArrowRight, ChevronRight, Instagram, Plus } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Play, ArrowRight, ChevronRight, Instagram, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { getTeamLogo } from "@/lib/team-logo-map";
 import { useAuth } from "@/hooks/use-auth";
 import burgerSaloonLogo from "@/assets/sponsors/burger-saloon.jpg";
@@ -357,6 +368,31 @@ const Index = () => {
 
   const categories = ["כללי", "משחקים", "העברות", "נוער", "אימונים"];
 
+  // Handle delete news
+  const handleDeleteNews = async (id: string) => {
+    if (!db) {
+      toast({ title: "Firebase לא זמין - לא ניתן למחוק חדשות", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const newsDoc = doc(db, "news", id);
+      await deleteDoc(newsDoc);
+      
+      // Refresh news list
+      const newsCollection = collection(db, "news");
+      const q = query(newsCollection, orderBy("date", "desc"));
+      const newsSnapshot = await getDocs(q);
+      const newsList = newsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+      setFeaturedNews(newsList.slice(0, 7));
+      
+      toast({ title: "החדשה נמחקה בהצלחה" });
+    } catch (error) {
+      console.error("Error deleting document: ", error);
+      toast({ title: "שגיאה במחיקת חדשה", variant: "destructive" });
+    }
+  };
+
   // Scroll videos horizontally
   const scrollVideos = (direction: 'left' | 'right') => {
     if (videoScrollRef.current) {
@@ -680,40 +716,74 @@ const Index = () => {
           ) : gridNews.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {gridNews.map((item) => (
-                <Link 
-                  key={item.id} 
-                  to={`/article/${item.id}`}
-                  className="group cursor-pointer"
-                >
-                  <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-                    {/* Image */}
-                    <div className="relative w-full h-64 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    
-                    {/* Text Block */}
-                    <div className="p-5 bg-white">
-                      {/* Title */}
-                      <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
-                        {item.title}
-                      </h3>
-                      
-                      {/* Category */}
-                      <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2">
-                        {getCategoryLabel(item.category)}
+                <div key={item.id} className="group relative">
+                  {/* Delete Button */}
+                  {isAuthenticated && hasPermission('delete_news') && db && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-2 left-2 z-10 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="מחק חדשה"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent dir="rtl">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            פעולה זו תמחק את החדשה לצמיתות. לא ניתן לשחזר את הפעולה.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>ביטול</AlertDialogCancel>
+                          <AlertDialogAction 
+                            onClick={() => handleDeleteNews(item.id)} 
+                            className="bg-destructive hover:bg-destructive/90"
+                          >
+                            מחק
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                  
+                  <Link 
+                    to={`/article/${item.id}`}
+                    className="block cursor-pointer"
+                  >
+                    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+                      {/* Image */}
+                      <div className="relative w-full h-64 overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
                       
-                      {/* Metadata */}
-                      <div className="text-xs text-gray-500 font-normal">
-                        {formatNewsDate(item.date)} // {getReadingTime(item.content || item.excerpt || '')}
+                      {/* Text Block */}
+                      <div className="p-5 bg-white">
+                        {/* Title */}
+                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                          {item.title}
+                        </h3>
+                        
+                        {/* Category */}
+                        <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2">
+                          {getCategoryLabel(item.category)}
+                        </div>
+                        
+                        {/* Metadata */}
+                        <div className="text-xs text-gray-500 font-normal">
+                          {formatNewsDate(item.date)} // {getReadingTime(item.content || item.excerpt || '')}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
             </div>
           ) : (
