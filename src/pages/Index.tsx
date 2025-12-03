@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Play, ArrowRight, ChevronRight, Instagram, Plus, Trash2 } from "lucide-react";
+import { Play, ArrowRight, ChevronRight, ChevronLeft, Instagram, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, addDoc, deleteDoc, doc, query, orderBy } from "firebase/firestore";
@@ -143,7 +143,11 @@ const Index = () => {
   const [displayedNewsCount, setDisplayedNewsCount] = useState(3);
   const [latestVideos, setLatestVideos] = useState<VideoItem[]>([]);
   const [featuredPlayer, setFeaturedPlayer] = useState<Player | null>(null);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [isLoadingGame, setIsLoadingGame] = useState(true);
+  const playerCarouselRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
   const [isLoadingNews, setIsLoadingNews] = useState(true);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [showAddNewsForm, setShowAddNewsForm] = useState(false);
@@ -256,10 +260,43 @@ const Index = () => {
       const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000);
       const playerIndex = dayOfYear % players.length;
       setFeaturedPlayer(players[playerIndex]);
+      setCurrentPlayerIndex(playerIndex);
     };
 
     selectFeaturedPlayer();
   }, []);
+
+  // Handle swipe gestures
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      // Swipe left - next player
+      setCurrentPlayerIndex((prev) => (prev + 1) % players.length);
+    } else if (distance < -minSwipeDistance) {
+      // Swipe right - previous player
+      setCurrentPlayerIndex((prev) => (prev - 1 + players.length) % players.length);
+    }
+  };
+
+  // Navigate to next/previous player
+  const goToNextPlayer = () => {
+    setCurrentPlayerIndex((prev) => (prev + 1) % players.length);
+  };
+
+  const goToPreviousPlayer = () => {
+    setCurrentPlayerIndex((prev) => (prev - 1 + players.length) % players.length);
+  };
 
   // Extract YouTube video ID from URL
   const getYouTubeVideoId = (url: string) => {
@@ -924,145 +961,171 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Player Section */}
-      {featuredPlayer && (
+      {/* Players Carousel Section */}
+      {players.length > 0 && (
         <section className="bg-white py-8 md:py-12 relative overflow-hidden">
           <div className="container mx-auto px-4">
-            <div className="relative bg-white rounded-lg shadow-xl overflow-hidden">
-              {/* Mobile Layout */}
-              <div className="lg:hidden">
-                <div className="grid grid-cols-2 gap-0">
-                  {/* Left Section - White Background */}
-                  <div className="relative bg-white p-4 md:p-6 flex flex-col justify-between">
-                    {/* Watermark */}
-                    <div className="absolute inset-0 opacity-5 pointer-events-none">
-                      <div className="absolute top-4 right-4 text-6xl font-bold text-gray-400">טבריה</div>
-                    </div>
-                    
-                    <div className="relative z-10">
-                      {/* Player Number */}
-                      <div className="text-5xl md:text-6xl font-bold text-red-600 mb-2 leading-none">
-                        {featuredPlayer.number}
-                      </div>
-                      
-                      {/* Player Name */}
-                      <div className="mb-3">
-                        <div className="text-base md:text-lg font-bold text-gray-900 uppercase tracking-tight">
-                          {featuredPlayer.name.split(' ')[0]}
-                        </div>
-                        <div className="text-xl md:text-2xl font-bold text-gray-900 uppercase tracking-tight">
-                          {featuredPlayer.name.split(' ').slice(1).join(' ')}
-                        </div>
-                      </div>
-                      
-                      {/* Position */}
-                      <div className="mb-4 inline-block border-2 border-blue-500 px-3 py-1 rounded">
-                        <span className="text-xs font-semibold text-gray-900 uppercase">
-                          {featuredPlayer.position}
-                        </span>
-                      </div>
-                    </div>
+            <div className="relative">
+              {/* Carousel Container */}
+              <div 
+                ref={playerCarouselRef}
+                className="relative bg-white rounded-lg shadow-xl overflow-hidden"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                {players.map((player, index) => {
+                  if (index !== currentPlayerIndex) return null;
+                  
+                  return (
+                    <div key={player.name} className="relative">
+                      {/* Mobile Layout */}
+                      <div className="lg:hidden">
+                        <div className="grid grid-cols-2 gap-0">
+                          {/* Left Section - White Background */}
+                          <div className="relative bg-white p-4 md:p-6 flex flex-col justify-between min-h-[300px] md:min-h-[400px]">
+                            <div className="relative z-10">
+                              {/* Player Number */}
+                              <div className="text-5xl md:text-6xl font-bold text-red-600 mb-2 leading-none">
+                                {player.number}
+                              </div>
+                              
+                              {/* Player Name */}
+                              <div className="mb-3">
+                                <div className="text-base md:text-lg font-bold text-gray-900 uppercase tracking-tight">
+                                  {player.name.split(' ')[0]}
+                                </div>
+                                <div className="text-xl md:text-2xl font-bold text-gray-900 uppercase tracking-tight">
+                                  {player.name.split(' ').slice(1).join(' ')}
+                                </div>
+                              </div>
+                              
+                              {/* Position */}
+                              <div className="mb-4 inline-block border-2 border-blue-500 px-3 py-1 rounded">
+                                <span className="text-xs font-semibold text-gray-900 uppercase">
+                                  {player.position}
+                                </span>
+                              </div>
+                            </div>
 
-                    {/* Bottom Section */}
-                    <div className="relative z-10 mt-auto">
-                      <Link to="/team" className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors">
-                        <span className="text-xs md:text-sm font-semibold uppercase">כל השחקנים</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                      {featuredPlayer.instagramLink && (
-                        <div className="mt-3">
-                          <a 
-                            href={featuredPlayer.instagramLink} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="inline-flex items-center justify-center w-8 h-8"
-                          >
-                            <Instagram className="w-6 h-6 text-blue-600" />
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                            {/* Bottom Section */}
+                            <div className="relative z-10 mt-auto">
+                              <Link to="/team" className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors">
+                                <span className="text-xs md:text-sm font-semibold uppercase">כל השחקנים</span>
+                                <ArrowRight className="w-4 h-4" />
+                              </Link>
+                              {player.instagramLink && (
+                                <div className="mt-3">
+                                  <a 
+                                    href={player.instagramLink} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="inline-flex items-center justify-center w-8 h-8"
+                                  >
+                                    <Instagram className="w-6 h-6 text-blue-600" />
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          </div>
 
-                  {/* Right Section - Player Image */}
-                  <div className="relative flex items-center justify-center bg-gradient-to-br from-blue-50 to-white overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600 opacity-20 rounded-bl-full"></div>
-                    <img
-                      src={featuredPlayer.image}
-                      alt={featuredPlayer.name}
-                      className="w-full h-full object-cover object-center min-h-[300px] md:min-h-[400px]"
+                          {/* Right Section - Player Image */}
+                          <div className="relative flex items-center justify-center bg-gradient-to-br from-blue-50 to-white overflow-hidden">
+                            <img
+                              src={player.image}
+                              alt={player.name}
+                              className="w-full h-full object-cover object-center min-h-[300px] md:min-h-[400px]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Desktop Layout */}
+                      <div className="hidden lg:grid grid-cols-2 gap-0" style={{ minHeight: '500px' }}>
+                        {/* Left Section - White Background */}
+                        <div className="relative bg-white p-8 lg:p-12 flex flex-col justify-between">
+                          {/* Player Number */}
+                          <div className="text-8xl md:text-9xl font-bold text-red-600 mb-4 leading-none">
+                            {player.number}
+                          </div>
+                          
+                          {/* Player Name */}
+                          <div className="mb-4">
+                            <div className="text-2xl md:text-3xl font-bold text-gray-900 uppercase tracking-tight">
+                              {player.name.split(' ')[0]}
+                            </div>
+                            <div className="text-4xl md:text-5xl font-bold text-gray-900 uppercase tracking-tight">
+                              {player.name.split(' ').slice(1).join(' ')}
+                            </div>
+                          </div>
+                          
+                          {/* Position */}
+                          <div className="mb-8 inline-block border-2 border-blue-500 px-4 py-2 rounded">
+                            <span className="text-sm font-semibold text-gray-900 uppercase">
+                              {player.position}
+                            </span>
+                          </div>
+
+                          {/* Bottom Links */}
+                          <div className="mt-auto flex items-center justify-between">
+                            <Link to="/team" className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors">
+                              <span className="text-sm font-semibold uppercase">כל השחקנים</span>
+                              <ArrowRight className="w-5 h-5" />
+                            </Link>
+                            {player.instagramLink && (
+                              <a 
+                                href={player.instagramLink} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="inline-flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded hover:border-gray-400 transition-colors"
+                              >
+                                <Instagram className="w-5 h-5 text-gray-600" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Right Section - Player Image */}
+                        <div className="relative flex items-center justify-center bg-gradient-to-br from-blue-50 to-white overflow-hidden">
+                          <img
+                            src={player.image}
+                            alt={player.name}
+                            className="w-full h-full object-cover object-center min-h-[500px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Navigation Arrows - Hidden on mobile, visible on desktop */}
+                <button
+                  onClick={goToPreviousPlayer}
+                  className="hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all z-10 items-center justify-center"
+                  aria-label="Previous player"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={goToNextPlayer}
+                  className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all z-10 items-center justify-center"
+                  aria-label="Next player"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+
+                {/* Dots Indicator */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {players.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentPlayerIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === currentPlayerIndex ? 'bg-red-600 w-6' : 'bg-gray-300'
+                      }`}
+                      aria-label={`Go to player ${index + 1}`}
                     />
-                  </div>
-                </div>
-              </div>
-
-              {/* Desktop Layout */}
-              <div className="hidden lg:grid grid-cols-3 gap-0" style={{ minHeight: '500px' }}>
-                {/* Left Section - Blue Background */}
-                <div className="relative bg-gradient-to-br from-blue-600 to-blue-800 p-8 lg:p-12 flex flex-col justify-between text-white">
-                  {/* Bottom Red Section */}
-                  <div className="mt-auto bg-red-600 rounded-lg p-4 flex items-center gap-4">
-                    <div className="w-16 h-16 bg-white/20 rounded flex items-center justify-center">
-                      <div className="text-2xl font-bold">{featuredPlayer.number}</div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-lg font-bold uppercase">{featuredPlayer.name.split(' ').slice(-1)[0]}</div>
-                      <div className="text-sm opacity-90">{featuredPlayer.number}</div>
-                    </div>
-                    <Link to="/team">
-                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-xs font-semibold rounded">
-                        כל השחקנים ►
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Center - Player Image (Full Width) */}
-                <div className="relative flex items-center justify-center bg-gradient-to-br from-blue-50 to-white overflow-hidden">
-                  <img
-                    src={featuredPlayer.image}
-                    alt={featuredPlayer.name}
-                    className="w-full h-full object-cover object-center min-h-[500px]"
-                  />
-                </div>
-
-                {/* Right Section - White Background */}
-                <div className="relative bg-white p-8 lg:p-12 flex flex-col justify-between">
-                  {/* Player Number */}
-                  <div className="text-8xl md:text-9xl font-bold text-red-600 mb-4 leading-none">
-                    {featuredPlayer.number}
-                  </div>
-                  
-                  {/* Player Name */}
-                  <div className="mb-4">
-                    <div className="text-2xl md:text-3xl font-bold text-gray-900 uppercase tracking-tight">
-                      {featuredPlayer.name.split(' ')[0]}
-                    </div>
-                    <div className="text-4xl md:text-5xl font-bold text-gray-900 uppercase tracking-tight">
-                      {featuredPlayer.name.split(' ').slice(1).join(' ')}
-                    </div>
-                  </div>
-                  
-                  {/* Position */}
-                  <div className="mb-8 inline-block border-2 border-blue-500 px-4 py-2 rounded">
-                    <span className="text-sm font-semibold text-gray-900 uppercase">
-                      {featuredPlayer.position}
-                    </span>
-                  </div>
-
-                  {/* Instagram Link */}
-                  {featuredPlayer.instagramLink && (
-                    <div className="mt-auto">
-                      <a 
-                        href={featuredPlayer.instagramLink} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="inline-flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded hover:border-gray-400 transition-colors"
-                      >
-                        <Instagram className="w-5 h-5 text-gray-600" />
-                      </a>
-                    </div>
-                  )}
+                  ))}
                 </div>
               </div>
             </div>
