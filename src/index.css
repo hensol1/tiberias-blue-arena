@@ -91,14 +91,14 @@
   }
 
   body {
-    @apply bg-background text-foreground font-heebo;
+    @apply bg-background text-foreground font-noto-hebrew;
     direction: rtl;
   }
 }
 
 /* Hebrew text improvements */
 .hebrew-text {
-  font-family: 'Heebo', sans-serif;
+  font-family: 'Noto Sans Hebrew', sans-serif;
   direction: rtl;
   text-align: right;
 }

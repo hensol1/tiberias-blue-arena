@@ -20,6 +20,9 @@ export default {
 		extend: {
 			fontFamily: {
 				'heebo': ['Heebo', 'sans-serif'],
+				'inter': ['Inter', 'sans-serif'],
+				'noto-hebrew': ['Noto Sans Hebrew', 'sans-serif'],
+				'sans': ['Noto Sans Hebrew', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
