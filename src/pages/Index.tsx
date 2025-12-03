@@ -31,6 +31,7 @@ import leagueManagerLogo from "@/assets/sponsors/league-manager.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 import mobileSponsors from "@/assets/sponsors/mobile sponsors.png";
 import NewsCard from "@/components/NewsCard";
+import mainLogo from "@/assets/lovable-uploads/17488e86-af0c-4984-a0a1-de1aec2e3e4d.png";
 import santos from "@/assets/lovable-uploads/santos.png";
 import IdoSharon from "@/assets/lovable-uploads/Ido Sharon.png";
 import jonas from "@/assets/lovable-uploads/jonas.png";
@@ -431,125 +432,115 @@ const Index = () => {
       
       {/* Main Hero Section with Sidebar */}
       <section className="bg-white">
-        <div className="container mx-auto px-4 py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left: Hero Image with Text Overlay */}
-            <div className="lg:col-span-2">
+        <div className="container mx-auto px-0">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-0 relative">
+            {/* Hero Image */}
+            <div className="lg:col-span-3 relative">
               {heroNews ? (
-                <Link to={`/article/${heroNews.id}`} className="block">
-                  <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-lg group cursor-pointer">
+                <Link to={`/article/${heroNews.id}`} className="block h-full">
+                  <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden group cursor-pointer">
                     <img
                       src={heroNews.image}
                       alt={heroNews.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    {/* Gradient overlay for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                     
-                    {/* Category Badge */}
-                    <div className="absolute top-4 right-4">
-                      <span className="text-xs font-semibold text-white uppercase tracking-wider bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/30">
-                        {heroNews.category || "FIRST-TEAM"}
-                      </span>
-                    </div>
-
-                    {/* Text Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                      <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 leading-tight">
-                        {heroNews.title}
-                      </h1>
-                      <div className="flex items-center gap-2 text-white/90 text-sm">
-                        <span>{new Date(heroNews.date).toLocaleDateString('he-IL')}</span>
-                        <span>•</span>
-                        <span>3 MINS READ</span>
+                    {/* Text Overlay - directly on the image */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-20 pointer-events-none">
+                      <div className="group pointer-events-auto">
+                        <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-white leading-tight group-hover:text-blue-200 transition-colors">
+                          {heroNews.title}
+                        </h1>
                       </div>
                     </div>
                   </div>
                 </Link>
               ) : (
-                <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
+                <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden bg-gray-200 flex items-center justify-center">
                   <span className="text-gray-400">אין חדשות להצגה</span>
                 </div>
               )}
             </div>
 
-            {/* Right: Sidebar with Last Match, Next Match, and League Table */}
-            <div className="lg:col-span-1 space-y-4">
-              {/* Last Match Section */}
-              {lastGame && (
-                <Card className="border-2 border-gray-200">
-                  <CardContent className="p-4">
-                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+            {/* Right: Dark Blue/Black Sidebar with Last Match, Next Match, and League Table */}
+            <div className="lg:col-span-2 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 p-4 md:p-6 lg:p-8 text-white lg:h-[500px] flex flex-col lg:overflow-hidden">
+              <div className="flex flex-col gap-2 md:gap-3 flex-1 min-h-0">
+                {/* Last Match Section */}
+                {lastGame && (
+                  <div className="bg-white/5 rounded-lg p-2.5 md:p-3 border border-white/10">
+                    <div className="text-xs font-bold text-white/80 uppercase tracking-wider mb-1.5 md:mb-2">
                       משחק אחרון
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-1.5 md:space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 md:gap-2.5">
                           <img 
                             src={getTeamLogo(lastGame.opponent)} 
                             alt={lastGame.opponent} 
-                            className="w-8 h-8 object-contain"
+                            className="w-6 h-6 md:w-7 md:h-7 object-contain bg-white/10 p-1 rounded"
                           />
-                          <span className="text-sm font-semibold">{lastGame.opponent}</span>
+                          <span className="text-xs md:text-sm font-semibold">{lastGame.opponent}</span>
                         </div>
-                        <span className="text-xs text-gray-500">(A)</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className={`text-lg font-bold ${
-                          lastGame.won === true ? 'text-green-600' : 
-                          lastGame.won === false ? 'text-red-600' : 'text-gray-600'
-                        }`}>
-                          {getResultText(lastGame)} {formatScore(lastGame.score, lastGame.won)}
-                        </span>
+                        <div className="flex items-center gap-1.5 md:gap-2">
+                          <span className="text-sm md:text-base font-bold">
+                            {formatScore(lastGame.score, lastGame.won)}
+                          </span>
+                          <span className="text-[10px] md:text-xs text-white/60 bg-white/5 px-1.5 md:px-2 py-0.5 rounded">(A)</span>
+                        </div>
                       </div>
                       <Button 
-                        variant="outline" 
                         size="sm" 
-                        className="w-full bg-red-600 hover:bg-red-700 text-white border-red-600"
+                        className="w-auto px-2 md:px-3 py-1 md:py-1.5 h-auto text-[10px] md:text-xs bg-red-600 hover:bg-red-700 text-white"
                         asChild
                       >
                         <Link to="/tv">
-                          <Play className="w-4 h-4 ml-2" />
+                          <Play className="w-3 h-3 md:w-3.5 md:h-3.5 ml-1 md:ml-1.5" />
                           תקציר
                         </Link>
                       </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
+                )}
 
-              {/* Next Match Section */}
-              {nextGame && (
-                <Card className="border-2 border-gray-200">
-                  <CardContent className="p-4">
-                    <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                {/* Next Match Section */}
+                {nextGame && (
+                  <div className="bg-white/5 rounded-lg p-2.5 md:p-3 border border-white/10">
+                    <div className="text-xs font-bold text-white/80 uppercase tracking-wider mb-1.5 md:mb-2">
                       המשחק הבא
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-1.5 md:space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 md:gap-2.5">
                           <img 
                             src={getTeamLogo(nextGame.opponent)} 
                             alt={nextGame.opponent} 
-                            className="w-8 h-8 object-contain"
+                            className="w-6 h-6 md:w-7 md:h-7 object-contain bg-white/10 p-1 rounded"
                           />
-                          <span className="text-sm font-semibold">{nextGame.opponent}</span>
+                          <span className="text-xs md:text-sm font-semibold">{nextGame.opponent}</span>
                         </div>
-                        <span className="text-xs text-gray-500">(H)</span>
+                        <span className="text-[10px] md:text-xs text-white/60 bg-white/5 px-1.5 md:px-2 py-0.5 rounded">(H)</span>
                       </div>
-                      <div className="text-sm text-gray-600">
-                        {new Date(nextGame.date).toLocaleDateString('he-IL', { 
-                          weekday: 'short', 
-                          day: 'numeric', 
-                          month: 'short' 
-                        }).toUpperCase()}, {new Date(nextGame.date).toLocaleTimeString('he-IL', { 
-                          hour: '2-digit', 
-                          minute: '2-digit' 
-                        })}
+                      <div className="flex items-center justify-between">
+                        <div className="text-[10px] md:text-xs text-white/90 font-medium">
+                          {new Date(nextGame.date).toLocaleDateString('he-IL', { 
+                            weekday: 'short', 
+                            day: 'numeric', 
+                            month: 'short' 
+                          }).toUpperCase()}
+                        </div>
+                        <div className="text-[10px] md:text-xs text-white/90 font-medium">
+                          {new Date(nextGame.date).toLocaleTimeString('he-IL', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}
+                        </div>
                       </div>
                       {nextGame.ticketLink && (
                         <Button 
                           size="sm" 
-                          className="w-full bg-red-600 hover:bg-red-700 text-white"
+                          className="w-auto px-2 md:px-3 py-1 md:py-1.5 h-auto text-[10px] md:text-xs bg-red-600 hover:bg-red-700 text-white"
                           asChild
                         >
                           <a href={nextGame.ticketLink} target="_blank" rel="noopener noreferrer">
@@ -558,47 +549,54 @@ const Index = () => {
                         </Button>
                       )}
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
+                )}
 
-              {/* League Table Section */}
-              <Card className="border-2 border-gray-200">
-                <CardContent className="p-4">
-                  <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                {/* League Table Section */}
+                <div className="flex-1 flex flex-col min-h-0">
+                  <div className="text-xs font-bold text-white uppercase tracking-wider mb-1.5 md:mb-2">
                     טבלת הליגה
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-xs">
-                      <tbody>
-                        {leagueTable.map((team) => (
-                          <tr 
-                            key={team.position}
-                            className={`border-b border-gray-100 ${
-                              team.team === "עירוני טבריה" ? "bg-blue-50 font-semibold" : ""
-                            }`}
-                          >
-                            <td className="py-2">{team.position}</td>
-                            <td className="py-2">
-                              <div className="flex items-center gap-2">
-                                <img 
-                                  src={getTeamLogo(team.team)} 
-                                  alt={team.team} 
-                                  className="w-6 h-6 object-contain"
-                                />
-                                <span>{team.team}</span>
-                              </div>
-                            </td>
-                            <td className="text-center py-2">{team.played}</td>
-                            <td className="text-center py-2">{team.goalsDiff > 0 ? '+' : ''}{team.goalsDiff}</td>
-                            <td className="text-center py-2 font-semibold">{team.points}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-[10px] md:text-xs">
+                    <thead>
+                      <tr className="border-b border-white/20">
+                        <th className="text-left py-0.5 md:py-1 text-white/80 font-semibold">POS</th>
+                        <th className="text-left py-0.5 md:py-1 text-white/80 font-semibold">CLUB</th>
+                        <th className="text-center py-0.5 md:py-1 text-white/80 font-semibold">PL</th>
+                        <th className="text-center py-0.5 md:py-1 text-white/80 font-semibold">GD</th>
+                        <th className="text-center py-0.5 md:py-1 text-white/80 font-semibold">PTS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {leagueTable.map((team) => (
+                        <tr 
+                          key={team.position}
+                          className={`border-b border-white/10 ${
+                            team.team === "עירוני טבריה" ? "bg-blue-700/50 font-semibold" : ""
+                          }`}
+                        >
+                          <td className="py-0.5 md:py-1">{team.position}</td>
+                          <td className="py-0.5 md:py-1">
+                            <div className="flex items-center gap-1 md:gap-2">
+                              <img 
+                                src={getTeamLogo(team.team)} 
+                                alt={team.team} 
+                                className="w-5 h-5 md:w-6 md:h-6 object-contain"
+                              />
+                              <span className="text-[10px] md:text-xs">{team.team}</span>
+                            </div>
+                          </td>
+                          <td className="text-center py-0.5 md:py-1">{team.played}</td>
+                          <td className="text-center py-0.5 md:py-1">{team.goalsDiff > 0 ? '+' : ''}{team.goalsDiff}</td>
+                          <td className="text-center py-0.5 md:py-1 font-semibold">{team.points}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              </div>
             </div>
           </div>
         </div>
@@ -764,21 +762,24 @@ const Index = () => {
                         />
                       </div>
                       
-                      {/* Text Block */}
+                      {/* Text Block - White background */}
                       <div className="p-5 bg-white">
                         {/* Title */}
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
+                        <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
                           {item.title}
                         </h3>
                         
-                        {/* Category */}
-                        <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-2">
-                          {getCategoryLabel(item.category)}
-                        </div>
-                        
-                        {/* Metadata */}
-                        <div className="text-xs text-gray-500 font-normal">
-                          {formatNewsDate(item.date)} // {getReadingTime(item.content || item.excerpt || '')}
+                        {/* Category and Metadata */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {/* Category */}
+                          <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                            {getCategoryLabel(item.category)}
+                          </div>
+                          
+                          {/* Metadata */}
+                          <div className="text-xs text-gray-500 font-normal">
+                            {formatNewsDate(item.date)} // {getReadingTime(item.content || item.excerpt || '')}
+                          </div>
                         </div>
                       </div>
                     </div>
