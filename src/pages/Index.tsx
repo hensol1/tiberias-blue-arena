@@ -478,15 +478,15 @@ const Index = () => {
             </div>
 
             {/* Right: Dark Blue/Black Sidebar with Last Match, Next Match, and League Table */}
-            <div className="lg:col-span-2 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 p-4 md:p-6 lg:p-8 text-white lg:h-[500px] flex flex-col lg:overflow-hidden">
-              <div className="flex flex-col gap-2 md:gap-3 flex-1 min-h-0">
+            <div className="lg:col-span-2 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 p-4 md:p-6 lg:p-6 text-white lg:h-[500px] flex flex-col lg:overflow-hidden">
+              <div className="flex flex-col gap-2 md:gap-2 lg:gap-2.5 flex-1 min-h-0">
                 {/* Last Match Section */}
                 {lastGame && (
-                  <div className="bg-white/5 rounded-lg p-2.5 md:p-3 border border-white/10">
-                    <div className="text-xs font-bold text-white/80 uppercase tracking-wider mb-1.5 md:mb-2">
+                  <div className="bg-white/5 rounded-lg p-2.5 md:p-3 lg:p-2.5 border border-white/10 flex-shrink-0">
+                    <div className="text-xs font-bold text-white/80 uppercase tracking-wider mb-1.5 md:mb-2 lg:mb-1.5">
                       משחק אחרון
                     </div>
-                    <div className="space-y-1.5 md:space-y-2">
+                    <div className="space-y-1.5 md:space-y-2 lg:space-y-1.5">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 md:gap-2.5">
                           <img 
@@ -503,27 +503,29 @@ const Index = () => {
                           <span className="text-[10px] md:text-xs text-white/60 bg-white/5 px-1.5 md:px-2 py-0.5 rounded">(A)</span>
                         </div>
                       </div>
-                      <Button 
-                        size="sm" 
-                        className="w-auto px-2 md:px-3 py-1 md:py-1.5 h-auto text-[10px] md:text-xs bg-red-600 hover:bg-red-700 text-white"
-                        asChild
-                      >
-                        <Link to="/tv">
-                          <Play className="w-3 h-3 md:w-3.5 md:h-3.5 ml-1 md:ml-1.5" />
-                          תקציר
-                        </Link>
-                      </Button>
+                      <div className="flex justify-center mt-2 lg:mt-1.5">
+                        <Button 
+                          size="lg" 
+                          className="w-full px-6 py-3 lg:px-4 lg:py-2 text-base md:text-lg lg:text-sm font-semibold bg-red-600 hover:bg-red-700 text-white"
+                          asChild
+                        >
+                          <Link to="/tv">
+                            <Play className="w-5 h-5 md:w-6 md:h-6 lg:w-4 lg:h-4 ml-2 lg:ml-1.5" />
+                            תקציר
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 )}
 
                 {/* Next Match Section */}
                 {nextGame && (
-                  <div className="bg-white/5 rounded-lg p-2.5 md:p-3 border border-white/10">
-                    <div className="text-xs font-bold text-white/80 uppercase tracking-wider mb-1.5 md:mb-2">
+                  <div className="bg-white/5 rounded-lg p-2.5 md:p-3 lg:p-2.5 border border-white/10 flex-shrink-0">
+                    <div className="text-xs font-bold text-white/80 uppercase tracking-wider mb-1.5 md:mb-2 lg:mb-1.5">
                       המשחק הבא
                     </div>
-                    <div className="space-y-1.5 md:space-y-2">
+                    <div className="space-y-1.5 md:space-y-2 lg:space-y-1.5">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 md:gap-2.5">
                           <img 
@@ -551,34 +553,36 @@ const Index = () => {
                         </div>
                       </div>
                       {nextGame.ticketLink && (
-                        <Button 
-                          size="sm" 
-                          className="w-auto px-2 md:px-3 py-1 md:py-1.5 h-auto text-[10px] md:text-xs bg-red-600 hover:bg-red-700 text-white"
-                          asChild
-                        >
-                          <a href={nextGame.ticketLink} target="_blank" rel="noopener noreferrer">
-                            כרטיסים
-                          </a>
-                        </Button>
+                        <div className="flex justify-center mt-2 lg:mt-1.5">
+                          <Button 
+                            size="lg" 
+                            className="w-full px-6 py-3 lg:px-4 lg:py-2 text-base md:text-lg lg:text-sm font-semibold bg-red-600 hover:bg-red-700 text-white"
+                            asChild
+                          >
+                            <a href={nextGame.ticketLink} target="_blank" rel="noopener noreferrer">
+                              כרטיסים
+                            </a>
+                          </Button>
+                        </div>
                       )}
                     </div>
                   </div>
                 )}
 
                 {/* League Table Section */}
-                <div className="flex-1 flex flex-col min-h-0">
-                  <div className="text-xs font-bold text-white uppercase tracking-wider mb-1.5 md:mb-2">
+                <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+                  <div className="text-xs font-bold text-white uppercase tracking-wider mb-1 lg:mb-1.5 flex-shrink-0">
                     טבלת הליגה
                   </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-[10px] md:text-xs">
+                <div className="flex-1 overflow-x-auto min-h-0">
+                  <table className="w-full text-[10px] md:text-xs lg:text-[11px]">
                     <thead>
                       <tr className="border-b border-white/20">
-                        <th className="text-left py-0.5 md:py-1 text-white/80 font-semibold">POS</th>
-                        <th className="text-left py-0.5 md:py-1 text-white/80 font-semibold">CLUB</th>
-                        <th className="text-center py-0.5 md:py-1 text-white/80 font-semibold">PL</th>
-                        <th className="text-center py-0.5 md:py-1 text-white/80 font-semibold">GD</th>
-                        <th className="text-center py-0.5 md:py-1 text-white/80 font-semibold">PTS</th>
+                        <th className="text-left py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">POS</th>
+                        <th className="text-left py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">CLUB</th>
+                        <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">PL</th>
+                        <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">GD</th>
+                        <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">PTS</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -589,20 +593,20 @@ const Index = () => {
                             team.team === "עירוני טבריה" ? "bg-blue-700/50 font-semibold" : ""
                           }`}
                         >
-                          <td className="py-0.5 md:py-1">{team.position}</td>
-                          <td className="py-0.5 md:py-1">
-                            <div className="flex items-center gap-1 md:gap-2">
+                          <td className="py-0.5 md:py-1 lg:py-0.5">{team.position}</td>
+                          <td className="py-0.5 md:py-1 lg:py-0.5">
+                            <div className="flex items-center gap-1 md:gap-2 lg:gap-1.5">
                               <img 
                                 src={getTeamLogo(team.team)} 
                                 alt={team.team} 
-                                className="w-5 h-5 md:w-6 md:h-6 object-contain"
+                                className="w-5 h-5 md:w-6 md:h-6 lg:w-5 lg:h-5 object-contain"
                               />
-                              <span className="text-[10px] md:text-xs">{team.team}</span>
+                              <span className="text-[10px] md:text-xs lg:text-[11px]">{team.team}</span>
                             </div>
                           </td>
-                          <td className="text-center py-0.5 md:py-1">{team.played}</td>
-                          <td className="text-center py-0.5 md:py-1">{team.goalsDiff > 0 ? '+' : ''}{team.goalsDiff}</td>
-                          <td className="text-center py-0.5 md:py-1 font-semibold">{team.points}</td>
+                          <td className="text-center py-0.5 md:py-1 lg:py-0.5">{team.played}</td>
+                          <td className="text-center py-0.5 md:py-1 lg:py-0.5">{team.goalsDiff > 0 ? '+' : ''}{team.goalsDiff}</td>
+                          <td className="text-center py-0.5 md:py-1 lg:py-0.5 font-semibold">{team.points}</td>
                         </tr>
                       ))}
                     </tbody>
