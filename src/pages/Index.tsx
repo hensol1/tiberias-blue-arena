@@ -139,6 +139,8 @@ const Index = () => {
   const [nextGame, setNextGame] = useState<any>(null);
   const [lastGame, setLastGame] = useState<any>(null);
   const [featuredNews, setFeaturedNews] = useState<any[]>([]);
+  const [allNews, setAllNews] = useState<any[]>([]);
+  const [displayedNewsCount, setDisplayedNewsCount] = useState(3);
   const [latestVideos, setLatestVideos] = useState<VideoItem[]>([]);
   const [featuredPlayer, setFeaturedPlayer] = useState<Player | null>(null);
   const [isLoadingGame, setIsLoadingGame] = useState(true);
@@ -207,8 +209,10 @@ const Index = () => {
         const q = query(newsCollection, orderBy("date", "desc"));
         const newsSnapshot = await getDocs(q);
         const newsList = newsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
-        // Get first 7 news items (1 for hero + 6 for grid)
-        setFeaturedNews(newsList.slice(0, 7));
+        // Store all news items
+        setAllNews(newsList);
+        // Get first news item for hero
+        setFeaturedNews(newsList.slice(0, 1));
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
@@ -354,7 +358,8 @@ const Index = () => {
       const q = query(newsCollectionRef, orderBy("date", "desc"));
       const newsSnapshot = await getDocs(q);
       const newsList = newsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
-      setFeaturedNews(newsList.slice(0, 7));
+      setAllNews(newsList);
+      setFeaturedNews(newsList.slice(0, 1));
 
       setShowAddNewsForm(false);
       setNewNews({ title: "", excerpt: "", content: "", category: "כללי", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop" });
@@ -385,7 +390,8 @@ const Index = () => {
       const q = query(newsCollection, orderBy("date", "desc"));
       const newsSnapshot = await getDocs(q);
       const newsList = newsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
-      setFeaturedNews(newsList.slice(0, 7));
+      setAllNews(newsList);
+      setFeaturedNews(newsList.slice(0, 1));
       
       toast({ title: "החדשה נמחקה בהצלחה" });
     } catch (error) {
@@ -407,7 +413,14 @@ const Index = () => {
 
   // Get featured news for hero and grid
   const heroNews = featuredNews[0] || null;
-  const gridNews = featuredNews.slice(1, 7) || [];
+  // Get news items for grid (skip first one which is used for hero, show up to displayedNewsCount)
+  const gridNews = allNews.slice(1, displayedNewsCount + 1) || [];
+  const hasMoreNews = allNews.length > displayedNewsCount + 1;
+
+  // Handle load more news
+  const handleLoadMore = () => {
+    setDisplayedNewsCount(prev => prev + 3);
+  };
 
   // Format score for display
   const formatScore = (score: string, won: boolean | null) => {
@@ -790,6 +803,18 @@ const Index = () => {
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-500">אין חדשות להצגה</p>
+            </div>
+          )}
+
+          {/* Load More Button */}
+          {!isLoadingNews && hasMoreNews && (
+            <div className="flex justify-center mt-8">
+              <Button 
+                onClick={handleLoadMore}
+                className="bg-team-primary hover:bg-team-secondary text-white px-6 py-2"
+              >
+                טען עוד
+              </Button>
             </div>
           )}
         </div>
