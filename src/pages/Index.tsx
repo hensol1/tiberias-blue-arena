@@ -61,25 +61,25 @@ import PeterMichael from "@/assets/lovable-uploads/Peter Michael.png";
 // League table data - showing only relevant teams (team position + 1 above and 1 below)
 const leagueTable = [
   {
-    position: 11,
+    position: 9,
     team: "הפועל פ\"ת",
-    played: 10,
+    played: 12,
     goalsDiff: -2,
-    points: 11,
+    points: 13,
   },
   {
-    position: 12,
+    position: 10,
     team: "עירוני טבריה",
-    played: 10,
-    goalsDiff: -14,
-    points: 10,
+    played: 11,
+    goalsDiff: -12,
+    points: 13,
   },
   {
-    position: 13,
-    team: "הפועל י-ם",
-    played: 10,
-    goalsDiff: -11,
-    points: 4,
+    position: 11,
+    team: "הפועל חיפה",
+    played: 11,
+    goalsDiff: -3,
+    points: 12,
   },
 ];
 
