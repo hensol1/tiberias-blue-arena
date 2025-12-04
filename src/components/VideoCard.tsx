@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,7 +53,22 @@ const VideoCard = ({
   };
 
   const videoId = getYouTubeVideoId(youtubeUrl);
-  const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
+  
+  // YouTube thumbnail with fallback: try maxresdefault first, then hqdefault, then sddefault
+  const getThumbnailUrl = (quality: 'maxresdefault' | 'hqdefault' | 'sddefault' = 'maxresdefault') => {
+    return videoId ? `https://img.youtube.com/vi/${videoId}/${quality}.jpg` : '';
+  };
+  
+  const [thumbnailUrl, setThumbnailUrl] = useState(getThumbnailUrl('maxresdefault'));
+  
+  const handleThumbnailError = () => {
+    // Fallback to lower quality thumbnails if maxresdefault fails
+    if (thumbnailUrl.includes('maxresdefault')) {
+      setThumbnailUrl(getThumbnailUrl('hqdefault'));
+    } else if (thumbnailUrl.includes('hqdefault')) {
+      setThumbnailUrl(getThumbnailUrl('sddefault'));
+    }
+  };
 
   return (
     <Card className={`group relative hover:shadow-lg transition-all duration-300 overflow-hidden ${
@@ -93,6 +109,7 @@ const VideoCard = ({
             <img 
               src={thumbnailUrl} 
               alt={title}
+              onError={handleThumbnailError}
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

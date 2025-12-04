@@ -898,7 +898,19 @@ const Index = () => {
               >
                 {latestVideos.map((video) => {
                   const videoId = getYouTubeVideoId(video.youtubeUrl);
-                  const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
+                  const getThumbnailUrl = (quality: 'maxresdefault' | 'hqdefault' | 'sddefault' = 'maxresdefault') => {
+                    return videoId ? `https://img.youtube.com/vi/${videoId}/${quality}.jpg` : '';
+                  };
+                  const thumbnailUrl = getThumbnailUrl('maxresdefault');
+                  
+                  const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                    const img = e.currentTarget;
+                    if (img.src.includes('maxresdefault')) {
+                      img.src = getThumbnailUrl('hqdefault');
+                    } else if (img.src.includes('hqdefault')) {
+                      img.src = getThumbnailUrl('sddefault');
+                    }
+                  };
                   
                   return (
                     <Link 
@@ -912,6 +924,7 @@ const Index = () => {
                           <img
                             src={thumbnailUrl}
                             alt={video.title}
+                            onError={handleThumbnailError}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
