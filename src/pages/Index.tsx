@@ -909,7 +909,11 @@ const Index = () => {
                       img.src = getThumbnailUrl('hqdefault');
                     } else if (img.src.includes('hqdefault')) {
                       img.src = getThumbnailUrl('sddefault');
+                    } else if (img.src.includes('sddefault') && videoId) {
+                      // Try default.jpg as last resort
+                      img.src = `https://img.youtube.com/vi/${videoId}/default.jpg`;
                     }
+                    // If all fail, the image will just show broken, but at least we tried all options
                   };
                   
                   return (
