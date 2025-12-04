@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useIsMobile } from "@/hooks/use-mobile";
 import academyImage from "@/assets/youth/academy.jpeg";
 import newSponsors from "@/assets/sponsors/newsponsers.png";
 
