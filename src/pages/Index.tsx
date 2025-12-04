@@ -475,6 +475,15 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <Header />
       
+      {/* Sponsors Section - Under Header */}
+      <section className="py-6 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center">
+            <img src={newSponsors} alt="Sponsors" className="w-full max-w-6xl object-contain" />
+          </div>
+        </div>
+      </section>
+      
       {/* Main Hero Section with Sidebar */}
       <section className="bg-white">
         <div className="container mx-auto px-0">

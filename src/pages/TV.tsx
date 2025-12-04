@@ -135,6 +135,16 @@ const TV = () => {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <Header />
+        
+        {/* Sponsors Section - Under Header */}
+        <section className="py-6 bg-gray-900">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-center items-center">
+              <img src={newSponsors} alt="Sponsors" className="w-full max-w-6xl object-contain" />
+            </div>
+          </div>
+        </section>
+        
         <div className="text-center py-12">טוען סרטונים...</div>
         <Footer />
       </div>
@@ -144,6 +154,15 @@ const TV = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Header />
+      
+      {/* Sponsors Section - Under Header */}
+      <section className="py-6 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center">
+            <img src={newSponsors} alt="Sponsors" className="w-full max-w-6xl object-contain" />
+          </div>
+        </div>
+      </section>
       
       {/* Hero Section */}
       <section className="bg-gradient-to-l from-team-primary to-team-dark text-white py-16">

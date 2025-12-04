@@ -158,6 +158,15 @@ const Team = () => {
     <div className="min-h-screen bg-white">
       <Header />
       
+      {/* Sponsors Section - Under Header */}
+      <section className="py-6 bg-gray-900">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="flex justify-center items-center">
+            <img src={newSponsors} alt="Sponsors" className="w-full max-w-6xl object-contain" />
+          </div>
+        </div>
+      </section>
+      
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-8 md:py-12">
         {/* Players Section */}
         <section className="mb-16">
@@ -228,7 +237,6 @@ const Team = () => {
           </div>
         </div>
       </section>
-
 
       <Footer />
     </div>

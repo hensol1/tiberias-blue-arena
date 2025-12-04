@@ -11,6 +11,15 @@ const Club = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Header />
       
+      {/* Sponsors Section - Under Header */}
+      <section className="py-6 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center">
+            <img src={newSponsors} alt="Sponsors" className="w-full max-w-6xl object-contain" />
+          </div>
+        </div>
+      </section>
+      
       {/* Hero Section */}
       <section className="w-full">
         <div className="relative h-64 md:h-96">
@@ -64,7 +73,6 @@ const Club = () => {
           </div>
         </div>
       </section>
-
 
       <Footer />
     </div>
