@@ -65,14 +65,14 @@ const leagueTable = [
   {
     position: 10,
     team: "עירוני טבריה",
-    played: 11,
-    goalsDiff: -12,
+    played: 12,
+    goalsDiff: -17,
     points: 13,
   },
   {
     position: 11,
-    team: "הפועל חיפה",
-    played: 11,
+    team: "הפועל ק\"ש",
+    played: 12,
     goalsDiff: -3,
     points: 12,
   },

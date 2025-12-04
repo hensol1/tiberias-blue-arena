@@ -55,27 +55,38 @@ const Games = () => {
     {
       position: 2,
       team: "מכבי ת\"א",
-      played: 11,
-      won: 7,
+      played: 12,
+      won: 8,
       drawn: 3,
       lost: 1,
-      goalsFor: 27,
-      goalsAgainst: 12,
-      points: 24,
+      goalsFor: 29,
+      goalsAgainst: 13,
+      points: 27,
     },
     {
       position: 3,
       team: "בית\"ר י-ם",
-      played: 11,
-      won: 7,
+      played: 12,
+      won: 8,
       drawn: 2,
       lost: 2,
-      goalsFor: 27,
+      goalsFor: 32,
       goalsAgainst: 15,
-      points: 23,
+      points: 26,
     },
     {
       position: 4,
+      team: "מכבי נתניה",
+      played: 12,
+      won: 6,
+      drawn: 1,
+      lost: 5,
+      goalsFor: 24,
+      goalsAgainst: 26,
+      points: 19,
+    },
+    {
+      position: 5,
       team: "הפועל ת\"א",
       played: 12,
       won: 6,
@@ -86,18 +97,18 @@ const Games = () => {
       points: 18,
     },
     {
-      position: 5,
-      team: "מכבי נתניה",
-      played: 11,
-      won: 6,
-      drawn: 0,
-      lost: 5,
-      goalsFor: 22,
-      goalsAgainst: 24,
-      points: 18,
+      position: 6,
+      team: "מ.ס. אשדוד",
+      played: 12,
+      won: 4,
+      drawn: 5,
+      lost: 3,
+      goalsFor: 21,
+      goalsAgainst: 23,
+      points: 17,
     },
     {
-      position: 6,
+      position: 7,
       team: "מכבי חיפה",
       played: 12,
       won: 3,
@@ -105,17 +116,6 @@ const Games = () => {
       lost: 2,
       goalsFor: 21,
       goalsAgainst: 14,
-      points: 16,
-    },
-    {
-      position: 7,
-      team: "מ.ס. אשדוד",
-      played: 11,
-      won: 4,
-      drawn: 4,
-      lost: 3,
-      goalsFor: 19,
-      goalsAgainst: 21,
       points: 16,
     },
     {
@@ -143,27 +143,16 @@ const Games = () => {
     {
       position: 10,
       team: "עירוני טבריה",
-      played: 11,
+      played: 12,
       won: 4,
       drawn: 1,
-      lost: 6,
+      lost: 7,
       goalsFor: 13,
-      goalsAgainst: 25,
+      goalsAgainst: 30,
       points: 13,
     },
     {
       position: 11,
-      team: "הפועל חיפה",
-      played: 11,
-      won: 3,
-      drawn: 3,
-      lost: 5,
-      goalsFor: 15,
-      goalsAgainst: 18,
-      points: 12,
-    },
-    {
-      position: 12,
       team: "הפועל ק\"ש",
       played: 12,
       won: 3,
@@ -171,6 +160,17 @@ const Games = () => {
       lost: 6,
       goalsFor: 14,
       goalsAgainst: 17,
+      points: 12,
+    },
+    {
+      position: 12,
+      team: "הפועל חיפה",
+      played: 12,
+      won: 3,
+      drawn: 3,
+      lost: 6,
+      goalsFor: 16,
+      goalsAgainst: 20,
       points: 12,
     },
     {
@@ -799,7 +799,7 @@ const Games = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {premierLeagueTable.map((team) => (
+                    {premierLeagueTable.map((team, index) => (
                       <tr 
                         key={team.team} 
                         className={`
@@ -807,6 +807,7 @@ const Games = () => {
                           ${team.team === "עירוני טבריה" ? "bg-blue-50/80" : "odd:bg-white even:bg-slate-50/70"}
                           ${team.position >= 13 && team.team !== "עירוני טבריה" ? "bg-red-50/80" : ""}
                           hover:bg-slate-100
+                          ${index === 11 ? "border-t-2 border-red-500" : ""}
                         `}
                       >
                         <td className="px-4 py-3 text-center font-semibold sticky right-0 bg-inherit">
