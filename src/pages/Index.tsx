@@ -17,10 +17,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Play, ArrowRight, ChevronRight, ChevronLeft, Instagram, Plus, Trash2 } from "lucide-react";
+import { Play, ArrowRight, ChevronRight, ChevronLeft, Instagram, Plus, Trash2, Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, addDoc, deleteDoc, doc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, query, orderBy } from "firebase/firestore";
 import { getTeamLogo } from "@/lib/team-logo-map";
 import { useAuth } from "@/hooks/use-auth";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -146,6 +146,7 @@ const Index = () => {
   const [isLoadingNews, setIsLoadingNews] = useState(true);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [showAddNewsForm, setShowAddNewsForm] = useState(false);
+  const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
   const [newNews, setNewNews] = useState({
@@ -402,6 +403,71 @@ const Index = () => {
       console.error("Error adding document: ", error);
       toast({ title: "שגיאה בהוספת חדשה", variant: "destructive" });
     }
+  };
+
+  // Handle edit news
+  const handleEditNews = async () => {
+    if (!newNews.title || !newNews.excerpt) {
+      toast({ title: "נא למלא את כל השדות", variant: "destructive" });
+      return;
+    }
+
+    if (!db || !editingNewsId) {
+      toast({ title: "Firebase לא זמין או אין מזהה לעריכה", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const newsDoc = doc(db, "news", editingNewsId);
+      await updateDoc(newsDoc, {
+        title: newNews.title,
+        excerpt: newNews.excerpt,
+        content: newNews.content,
+        category: newNews.category,
+        image: newNews.image,
+      });
+      
+      // Refresh news list
+      const newsCollection = collection(db, "news");
+      const q = query(newsCollection, orderBy("date", "desc"));
+      const newsSnapshot = await getDocs(q);
+      const newsList = newsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+      setAllNews(newsList);
+      setFeaturedNews(newsList.slice(0, 1));
+
+      setEditingNewsId(null);
+      setShowAddNewsForm(false);
+      setNewNews({ title: "", excerpt: "", content: "", category: "כללי", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop" });
+      setImageFile(null);
+      setImagePreview("");
+      toast({ title: "החדשה עודכנה בהצלחה!" });
+    } catch (error) {
+      console.error("Error updating document: ", error);
+      toast({ title: "שגיאה בעדכון חדשה", variant: "destructive" });
+    }
+  };
+
+  // Handle start editing
+  const handleStartEdit = (newsItem: any) => {
+    setEditingNewsId(newsItem.id);
+    setNewNews({
+      title: newsItem.title || "",
+      excerpt: newsItem.excerpt || "",
+      content: newsItem.content || "",
+      category: newsItem.category || "כללי",
+      image: newsItem.image || "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop"
+    });
+    setImagePreview(newsItem.image || "");
+    setShowAddNewsForm(true);
+  };
+
+  // Handle cancel edit/add
+  const handleCancelForm = () => {
+    setShowAddNewsForm(false);
+    setEditingNewsId(null);
+    setNewNews({ title: "", excerpt: "", content: "", category: "כללי", image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop" });
+    setImageFile(null);
+    setImagePreview("");
   };
 
   const categories = ["כללי", "משחקים", "העברות", "נוער", "אימונים"];
@@ -676,11 +742,13 @@ const Index = () => {
             )}
           </div>
 
-          {/* Add News Form */}
+          {/* Add/Edit News Form */}
           {showAddNewsForm && (
             <Card className="mb-6 animate-fade-in">
               <CardHeader>
-                <CardTitle className="text-right">הוסף חדשה חדשה</CardTitle>
+                <CardTitle className="text-right">
+                  {editingNewsId ? "ערוך חדשה" : "הוסף חדשה חדשה"}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -751,14 +819,14 @@ const Index = () => {
 
                 <div className="flex space-x-2 space-x-reverse">
                   <Button 
-                    onClick={handleAddNews}
+                    onClick={editingNewsId ? handleEditNews : handleAddNews}
                     className="bg-team-primary hover:bg-team-secondary"
                   >
-                    פרסם חדשה
+                    {editingNewsId ? "עדכן חדשה" : "פרסם חדשה"}
                   </Button>
                   <Button 
                     variant="outline" 
-                    onClick={() => setShowAddNewsForm(false)}
+                    onClick={handleCancelForm}
                   >
                     ביטול
                   </Button>
@@ -773,37 +841,54 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {gridNews.map((item) => (
                 <div key={item.id} className="group relative">
-                  {/* Delete Button */}
-                  {isAuthenticated && hasPermission('delete_news') && db && (
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
+                  {/* Edit and Delete Buttons */}
+                  {isAuthenticated && (hasPermission('edit_news') || hasPermission('delete_news')) && db && (
+                    <div className="absolute top-2 left-2 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {/* Edit Button */}
+                      {hasPermission('edit_news') && (
                         <Button
-                          variant="destructive"
+                          variant="default"
                           size="icon"
-                          className="absolute top-2 left-2 z-10 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                          title="מחק חדשה"
+                          className="h-8 w-8 bg-blue-600 hover:bg-blue-700"
+                          title="ערוך חדשה"
+                          onClick={() => handleStartEdit(item)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Pencil className="h-4 w-4" />
                         </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent dir="rtl">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            פעולה זו תמחק את החדשה לצמיתות. לא ניתן לשחזר את הפעולה.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>ביטול</AlertDialogCancel>
-                          <AlertDialogAction 
-                            onClick={() => handleDeleteNews(item.id)} 
-                            className="bg-destructive hover:bg-destructive/90"
-                          >
-                            מחק
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                      )}
+                      {/* Delete Button */}
+                      {hasPermission('delete_news') && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              className="h-8 w-8"
+                              title="מחק חדשה"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent dir="rtl">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                פעולה זו תמחק את החדשה לצמיתות. לא ניתן לשחזר את הפעולה.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>ביטול</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={() => handleDeleteNews(item.id)} 
+                                className="bg-destructive hover:bg-destructive/90"
+                              >
+                                מחק
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                    </div>
                   )}
                   
                   <Link 
