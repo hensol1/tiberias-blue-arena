@@ -557,26 +557,86 @@ const Index = () => {
             {/* Hero Image */}
             <div className="lg:col-span-3 relative">
               {heroNews ? (
-                <Link to={`/article/${heroNews.id}`} className="block h-full">
-                  <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden group cursor-pointer">
-                    <img
-                      src={heroNews.image}
-                      alt={heroNews.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {/* Gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-                    
-                    {/* Text Overlay - directly on the image */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-20 pointer-events-none">
-                      <div className="group pointer-events-auto">
-                        <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-white leading-tight group-hover:text-blue-200 transition-colors">
-                          {heroNews.title}
-                        </h1>
+                <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden group">
+                  {/* Edit and Delete Buttons */}
+                  {isAuthenticated && (hasPermission('edit_news') || hasPermission('delete_news')) && db && (
+                    <div className="absolute top-4 right-4 z-30 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {/* Edit Button */}
+                      {hasPermission('edit_news') && (
+                        <Button
+                          variant="default"
+                          size="icon"
+                          className="h-10 w-10 bg-blue-600 hover:bg-blue-700 shadow-lg"
+                          title="ערוך חדשה"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleStartEdit(heroNews);
+                          }}
+                        >
+                          <Pencil className="h-5 w-5" />
+                        </Button>
+                      )}
+                      {/* Delete Button */}
+                      {hasPermission('delete_news') && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              className="h-10 w-10 shadow-lg"
+                              title="מחק חדשה"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
+                            >
+                              <Trash2 className="h-5 w-5" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent dir="rtl">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>האם אתה בטוח?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                פעולה זו תמחק את החדשה לצמיתות. לא ניתן לשחזר את הפעולה.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>ביטול</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={() => handleDeleteNews(heroNews.id)} 
+                                className="bg-destructive hover:bg-destructive/90"
+                              >
+                                מחק
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                    </div>
+                  )}
+                  
+                  <Link to={`/article/${heroNews.id}`} className="block h-full">
+                    <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden cursor-pointer">
+                      <img
+                        src={heroNews.image}
+                        alt={heroNews.title}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                      
+                      {/* Text Overlay - directly on the image */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-20 pointer-events-none">
+                        <div className="group pointer-events-auto">
+                          <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-white leading-tight group-hover:text-blue-200 transition-colors">
+                            {heroNews.title}
+                          </h1>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ) : (
                 <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden bg-gray-200 flex items-center justify-center">
                   <span className="text-gray-400">אין חדשות להצגה</span>
