@@ -57,24 +57,24 @@ import PeterMichael from "@/assets/lovable-uploads/Peter Michael.png";
 const leagueTable = [
   {
     position: 8,
-    team: "הפועל פ\"ת",
-    played: 20,
-    goalsDiff: 2,
-    points: 26,
+    team: "מכבי נתניה",
+    played: 21,
+    goalsDiff: -9,
+    points: 27,
   },
   {
     position: 9,
     team: "עירוני טבריה",
-    played: 20,
-    goalsDiff: -17,
+    played: 21,
+    goalsDiff: -18,
     points: 22,
   },
   {
     position: 10,
-    team: "הפועל ק\"ש",
-    played: 20,
-    goalsDiff: -6,
-    points: 19,
+    team: "הפועל חיפה",
+    played: 21,
+    goalsDiff: -9,
+    points: 20,
   },
 ];
 
