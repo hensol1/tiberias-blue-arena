@@ -56,25 +56,25 @@ import PeterMichael from "@/assets/lovable-uploads/Peter Michael.png";
 // League table data - showing only relevant teams (team position + 1 above and 1 below)
 const leagueTable = [
   {
-    position: 10,
-    team: "מ.ס. אשדוד",
-    played: 23,
-    goalsDiff: -16,
-    points: 23,
-  },
-  {
-    position: 11,
-    team: "עירוני טבריה",
-    played: 23,
-    goalsDiff: -20,
-    points: 23,
-  },
-  {
     position: 12,
-    team: "הפועל ק\"ש",
-    played: 23,
-    goalsDiff: -9,
+    team: "הפועל י-ם",
+    played: 27,
+    goalsDiff: -17,
     points: 21,
+  },
+  {
+    position: 13,
+    team: "עירוני טבריה",
+    played: 27,
+    goalsDiff: -20,
+    points: 20,
+  },
+  {
+    position: 14,
+    team: "מכבי בני ריינה",
+    played: 27,
+    goalsDiff: -41,
+    points: 15,
   },
 ];
 
