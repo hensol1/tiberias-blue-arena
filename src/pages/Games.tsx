@@ -39,7 +39,7 @@ const Games = () => {
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
-  // League table - Playoffs - מחזור 27
+  // League table - Playoffs - מחזור 32
   type LeagueRow = {
     position: number;
     team: string;
@@ -54,23 +54,23 @@ const Games = () => {
   };
 
   const upperPlayoffTable: LeagueRow[] = [
-    { position: 1, team: "הפועל ב\"ש", played: 27, won: 19, drawn: 5, lost: 3, goalsFor: 61, goalsAgainst: 25, points: 62 },
-    { position: 2, team: "בית\"ר י-ם", played: 27, won: 18, drawn: 6, lost: 3, goalsFor: 64, goalsAgainst: 29, points: 60 },
-    { position: 3, team: "מכבי ת\"א", played: 27, won: 15, drawn: 7, lost: 5, goalsFor: 56, goalsAgainst: 32, points: 52 },
-    { position: 4, team: "הפועל ת\"א", played: 27, won: 15, drawn: 6, lost: 6, goalsFor: 46, goalsAgainst: 27, points: 49, deduction: 2 },
-    { position: 5, team: "מכבי חיפה", played: 27, won: 11, drawn: 9, lost: 7, goalsFor: 50, goalsAgainst: 31, points: 42 },
-    { position: 6, team: "הפועל פ\"ת", played: 27, won: 9, drawn: 10, lost: 8, goalsFor: 41, goalsAgainst: 39, points: 37 },
+    { position: 1, team: "הפועל ב\"ש", played: 34, won: 23, drawn: 7, lost: 4, goalsFor: 73, goalsAgainst: 31, points: 76 },
+    { position: 2, team: "בית\"ר י-ם", played: 33, won: 21, drawn: 8, lost: 4, goalsFor: 75, goalsAgainst: 38, points: 71 },
+    { position: 3, team: "מכבי ת\"א", played: 33, won: 19, drawn: 8, lost: 6, goalsFor: 70, goalsAgainst: 38, points: 65 },
+    { position: 4, team: "הפועל ת\"א", played: 34, won: 18, drawn: 7, lost: 9, goalsFor: 53, goalsAgainst: 33, points: 59, deduction: 2 },
+    { position: 5, team: "מכבי חיפה", played: 33, won: 13, drawn: 9, lost: 11, goalsFor: 56, goalsAgainst: 43, points: 48 },
+    { position: 6, team: "הפועל פ\"ת", played: 33, won: 9, drawn: 10, lost: 14, goalsFor: 45, goalsAgainst: 54, points: 37 },
   ];
 
   const lowerPlayoffTable: LeagueRow[] = [
-    { position: 7, team: "מכבי נתניה", played: 27, won: 11, drawn: 5, lost: 11, goalsFor: 47, goalsAgainst: 56, points: 38 },
-    { position: 8, team: "בני סכנין", played: 27, won: 8, drawn: 9, lost: 10, goalsFor: 27, goalsAgainst: 35, points: 33 },
-    { position: 9, team: "הפועל ק\"ש", played: 27, won: 8, drawn: 6, lost: 13, goalsFor: 40, goalsAgainst: 47, points: 30 },
-    { position: 10, team: "הפועל חיפה", played: 27, won: 6, drawn: 7, lost: 14, goalsFor: 33, goalsAgainst: 47, points: 25 },
-    { position: 11, team: "מ.ס. אשדוד", played: 27, won: 5, drawn: 9, lost: 13, goalsFor: 33, goalsAgainst: 52, points: 24 },
-    { position: 12, team: "הפועל י-ם", played: 27, won: 4, drawn: 9, lost: 14, goalsFor: 23, goalsAgainst: 40, points: 21 },
-    { position: 13, team: "עירוני טבריה", played: 27, won: 7, drawn: 7, lost: 13, goalsFor: 32, goalsAgainst: 52, points: 20, deduction: 8 },
-    { position: 14, team: "מכבי בני ריינה", played: 27, won: 4, drawn: 3, lost: 20, goalsFor: 20, goalsAgainst: 61, points: 15 },
+    { position: 7, team: "מכבי נתניה", played: 32, won: 13, drawn: 6, lost: 13, goalsFor: 55, goalsAgainst: 62, points: 45 },
+    { position: 8, team: "הפועל ק\"ש", played: 32, won: 11, drawn: 7, lost: 14, goalsFor: 48, goalsAgainst: 50, points: 40 },
+    { position: 9, team: "בני סכנין", played: 32, won: 8, drawn: 10, lost: 14, goalsFor: 28, goalsAgainst: 46, points: 34 },
+    { position: 10, team: "עירוני טבריה", played: 32, won: 11, drawn: 8, lost: 13, goalsFor: 43, goalsAgainst: 56, points: 33, deduction: 8 },
+    { position: 11, team: "הפועל חיפה", played: 32, won: 7, drawn: 10, lost: 15, goalsFor: 36, goalsAgainst: 51, points: 31 },
+    { position: 12, team: "הפועל י-ם", played: 32, won: 7, drawn: 10, lost: 15, goalsFor: 26, goalsAgainst: 41, points: 31 },
+    { position: 13, team: "מ.ס. אשדוד", played: 32, won: 5, drawn: 10, lost: 17, goalsFor: 35, goalsAgainst: 60, points: 25 },
+    { position: 14, team: "מכבי בני ריינה", played: 32, won: 6, drawn: 4, lost: 22, goalsFor: 25, goalsAgainst: 65, points: 22 },
   ];
 
   const renderDeductionMarker = (deduction?: number) => {
@@ -819,8 +819,8 @@ const Games = () => {
             </div>
 
             <div className="space-y-8">
-              {renderPlayoffTable(upperPlayoffTable, "פלייאוף עליון - מחזור 27", "upper")}
-              {renderPlayoffTable(lowerPlayoffTable, "פלייאוף תחתון - מחזור 27", "lower")}
+              {renderPlayoffTable(upperPlayoffTable, "פלייאוף עליון - מחזור 34", "upper")}
+              {renderPlayoffTable(lowerPlayoffTable, "פלייאוף תחתון - מחזור 32", "lower")}
             </div>
 
             <div className="mt-4 text-xs text-muted-foreground text-right space-y-1">

@@ -54,27 +54,44 @@ import MatanDegani from "@/assets/lovable-uploads/Matan Dgani.png";
 import PeterMichael from "@/assets/lovable-uploads/Peter Michael.png";
 
 // League table data - showing only relevant teams (team position + 1 above and 1 below)
+// Source of truth: src/pages/Games.tsx (פלייאוף תחתון - מחזור 32)
 const leagueTable = [
   {
-    position: 12,
-    team: "הפועל י-ם",
-    played: 27,
-    goalsDiff: -17,
-    points: 21,
+    position: 9,
+    team: "בני סכנין",
+    played: 32,
+    won: 8,
+    drawn: 10,
+    lost: 14,
+    goalsFor: 28,
+    goalsAgainst: 46,
+    goalsDiff: -18,
+    points: 34,
   },
   {
-    position: 13,
+    position: 10,
     team: "עירוני טבריה",
-    played: 27,
-    goalsDiff: -20,
-    points: 20,
+    played: 32,
+    won: 11,
+    drawn: 8,
+    lost: 13,
+    goalsFor: 43,
+    goalsAgainst: 56,
+    goalsDiff: -13,
+    points: 33,
+    deduction: 8,
   },
   {
-    position: 14,
-    team: "מכבי בני ריינה",
-    played: 27,
-    goalsDiff: -41,
-    points: 15,
+    position: 11,
+    team: "הפועל חיפה",
+    played: 32,
+    won: 7,
+    drawn: 10,
+    lost: 15,
+    goalsFor: 36,
+    goalsAgainst: 51,
+    goalsDiff: -15,
+    points: 31,
   },
 ];
 
@@ -738,8 +755,13 @@ const Index = () => {
 
                 {/* League Table Section */}
                 <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-                  <div className="text-xs font-bold text-white uppercase tracking-wider mb-1 lg:mb-1.5 flex-shrink-0">
-                    טבלת הליגה
+                  <div className="flex items-baseline justify-between mb-1 lg:mb-1.5 flex-shrink-0">
+                    <div className="text-xs font-bold text-white uppercase tracking-wider">
+                      טבלת הליגה
+                    </div>
+                    <div className="text-[10px] text-white/70 font-medium">
+                      פלייאוף תחתון · מחזור 32
+                    </div>
                   </div>
                 <div className="flex-1 overflow-x-auto min-h-0">
                   <table className="w-full text-[10px] md:text-xs lg:text-[11px]">
@@ -748,36 +770,65 @@ const Index = () => {
                         <th className="text-left py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">POS</th>
                         <th className="text-left py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">CLUB</th>
                         <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">PL</th>
+                        <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">W</th>
+                        <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">D</th>
+                        <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">L</th>
                         <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">GD</th>
                         <th className="text-center py-0.5 md:py-1 lg:py-0.5 text-white/80 font-semibold">PTS</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {leagueTable.map((team) => (
-                        <tr 
-                          key={team.position}
-                          className={`border-b border-white/10 ${
-                            team.team === "עירוני טבריה" ? "bg-blue-700/50 font-semibold" : ""
-                          }`}
-                        >
-                          <td className="py-0.5 md:py-1 lg:py-0.5">{team.position}</td>
-                          <td className="py-0.5 md:py-1 lg:py-0.5">
-                            <div className="flex items-center gap-1 md:gap-2 lg:gap-1.5">
-                              <img 
-                                src={getTeamLogo(team.team)} 
-                                alt={team.team} 
-                                className="w-5 h-5 md:w-6 md:h-6 lg:w-5 lg:h-5 object-contain"
-                              />
-                              <span className="text-[10px] md:text-xs lg:text-[11px]">{team.team}</span>
-                            </div>
-                          </td>
-                          <td className="text-center py-0.5 md:py-1 lg:py-0.5">{team.played}</td>
-                          <td className="text-center py-0.5 md:py-1 lg:py-0.5">{team.goalsDiff > 0 ? '+' : ''}{team.goalsDiff}</td>
-                          <td className="text-center py-0.5 md:py-1 lg:py-0.5 font-semibold">{team.points}</td>
-                        </tr>
-                      ))}
+                      {leagueTable.map((team) => {
+                        const isTiberias = team.team === "עירוני טבריה";
+                        const isRelegation = team.position >= 13;
+                        return (
+                          <tr
+                            key={team.position}
+                            className={`border-b border-white/10 ${
+                              isTiberias
+                                ? "bg-blue-700/50 font-semibold"
+                                : isRelegation
+                                  ? "bg-red-500/20"
+                                  : ""
+                            }`}
+                          >
+                            <td className="py-0.5 md:py-1 lg:py-0.5">
+                              <span className={`inline-flex items-center justify-center w-4 h-4 md:w-5 md:h-5 rounded-full text-[9px] md:text-[10px] font-bold ${
+                                isRelegation
+                                  ? "bg-red-500 text-white"
+                                  : "bg-white/20 text-white"
+                              }`}>
+                                {team.position}
+                              </span>
+                            </td>
+                            <td className="py-0.5 md:py-1 lg:py-0.5">
+                              <div className="flex items-center gap-1 md:gap-2 lg:gap-1.5">
+                                <img
+                                  src={getTeamLogo(team.team)}
+                                  alt={team.team}
+                                  className="w-5 h-5 md:w-6 md:h-6 lg:w-5 lg:h-5 object-contain"
+                                />
+                                <span className="text-[10px] md:text-xs lg:text-[11px]">
+                                  {team.team}{team.deduction ? " **" : ""}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="text-center py-0.5 md:py-1 lg:py-0.5">{team.played}</td>
+                            <td className="text-center py-0.5 md:py-1 lg:py-0.5 text-emerald-300">{team.won}</td>
+                            <td className="text-center py-0.5 md:py-1 lg:py-0.5 text-amber-200">{team.drawn}</td>
+                            <td className="text-center py-0.5 md:py-1 lg:py-0.5 text-rose-300">{team.lost}</td>
+                            <td className={`text-center py-0.5 md:py-1 lg:py-0.5 font-medium ${
+                              team.goalsDiff > 0 ? "text-emerald-300" : team.goalsDiff < 0 ? "text-rose-300" : ""
+                            }`}>{team.goalsDiff > 0 ? '+' : ''}{team.goalsDiff}</td>
+                            <td className="text-center py-0.5 md:py-1 lg:py-0.5 font-semibold">{team.points}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
+                </div>
+                <div className="mt-1 text-[9px] md:text-[10px] text-white/60 leading-tight flex-shrink-0">
+                  ** ממאזנה של עירוני טבריה הופחתו 8 נקודות על פי החלטת בית הדין
                 </div>
               </div>
               </div>
